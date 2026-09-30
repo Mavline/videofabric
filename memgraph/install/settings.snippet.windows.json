@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$repo = try { (& git rev-parse --show-toplevel 2>$null).Trim() } catch { (Get-Location).Path }; if (Test-Path (Join-Path $repo '.agent/memory.db')) { & (Join-Path $repo 'memgraph/memgraph.ps1') session-context } else { Write-Output \\\"memgraph: no .agent/memory.db in $repo - skill idle\\\" }\""
+          }
+        ]
+      }
+    ]
+  }
+}

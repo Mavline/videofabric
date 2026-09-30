@@ -1,0 +1,25 @@
+.DS_Store
+.env
+.codex/
+*.bak
+*.backup
+*.orig
+*.zip
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+
+# Машинные части движка памяти: пересобираются на каждой машине.
+memgraph/venv/
+memgraph/vendor/
+
+# Память проекта: в git идут только переносимая база и замороженные спецификации задач.
+.agent/*
+!.agent/memory.db
+!.agent/tasks/
+.agent/tasks/*/*
+!.agent/tasks/*/spec.md
+
+# Локальные настройки агентов.
+.claude/settings.local.json

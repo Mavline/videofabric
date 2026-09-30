@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# memgraph wrapper — invokes scripts/memgraph.py via the bundled skill venv
+# so sqlite-vec extension loading and openai imports work even when system
+# `python3` is a pyenv build without --enable-loadable-sqlite-extensions.
+#
+# Auto-loads OPENAI_API_KEY from <repo>/.env if not already in env.
+# Auto-points SQLITE_VEC_PATH at the vendored vec0.dylib.
+#
+# Usage from a target repo with this folder at <repo>/memgraph:
+#   memgraph/memgraph session-context
+#   memgraph/memgraph recall "supabase auth" --k 5
+#   memgraph/memgraph next-wf
+#   memgraph/memgraph write-claim --type gotcha --statement "..." --confidence 0.9
+set -e
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VENV_PY="$HERE/venv/bin/python"
+if [ ! -x "$VENV_PY" ]; then
+  echo "memgraph wrapper: skill venv missing at $VENV_PY" >&2
+  echo "Recreate: python3 -m venv $HERE/venv && \\" >&2
+  echo "          $HERE/venv/bin/python -m pip install -r $HERE/requirements.txt" >&2
+  exit 2
+fi
+# Vendored sqlite-vec extension — used by memgraph.py if SQLITE_VEC_PATH unset.
+# macOS ships vec0.dylib, Linux vec0.so (Windows uses memgraph.ps1 + vec0.dll).
+if [ -z "${SQLITE_VEC_PATH:-}" ]; then
+  for _vec in "$HERE/vendor/vec0.dylib" "$HERE/vendor/vec0.so"; do
+    if [ -f "$_vec" ]; then export SQLITE_VEC_PATH="$_vec"; break; fi
+  done
+fi
+# Resolve target repo for Claude, Codex, shells, and non-git bootstrap cases.
+if git rev-parse --show-toplevel >/dev/null 2>&1; then
+  REPO="$(git rev-parse --show-toplevel)"
+elif [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
+  REPO="$CLAUDE_PROJECT_DIR"
+elif [ -n "${CODEX_PROJECT_DIR:-}" ]; then
+  REPO="$CODEX_PROJECT_DIR"
+else
+  REPO="$(cd "$HERE/.." && pwd)"
+fi
+export MEMGRAPH_REPO_ROOT="$REPO"
+
+# The engine has its own fallback, but setting MEMGRAPH_DB here makes invocation
+# deterministic even when the wrapper is launched outside a git worktree.
+if [ -z "${MEMGRAPH_DB:-}" ]; then
+  export MEMGRAPH_DB="$REPO/.agent/memory.db"
+fi
+
+# Auto-load OPENAI_API_KEY from <repo>/.env if not already exported.
+if [ -z "${OPENAI_API_KEY:-}" ] && [ -f "$REPO/.env" ]; then
+  set -a
+  # shellcheck disable=SC1090
+  . "$REPO/.env"
+  set +a
+fi
+exec "$VENV_PY" "$HERE/scripts/memgraph.py" "$@"
