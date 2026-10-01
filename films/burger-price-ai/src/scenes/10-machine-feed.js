@@ -5,10 +5,10 @@
 //     G3 wall map (x 80 to 1000, y 400 to 700: a pale land, 140 restaurants, a dozen booths, two pins)
 //   2 T 18.5: the map's red dots pulse to 1.3 and back, seeded phases, redrawn over the cached map
 //   3 the G3 machine (h 660 from (540, 1480)): periscope down, needle at LOW, a 1 px hum on twos,
-//     gulps on 19.0 and 19.5 (on ones)
+//     gulps on 19.0 and 19.5 (on ones: squeeze 2 frames, light stretch 2 frames)
 //   4 the purchase stream: seven streams of receipts and coins leap from the dots and fall into the
 //     hopper's mouth (on ones)
-//   5 the captions (G8): nearly 14,000 restaurants (18.25) / millions of orders a day (18.5)
+//   5 the captions (G8), white over ink: nearly 14,000 restaurants (18.25) / millions of orders a day (18.5)
 (() => {
   'use strict';
   const ID = 'machine-feed';
@@ -59,13 +59,16 @@
     }
   }
 
-  // the gulp's three drawings on ones from each beat: squeeze and squash, swell, settle
-  function gulpK(t) {
+  // the gulp from each beat, on ones: the squeeze held 2 frames, 2 frames of a light stretch, then idle.
+  // The lib's gulp has no stretch drawing: its swell drawing (the neck bulges, the box back up) is drawn
+  // 2.5 percent bigger through o.h, the cast's own size option, so the contour keeps its width
+  function gulp(t) {
     for (const b of GULPS) {
       const f = Math.floor((t - b) * 24 + 1e-6);
-      if (f >= 0 && f < 3) return (f + 0.5) / 3;
+      if (f >= 0 && f < 2) return { pose: 'gulp', k: 1 / 6, h: 660 };
+      if (f >= 2 && f < 4) return { pose: 'gulp', k: 0.5, h: 676 };
     }
-    return null;
+    return { pose: 'idle', k: 0, h: 660 };
   }
 
   // each stream's dots: the column's dots low enough to leap 60 px or more (pure, built once)
@@ -126,12 +129,14 @@
 
   // a white handwritten line (art bible 9.2) at left edge x, fitted into maxW, popping with outBack
   // over 3 frames on ones from t0; it grows from its left edge, so the 9 percent overshoot stays
-  // inside the safe area
+  // inside the safe area. Two passes like every white caption on the machine plate (12, 13, 14):
+  // ink with a 5.5 px ink contour, then white on the same seed
   function caption(ctx, L, str, x, base, maxW, t0, t, seed) {
     if (t < t0 - 1e-6) return;
+    const P = L.pal;
     const f = Math.floor((t - t0) * 24 + 1e-6);
     const s = f < 3 ? L.ease.outBack((f + 1) / 3) : 1;
-    const o = { size: 52 / 0.71, face: 'note', color: L.pal.white, seed };
+    const o = { size: 52 / 0.71, face: 'note', seed };
     const w = L.letters(ctx, str, x, base, Object.assign({ measure: true }, o)).w;
     if (w > maxW) o.size *= maxW / w;
     const cy = base - o.size * 0.36;
@@ -139,7 +144,7 @@
     ctx.translate(x, cy);
     ctx.scale(s, s);
     ctx.translate(-x, -cy);
-    L.letters(ctx, str, x, base, o);
+    for (const pass of [{ color: P.ink, outline: P.ink, outlineWidth: 5.5 }, { color: P.white }]) L.letters(ctx, str, x, base, Object.assign({}, o, pass));
     ctx.restore();
   }
 
@@ -158,11 +163,11 @@
 
       // 3 the machine: a 1 px hum on twos, the gulps on ones; on the hold the eye acts (art bible 7.2):
       // it watches the stream, shuts for exactly 2 frames on the first gulp, glances right before the cut
-      const k = gulpK(t);
+      const gp = gulp(t);
       const hum = Math.floor(t * 12 + 1e-6) % 2;
       const fg = Math.floor((t - GULPS[0]) * 24 + 1e-6);
       const m = L.cast.machine(ctx, 540 + hum, 1480, {
-        h: 660, pose: k == null ? 'idle' : 'gulp', k: k == null ? 0 : k, t, scope: 0, level: 0,
+        h: gp.h, pose: gp.pose, k: gp.k, t, scope: 0, level: 0,
         look: t < B_GLANCE ? [-0.8, -0.5] : [0.85, -0.2], blink: fg === 0 || fg === 1, ground: L.pal.pavement,
       });
 
