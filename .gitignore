@@ -23,3 +23,10 @@ memgraph/vendor/
 
 # Локальные настройки агентов.
 .claude/settings.local.json
+
+# Проекты роликов procedural-film: в git только исходники.
+films/*/node_modules/
+films/*/exports/
+films/*/.tmp/
+films/*/dist/
+films/*/tools/node_modules/
