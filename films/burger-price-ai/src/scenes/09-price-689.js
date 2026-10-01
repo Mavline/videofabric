@@ -52,12 +52,23 @@
 
   /**
    * The open-mouth stage (k below 1/3): at G5's burger point the burger covers the mouth, so the face is
-   * laid over it. The same drawing again without the burger (burger: false), clipped to the head down to
-   * just under the chin: the open mouth shows, the burger tucks behind the cheek and keeps its G5 point,
-   * the near hand stays in front of it.
+   * laid over it. The same drawing without the burger (burger: false) is painted on a scratch layer and
+   * laid on the frame clipped to the head down to just under the chin: the open mouth shows, the burger
+   * tucks behind the cheek and keeps its G5 point, the near hand stays in front of it. The layer is
+   * cleared on every use, so nothing carries between frames (as lib.wallShadow does).
    */
+  let faceLayer = null;
   function g5HeroOpen(ctx, L, o) {
     const a = g5Hero(ctx, L, o);
+    const cv = ctx.canvas;
+    if (!faceLayer || faceLayer.width !== cv.width || faceLayer.height !== cv.height) faceLayer = FILM.makeCanvas(cv.width, cv.height);
+    const g = faceLayer.getContext('2d');
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.globalAlpha = 1;
+    g.globalCompositeOperation = 'source-over';
+    g.clearRect(0, 0, cv.width, cv.height);
+    g.setTransform(ctx.getTransform());
+    g5Hero(g, L, Object.assign({}, o, { burger: false }));
     ctx.save();
     ctx.beginPath();
     ctx.rect(0, 0, 1080, a.head[1] + 0.92 * a.headR);
@@ -65,7 +76,8 @@
     ctx.beginPath();
     ctx.arc(a.head[0], a.head[1], 1.09 * a.headR, 0, 2 * Math.PI);
     ctx.clip();
-    g5Hero(ctx, L, Object.assign({}, o, { burger: false }));
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(faceLayer, 0, 0);
     ctx.restore();
     return a;
   }
@@ -176,7 +188,7 @@
     const stripe = (x0, x1) => {
       const pts = [[x0, 470], [x1, 470]];
       for (let x = x1; x >= x0; x -= 5) pts.push([x, scal(x)]);
-      return pts;
+      return L.densify(pts, 8);
     };
     theirs(stripe(920, 1000), P.flower, 'awn1');
     theirs(stripe(1000, 1100), P.paper, 'awn2');

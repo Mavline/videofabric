@@ -1,6 +1,9 @@
 // 16 ride-back: Two miles back. Global T 27.0 to 28.0 (t = T - 27, 24 frames), illustrated (street plate).
 // A cascade of four still cards, 6 frames each, cut on the 8ths inside the shot; the camera is locked on each.
-// Screen direction right to left: the hero rides home.
+// Screen direction right to left: the hero rides home. Every card keeps 05's street frame: the fieldSky
+// light field, the far hills (tops near y 1000 to 1060), the lawn from the yard line y 1145, the G1 ground
+// line y 1480, the cityPastel pavement and its kerb at y 1600. The hero is drawn at the G1 size (wheel
+// radius 80) read from his anchors, facing left.
 //   T 27.0    card 1, the columns (07's street, simplified)
 //   T 27.25   card 2, the fountain (06's street, simplified)
 //   T 27.5    card 3, the fences (05's street, simplified)
@@ -28,7 +31,8 @@
   function drawMileCounter(ctx, L, value, popAge) {
     const P = L.pal;
     L.spot(ctx, 265, 300, 195, 70, { seed: 6 });
-    const o = { face: 'note', color: P.ink, seed: 6, size: 70 / 0.72 }; // digits stand 0.72 of the size
+    // letter seed 52: no 'i' of any value 0..2 drops below the line (seed 6 turned '1.25 mi' into 'mj')
+    const o = { face: 'note', color: P.ink, seed: 52, size: 70 / 0.72 }; // digits stand 0.72 of the size
     const widest = Math.max(...['0.25', '0.75', '1.25', '1.75'].map((v) => L.letters(ctx, v + ' mi', 0, 0, Object.assign({}, o, { measure: true })).w));
     o.size = Math.min(o.size, (o.size * 340) / widest);
     const str = value + ' mi';
@@ -45,20 +49,32 @@
   }
 
   // ---- timing: frames of the shot (0..23) ----
-  const CARD_F = 6; // each card holds 6 frames, a 8th
+  const CARD_F = 6; // each card holds 6 frames, an 8th
   const MILES = [1.75, 1.5, 1.25, 1, 0.75, 0.5, 0.25, 0]; // one value a 16th (3 frames), 0 from T 27.875
 
-  // ---- the hero at the G1 size: wheel radius 80, the wheel centres 140 px either side of his ground point ----
-  const HERO_H = 428.6;
   const GROUND = 1480; // G1 ground line, the pavement's top edge
-  const AXLE = 140;
-  const YARD = 1145; // 05 and 06: the houses stand back from the street on this line
+  const YARD = 1145; // 05: the houses stand back from the street on this line
+
+  // the hero's riding proportions per unit of height, read from his anchors once (copied verbatim from 06):
+  // the library may refine the body and the bicycle, so no part of him is hard-coded here
+  const heroUnit = (L) => L.cached(ID + '|hero-unit', () => {
+    const c = FILM.makeCanvas ? FILM.makeCanvas(1, 1) : document.createElement('canvas');
+    c.width = c.height = 1;
+    const a = L.cast.hero(c.getContext('2d'), 0, 0, { h: 300, pose: 'ride', phase: 0, shadow: false });
+    return { wheelR: a.wheelR / 300, front: a.axleFront[0] / 300, head: [a.head[0] / 300, a.head[1] / 300] };
+  });
+  // the dash drawing at height h, facing right: its anchors relative to his ground point give the smear its
+  // bands and the speed lines their height
+  const dashShape = (L, h) => L.cached(ID + '|dash-shape|' + h, () => {
+    const c = FILM.makeCanvas ? FILM.makeCanvas(1, 1) : document.createElement('canvas');
+    c.width = c.height = 1;
+    return L.cast.hero(c.getContext('2d'), 0, 0, { h, pose: 'dash', phase: 0, shadow: false });
+  });
 
   // cards 1 to 3: his ground point on frames 0..4 of the card, 260 px a frame right to left (on ones)
   const passX = (cf) => 540 + 260 * (2 - cf);
-  // card 4: the skid on frames 0..2 (the last a 4 px overshoot), then he stands on the stop mark
-  const STOP = 300 + AXLE; // the front wheel centre on x 300, facing left
-  const SKID_X = [600, 470, STOP - 4];
+  // card 4: px past the stop mark on the skid's frames 0..2 (the last a 4 px overshoot); then he stands on it
+  const SKID = [160, 30, -4];
 
   // ---- 1 the four streets, each painted once ----
   // one part of a picture: a solid wash with brush marks, edged in pencil of its own colour, darker
@@ -76,19 +92,29 @@
     return { sd, part, rect, poly, line };
   }
 
-  // the light field of the street, in its pale tint (art bible 2.3)
-  function sky(g, L) {
-    g.fillStyle = L.pal.fieldSky;
+  // 05's street frame under every card: the light field (art bible 2.3), the far hills, the lawn from the yard line
+  function street(g, L, d) {
+    const P = L.pal;
+    g.fillStyle = P.fieldSky;
     g.fillRect(0, 0, 1080, 1920);
+    const hills = [[-20, 1060], [120, 1012], [300, 1060], [470, 1002], [650, 1052], [820, 996], [1000, 1046], [1100, 1020]];
+    L.softWash(g, L.densify(hills.concat([[1100, 1200], [-20, 1200]]), 12), { color: P.hillsFar, soft: 10, seed: d.sd('hills') });
+    const lawn = [[-20, YARD - 6], [260, YARD - 12], [560, YARD - 4], [820, YARD - 14], [1100, YARD - 6]];
+    L.softWash(g, L.densify(lawn.concat([[1100, GROUND + 6], [-20, GROUND + 6]]), 12), { color: P.grass, alpha: 0.7, soft: 12, seed: d.sd('lawn') });
+  }
+  // and over everything at the bottom, 05's pavement from the ground line with its kerb (G1)
+  function pavement(g, L, d) {
+    const P = L.pal;
+    L.softWash(g, L.rectPts(-20, GROUND, 1120, 460, 12), { color: P.cityPastel, soft: 2, solid: true, marks: 0.6, seed: d.sd('pavement') });
+    L.pencil(g, [[0, 1600], [1080, 1602]], { base: P.cityPastel, width: 3, seed: d.sd('kerb') });
   }
 
   // card 1: 07's mansion, fewer details: the hip roof, two storeys of wings, the portico of four columns
-  // under a pediment (top near y 562), the long lawn, the urn on its plinth, the gate at the right
+  // under a pediment (top near y 562), the urn on its plinth, the gate at the right; 05's lawn in front
   function cardColumns(g, L) {
     const P = L.pal;
     const d = painter(g, L, 1);
-    sky(g, L);
-    L.softWash(g, L.densify([[0, 1184], [150, 1154], [400, 1172], [660, 1150], [900, 1168], [1080, 1152], [1080, 1300], [0, 1300]], 20), { color: P.hillsFar, soft: 8, seed: d.sd('hills') });
+    street(g, L, d);
     const MX = 520;
     d.poly([[140, 716], [232, 650], [808, 650], [900, 716]], P.hillsFar);
     d.rect(130, 706, 910, 730, P.stone);
@@ -115,7 +141,6 @@
     d.rect(300, 1214, 740, 1236, P.stone);
     d.rect(284, 1236, 756, 1260, P.stone);
     d.rect(268, 1260, 772, 1292, P.stone);
-    d.part(L.densify([[-10, 1291], [270, 1288], [540, 1293], [800, 1289], [1090, 1291], [1090, 1484], [-10, 1484]], 16), P.grass, { marks: 0.9 });
     d.rect(46, 1440, 130, 1462, P.stone);
     d.rect(56, 1352, 120, 1440, P.stone);
     d.rect(46, 1336, 130, 1352, P.stone);
@@ -129,8 +154,7 @@
     for (let x = 980; x <= 1090; x += 20) d.line([[x, 1478], [x, top(x)]], P.slate, 3);
     d.line([[966, 1270], [1090, 1270]], P.slate, 3);
     d.line([[966, 1440], [1090, 1440]], P.slate, 3.4);
-    d.part(L.rectPts(-10, GROUND, 1100, 460, 24), P.cityPastel);
-    L.pencil(g, [[0, 1600], [1080, 1602]], { base: P.cityPastel, width: 3, seed: d.sd('kerb') });
+    pavement(g, L, d);
   }
 
   // card 2: 06's street, fewer details: the rich house on the left, the yellow two-storey house on the
@@ -139,9 +163,7 @@
   function cardFountain(g, L) {
     const P = L.pal;
     const d = painter(g, L, 2);
-    sky(g, L);
-    L.softWash(g, L.densify([[-20, 1078], [140, 1046], [330, 1074], [520, 1036], [720, 1068], [900, 1040], [1100, 1066], [1100, 1200], [-20, 1200]], 12), { color: P.hillsFar, soft: 10, seed: d.sd('hills') });
-    L.softWash(g, L.densify([[-20, YARD - 6], [260, YARD - 12], [560, YARD - 4], [820, YARD - 14], [1100, YARD - 6], [1100, GROUND + 6], [-20, GROUND + 6]], 12), { color: P.grass, alpha: 0.7, soft: 12, seed: d.sd('lawn') });
+    street(g, L, d);
     d.rect(915, 728, 947, 828, P.stone);
     d.rect(870, 845, 1160, 1145, P.wallYellow);
     d.poly([[850, 853], [1015, 700], [1180, 853]], P.roof);
@@ -187,8 +209,9 @@
         right.push([p[0] - nx * w, p[1] - ny * w]);
       });
       const poly = left.concat(right.reverse());
-      L.softWash(g, poly, { color: P.waterTop, alpha: 0.95, soft: 2, marks: 0.3, rim: 0, seed: d.sd('jet', pts[0][0], pts[pts.length - 1][0]) });
-      L.pencil(g, poly, { closed: true, color: P.waterDeep, width: 2, seed: d.sd('jetp', pts[0][0], pts[pts.length - 1][0]) });
+      const id = d.sd('jet', pts[0][0], pts[pts.length - 1][0]);
+      L.softWash(g, poly, { color: P.waterTop, alpha: 0.95, soft: 2, marks: 0.3, rim: 0, seed: id });
+      L.pencil(g, poly, { closed: true, color: P.waterDeep, width: 2, seed: id + 1 });
     };
     const c = 0.85 * 340, topY = BOWL_Y - 4 - c;
     jet([[FX, BOWL_Y - 2], [FX, topY]], 18, 11);
@@ -205,21 +228,18 @@
       jet(arc, 10, 5);
       jet(side, 13, 7);
     }
-    for (let i = 0, x = 8; x < 1080; x += 24, i++) d.line([[x, GROUND - 2], [x, 1412]], P.slate, 2.2);
+    for (let x = 8; x < 1080; x += 24) d.line([[x, GROUND - 2], [x, 1412]], P.slate, 2.2);
     d.line([[0, 1428], [1080, 1426]], P.slate, 2.6);
     d.line([[0, 1468], [1080, 1467]], P.slate, 2.6);
-    d.part(L.rectPts(-10, GROUND, 1100, 460, 24), P.cityPastel);
-    L.pencil(g, [[0, 1600], [1080, 1602]], { base: P.cityPastel, width: 3, seed: d.sd('kerb') });
+    pavement(g, L, d);
   }
 
   // card 3: 05's street, fewer details: three small houses set back on the yard line, a tree, the laundry
-  // line, the picket fence along y 1330..1480
+  // line with two pieces hanging still, the picket fence along y 1330..1480
   function cardFences(g, L) {
     const P = L.pal;
     const d = painter(g, L, 3);
-    sky(g, L);
-    L.softWash(g, L.densify([[-20, 1060], [120, 1012], [300, 1060], [470, 1002], [650, 1052], [820, 996], [1000, 1046], [1100, 1020], [1100, 1200], [-20, 1200]], 12), { color: P.hillsFar, soft: 10, seed: d.sd('hills') });
-    L.softWash(g, L.densify([[-20, YARD - 6], [260, YARD - 12], [560, YARD - 4], [820, YARD - 14], [1100, YARD - 6], [1100, GROUND + 6], [-20, GROUND + 6]], 12), { color: P.grass, alpha: 0.7, soft: 12, seed: d.sd('lawn') });
+    street(g, L, d);
     d.part(L.densify([[777, YARD + 4], [784, 976], [796, 976], [805, YARD + 4]], 8), P.trunk);
     L.softWash(g, L.blobPts(790, 880, 92, 108, d.sd('crown'), 0.22), { color: P.grass, soft: 8, seed: d.sd('crownw') });
     L.props.house(g, 175, YARD, { h: 250, kind: 'modest', fence: false, seed: 1 });
@@ -229,7 +249,6 @@
     L.props.house(g, 600, YARD, { h: 270, kind: 'modest', fence: false, seed: 2 });
     g.restore();
     L.props.house(g, 955, YARD, { h: 245, kind: 'modest', fence: false, seed: 3 });
-    // the laundry posts and the sagging line, two pieces of washing hanging still
     const lineY = (x) => 1010 + 18 * (1 - Math.pow((x - 377.5) / 77.5, 2));
     for (const x of [300, 455]) d.rect(x - 4, 996, x + 4, YARD + 70, P.trunk);
     const ln = [];
@@ -240,25 +259,19 @@
     d.rect(-20, 1364, 1100, 1380, P.fence);
     d.rect(-20, 1428, 1100, 1444, P.fence);
     for (let x = 6; x < 1110; x += 46) d.part(L.densify([[x - 15, GROUND], [x - 15, 1347], [x, 1330], [x + 15, 1347], [x + 15, GROUND]], 6), P.fence);
-    d.part(L.rectPts(-10, GROUND, 1100, 460, 24), P.cityPastel);
-    L.pencil(g, [[0, 1600], [1080, 1602]], { base: P.cityPastel, width: 3, seed: d.sd('kerb') });
+    pavement(g, L, d);
   }
 
   // card 4: 01's modest street, the camera 850 px further right along it: booth one's right corner (its
   // striped awning, the sign board's end, a post, the yellow front with planks) at the left edge, the tree
-  // that stands behind it, then a small yellow house and its picket fence; far hills, two clouds
+  // that stands behind it, then a small yellow house and its picket fence; two clouds
   const HOME = 850;
   function cardHome(g, L) {
     const P = L.pal;
     const d = painter(g, L, 4);
-    sky(g, L);
+    street(g, L, d);
     L.softWash(g, L.blobPts(800, 470, 120, 30, d.sd('cloud1'), 0.25), { color: P.waterTop, alpha: 0.45, soft: 12, marks: 0.5, rim: 0.1, seed: d.sd('cloud1w') });
     L.softWash(g, L.blobPts(430, 690, 130, 30, d.sd('cloud2'), 0.25), { color: P.waterTop, alpha: 0.45, soft: 12, marks: 0.5, rim: 0.1, seed: d.sd('cloud2w') });
-    const hills = [];
-    for (let x = -20; x <= 1100; x += 20) hills.push([x, 1176 - 20 * Math.sin((x + HOME) / 150 + 0.4) - 8 * Math.sin((x + HOME) / 47)]);
-    hills.push([1100, 1262], [-20, 1262]);
-    L.softWash(g, hills, { color: P.hillsFar, soft: 8, marks: 0.6, seed: d.sd('hills') });
-    L.softWash(g, L.rectPts(-20, 1254, 1120, 236, 20), { color: L.mix(P.grass, P.paper, 0.45), solid: true, marks: 0.5, rim: 0, seed: d.sd('meadow') });
     // the tree behind the booth's right edge (01: crown x 920..1080, trunk x 998..1034)
     d.rect(998 - HOME, 930, 1034 - HOME, 1490, P.trunk);
     d.part(L.blobPts(1008 - HOME, 850, 92, 150, d.sd('crown'), 0.16), P.grass, { marks: 0.8 });
@@ -279,41 +292,39 @@
     for (let px = 262; px < 1100; px += 34) d.part(L.densify([[px, 1490], [px, 1342], [px + 11, 1330], [px + 22, 1342], [px + 22, 1490]], 6), P.fence);
     // booth one, all of it but the tag; only its right corner is in the picture
     L.props.booth(g, 690 - HOME, GROUND, { w: 580, price: false });
-    // the pavement, the road under the kerb (01)
-    L.softWash(g, L.rectPts(-20, 1480, 1120, 140, 20), { color: P.cityPastel, solid: true, marks: 0.6, rim: 0, seed: d.sd('pavement') });
-    L.softWash(g, L.rectPts(-20, 1600, 1120, 340, 20), { color: L.mix(P.cityPastel, P.hillsFar, 0.45), solid: true, marks: 0.6, rim: 0, seed: d.sd('road') });
-    L.pencil(g, [[-10, 1481], [1090, 1479]], { base: P.cityPastel, width: 2.4, seed: d.sd('ground') });
-    L.pencil(g, [[-10, 1600], [1090, 1602]], { base: P.cityPastel, width: 3, seed: d.sd('kerb') });
+    pavement(g, L, d);
   }
   const CARDS = [cardColumns, cardFountain, cardFences, cardHome];
 
   // ---- 3 the hero ----
   // the smear that stands for him on a fast frame: dry-brush streaks in his own colours, one for each band
   // of the figure, so it still reads as a boy on a bicycle: the wheels with his legs and shoes, the shirt
-  // with his arms, the head under the cap. x is his ground point; each streak's head is that band's front
-  // edge (he faces left), its tail trails right and fades.
-  function heroSmear(ctx, L, x, trail, seed) {
+  // with his arms, the head under the cap. The bands come from the dash drawing's anchors a (facing right,
+  // relative to his ground point); x is his ground point and he faces left, so each streak's head is that
+  // band's front edge and its tail trails right, fading.
+  function heroSmear(ctx, L, a, x, trail, seed) {
     const P = L.pal;
+    const R = a.wheelR, axleY = a.axleFront[1], chin = a.head[1] + a.headR;
     const bands = [
-      { y: 1392, w: 170, front: -222, back: 220, cols: [P.ink, P.shoe, P.green, P.skinKid, P.green, P.ink] },
-      { y: 1238, w: 120, front: -72, back: 36, cols: [P.red, P.skinKid, P.red, P.red] },
-      { y: 1128, w: 124, front: -170, back: -36, cols: [P.skinKid, P.skinKid, P.hairYellow, P.cap, P.cap] },
+      { y: axleY, w: 2 * R + 10, front: a.axleFront[0] + R, back: a.axleRear[0] - R, cols: [P.ink, P.shoe, P.green, P.skinKid, P.green, P.ink] },
+      { y: (axleY - R + chin) / 2, w: axleY - R - chin + 20, front: a.grip[0] + 20, back: a.seat[0] - 20, cols: [P.red, P.skinKid, P.red, P.red, P.red] },
+      { y: (a.top[1] + chin) / 2, w: chin - a.top[1], front: a.head[0] + 1.3 * a.headR, back: a.head[0] - a.headR, cols: [P.skinKid, P.skinKid, P.hairYellow, P.cap, P.cap] },
     ];
     bands.forEach((b, i) => {
-      const head = x + b.front, tail = x + b.back + trail * (1 - 0.15 * i);
-      L.smear(ctx, [[tail, b.y + 14], [L.lerp(tail, head, 0.55), b.y + 2], [head, b.y]], { colors: b.cols, width: b.w, strands: b.cols.length, seed: seed + i * 13 });
+      const head = x - b.front, tail = x - b.back + trail * (1 - 0.15 * i), y = GROUND + b.y;
+      L.smear(ctx, [[tail, y + 14], [L.lerp(tail, head, 0.55), y + 2], [head, y]], { colors: b.cols, width: b.w, strands: b.cols.length, seed: seed + i * 13 });
     });
   }
 
   // the stretched drawing of the pass: the dash, drawn 1.4 times long and 0.86 high about his ground point;
   // the line is thinned so it stays 3.5 to 5.7 px after the stretch (art bible 3.2)
-  function heroStretched(ctx, L, x, t, face) {
+  function heroStretched(ctx, L, h, x, t, face) {
     const sx = 1.4, sy = 0.86;
     ctx.save();
     ctx.translate(x, GROUND);
     ctx.scale(sx, sy);
     ctx.translate(-x, -GROUND);
-    L.cast.hero(ctx, x, GROUND, { h: HERO_H, facing: -1, pose: 'dash', t, ones: true, cadence: 6, cycle: 4, face, look: [1, 0], line: L.LINE / Math.sqrt(sx * sy) });
+    L.cast.hero(ctx, x, GROUND, { h, facing: -1, pose: 'dash', t, ones: true, cadence: 6, cycle: 4, face, look: [1, 0], line: L.LINE / Math.sqrt(sx * sy) });
     ctx.restore();
   }
 
@@ -326,33 +337,40 @@
       const card = Math.min(3, Math.floor(f / CARD_F));
       const cf = f - card * CARD_F; // frame of the card
       const sd = (...k) => L.hash(ID, ...k) & 0x7fffffff;
+      // the hero at the G1 size (wheel radius 80), from his anchors
+      const u = heroUnit(L);
+      const h = 80 / u.wheelR;
+      const a = dashShape(L, h);
+      const midY = GROUND + a.top[1] / 2, spread = -0.7 * a.top[1]; // where the speed lines run
 
       // 1 the street of this card
-      L.plate(ctx, `${ID}|card${card}|1`, (g) => CARDS[card](g, L));
+      L.plate(ctx, `${ID}|card${card}|2`, (g) => CARDS[card](g, L));
 
       if (card < 3) {
         // 2 and 3: the pass, on ones: smear, smear, the stretched drawing, smear, smear, gone
         if (cf < 5) {
           const x = passX(cf);
-          L.speedLines(ctx, x + 230 + (cf === 2 ? 60 : 160), 1270, Math.PI, { n: 4, spread: 280, len: [120, 260], gap: 16, width: 5, seed: sd('speed', card, cf) });
-          if (cf === 2) heroStretched(ctx, L, x, t, card === 2 ? 'grin' : 'determined');
-          else heroSmear(ctx, L, x, cf < 2 ? 340 : 260, sd('smear', card, cf));
+          const back = x - a.axleRear[0] + a.wheelR; // the back of his rear tyre
+          L.speedLines(ctx, back + (cf === 2 ? 70 : 170), midY, Math.PI, { n: 4, spread, len: [120, 260], gap: 16, width: 5, seed: sd('speed', card, cf) });
+          if (cf === 2) heroStretched(ctx, L, h, x, t, card === 2 ? 'grin' : 'determined');
+          else heroSmear(ctx, L, a, x, cf < 2 ? 340 : 260, sd('smear', card, cf));
         }
       } else {
         // card 4: the skid on ones (frames 0..2), the stop on the bell (frame 3), held
-        const x = cf < 3 ? SKID_X[cf] : STOP;
-        const rear = x + AXLE; // the rear wheel's centre, facing left
-        if (cf === 0) heroSmear(ctx, L, x + 340, 300, sd('smear', 3));
-        if (cf < 2) L.speedLines(ctx, rear + 120, 1290, Math.PI, { n: 4, spread: 260, len: [100, 220], gap: 16, width: 5, seed: sd('speed', 3, cf) });
+        const stop = 300 + u.front * h; // his ground point with the front wheel centre on x 300, facing left
+        const x = stop + (cf < 3 ? SKID[cf] : 0);
+        const rear = x - a.axleRear[0]; // the rear wheel's centre
+        if (cf === 0) heroSmear(ctx, L, a, x + 340, 300, sd('smear', 3));
+        if (cf < 2) L.speedLines(ctx, rear + a.wheelR + 40, midY, Math.PI, { n: 4, spread, len: [100, 220], gap: 16, width: 5, seed: sd('speed', 3, cf) });
         // the tyre's streak on the pavement behind the rear wheel's contact, and the dust kicked up there
         const streak = [50, 90, 130, 140][Math.min(3, cf)];
-        L.speedLines(ctx, rear - 2, 1484, Math.PI, { n: 2, spread: 7, gap: 0, width: 6, len: [streak * 0.8, streak], seed: sd('skid') });
+        L.speedLines(ctx, rear - 2, GROUND + 4, Math.PI, { n: 2, spread: 7, gap: 0, width: 6, len: [streak * 0.8, streak], seed: sd('skid') });
         const age = cf < 3 ? cf : 3 + ((cf - 3) >> 1); // on ones in the skid, on twos as it thins
         const p = [0.08, 0.24, 0.4, 0.56, 0.76][age];
-        L.dust(ctx, rear + 50, 1456, { r: 92, p, dir: -0.25, n: 4, seed: sd('dust') });
-        L.dust(ctx, rear, 1472, { r: 56, p, dir: 0.15, n: 3, seed: sd('dust', 2) });
+        L.dust(ctx, rear + 50, GROUND - 24, { r: 92, p, dir: -0.25, n: 4, seed: sd('dust') });
+        L.dust(ctx, rear, GROUND - 8, { r: 56, p, dir: 0.15, n: 3, seed: sd('dust', 2) });
         const o = cf < 3 ? { pose: 'skid', face: 'determined', look: [0.8, -0.1] } : { pose: 'straddle', face: 'grin', look: [0.9, -0.3] };
-        L.cast.hero(ctx, x, GROUND, Object.assign({ h: HERO_H, facing: -1 }, o));
+        L.cast.hero(ctx, x, GROUND, Object.assign({ h, facing: -1 }, o));
       }
 
       // 4 the G6 counter: a new value every 16th (3 frames), each popping as it changes
