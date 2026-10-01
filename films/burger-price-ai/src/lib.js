@@ -266,7 +266,10 @@
   const pal = {
     // 2.1 the manner, sampled from the reference frames (docs/reference-analysis.md, "Палитра")
     ink: '#001003', // contour of every character and moving object
-    paper: '#FEFFF5', // street plate paper, white sky, title field
+    paper: '#FEFFF5', // white of cards, signs and title fields; the white flash
+    fieldSky: '#DDE7EC', // light field tinted per scene (STYLE.md 3): pale blue
+    fieldMint: '#DCE8D8', // light field: pale mint
+    fieldPink: '#F0D9D2', // light field: pale pink
     hillsFar: '#B5B7C3', // far hills, the distance
     grass: '#89D48C', // near meadow, lawns, hills
     wallYellow: '#E7D885', // house walls
@@ -2234,8 +2237,9 @@
    *   pencil(ctx, pts, o)                coloured pencil edge, 1.5 to 3 px, the object's colour made darker
    *                                      o: color (or base: the fill to darken), width 2.2, closed, alpha 0.9, seed
    * Background, machine plate (schematic): mid-tone ground, dense short strokes, torn dark lines
-   *   dense(ctx, clip, o)                ground colour under dense short strokes, built once and cached
-   *                                      o: base, dark, light, cover [0.18, 0.07], len 12, width 3,
+   *   dense(ctx, clip, o)                muted ground, tonal patches, dry streaks, short strokes in three
+   *                                      tones, built once and cached. o: base, mute 0.45, cover [0.16, 0.05],
+   *                                      patches 1, streaks 1, scribble 0.5, len 12, width 4, dark, light,
    *                                      dir 'vertical' | 'horizontal' | 'perspective' | 'swirl' | radians,
    *                                      vp [x, y] (vanishing point or swirl centre), bounds, seed
    *   ragged(ctx, pts, o)                torn dark line, never black (brightness 70 to 110)
@@ -2251,11 +2255,14 @@
    *   smear(ctx, pts, o)                 dry-brush swirl along a path, tail first. o: colors, width 60, strands 5, seed
    *   dust(ctx, x, y, o)                 grey dry-brush puffs. o: r 50, p 0.5 (age 0..1), dir PI, n 4, color, seed
    *   puff(ctx, x, y, o)                 a sigh: a short grey dry-brush wave drifting off. o: p (age), dir, drift 60, len 70
+   *   footShadow(ctx, x, y, rx, o)       the shadow spot under the feet: flat, a dark tone of the ground at 35 percent.
+   *                                      o: ground (the color it darkens), color, alpha 0.35, ry
    *   dipBlack(ctx, k), dipWhite(ctx, k) the whole frame toward black or white paper, k 0..1
    *   letters(ctx, str, x, y, o)         hand lettering, each letter turned, lifted and sized a little
    *                                      o: size 60, face 'round' | 'note', color ink, outline null,
    *                                      outlineWidth, align 'left', baseline 'alphabetic', jitter 1,
-   *                                      tracking 0.04, firstColor, colors, rot, arc, p, seed, measure
+   *                                      tracking 0.04, firstColor, colors, rot, arc, p, seed, ink (each
+   *                                      letter re-inked at its own weight: 1 for note, 0.4 for round), measure
    *                                      (true: draw nothing). Returns its box { x0, x1, y0, y1, w }.
    *   spot(ctx, cx, cy, rx, ry, o)       the pale soft blot under a title. o: color titleSpot, irr 0.14, seed
    *   blobPts(cx, cy, rx, ry, seed, irr, n)  an irregular closed outline
@@ -2524,23 +2531,35 @@
   };
 
   /*
-   * dense: the machine plate's ground. Strokes run along the surface (walls vertical, floors toward
-   * the vanishing point, skies in a swirl), dark ones over 11 to 22 percent of the area and light ones
-   * over 1 to 23 percent, 9 to 15 px long. Built once per option set and cached; the clip is applied
-   * when the cached texture is drawn.
+   * dense: the machine plate's ground (docs/art-bible.md 4.3, R11). A muted middle tone; large
+   * scumbled patches lighter and darker than it; long dry streaks along the surface; short strokes
+   * 9 to 15 px in three close tones (two darks and a light), clustered, along the surface with some
+   * scatter. Walls 'vertical', floors 'perspective' toward vp, skies 'swirl' around vp. Built once
+   * per option set and cached; the clip is applied when the cached texture is drawn.
    */
+  function muteColor(c, k) {
+    const [r, g, b] = parseColor(c);
+    const L = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+    return lib.mix(c, `rgb(${L},${L},${L})`, k);
+  }
   lib.dense = (ctx, clip, o = {}) => {
     const B = normBounds(o.bounds);
     const S = renderScale();
-    const base = o.base || pal.pavement;
+    const base = muteColor(o.base || pal.pavement, o.mute != null ? o.mute : 0.45);
     const opt = {
       x: B.x, y: B.y, w: B.w, h: B.h,
       base,
-      dark: o.dark || lib.mix(base, pal.ink, 0.38),
-      light: o.light || lib.mix(base, pal.paper, 0.32),
-      cover: o.cover || [0.18, 0.07],
+      dark: o.dark || lib.mix(base, pal.ink, 0.44),
+      dark2: lib.mix(base, pal.ink, 0.27),
+      light: o.light || lib.mix(base, pal.paper, 0.3),
+      patchLight: lib.mix(base, pal.paper, 0.44),
+      patchDark: lib.mix(base, pal.ink, 0.28),
+      cover: o.cover || [0.16, 0.05],
       len: o.len || 12,
-      width: o.width || 3,
+      width: o.width || 4,
+      patches: o.patches != null ? o.patches : 1,
+      streaks: o.streaks != null ? o.streaks : 1,
+      scribble: o.scribble != null ? o.scribble : 0.5,
       dir: o.dir != null ? o.dir : 'vertical',
       vp: o.vp || [B.x + B.w / 2, B.y + B.h / 2],
       seed: seedInt(o.seed == null ? 29 : o.seed),
@@ -2571,29 +2590,54 @@
       if (o.dir === 'swirl') return Math.atan2(y - vy, x - vx) + Math.PI / 2 + 0.9 * noise2(x * 0.004, y * 0.004, o.seed + 7);
       return Math.PI / 2;
     };
-    // large soft unevenness first, so no stretch of ground is flat
-    for (let i = 0; i < Math.round((o.w * o.h) / 60000) + 3; i++) {
-      const x = r() * o.w, y = r() * o.h, rad = lerp(60, 220, r());
-      const gr = g.createRadialGradient(x, y, 0, x, y, rad);
-      const col = r() < 0.5 ? o.dark : o.light;
-      gr.addColorStop(0, lib.rgba(col, 0.16));
-      gr.addColorStop(1, lib.rgba(col, 0));
-      g.fillStyle = gr;
-      g.fillRect(x - rad, y - rad, rad * 2, rad * 2);
-    }
+    const area = o.w * o.h;
+    const seg = (x, y, a, L, bend) => {
+      const ca = Math.cos(a), sa = Math.sin(a);
+      g.moveTo(x - (ca * L) / 2, y - (sa * L) / 2);
+      g.quadraticCurveTo(x - sa * bend, y + ca * bend, x + (ca * L) / 2, y + (sa * L) / 2);
+    };
     g.lineCap = 'round';
+    // 1 tone in patches: dry-brush strokes (bristles broken where the brush ran dry) where a slow
+    // field is high (lighter paint) or low (darker paint), so the tone changes with a painted edge
+    for (let i = 0, n = Math.round((area / 850) * o.patches); i < n; i++) {
+      const x = r() * o.w, y = r() * o.h;
+      const v = lib.fbm2(x * 0.0032, y * 0.0032, o.seed + 11, 3);
+      if (Math.abs(v) < 0.06) continue;
+      const a = angleAt(x, y) + (r() - 0.5) * 0.45;
+      const L = lerp(50, 150, r());
+      const ca = Math.cos(a), sa = Math.sin(a), bend = (r() - 0.5) * 18;
+      const P = [];
+      for (let k = 0; k <= 6; k++) {
+        const u = k / 6 - 0.5;
+        P.push([x + ca * u * L - sa * bend * (1 - 4 * u * u), y + sa * u * L + ca * bend * (1 - 4 * u * u)]);
+      }
+      dryBrush(g, P, lerp(18, 46, r()), v > 0 ? o.patchLight : o.patchDark, Math.min(0.95, Math.abs(v) * 2.2) * lerp(0.6, 1, r()), o.seed + i * 7);
+    }
+    // 2 long dry streaks along the surface, broken where the brush ran dry
+    for (let i = 0, n = Math.round((area / 7000) * o.streaks); i < n; i++) {
+      const x = r() * o.w, y = r() * o.h;
+      g.globalAlpha = lerp(0.3, 0.65, r());
+      g.strokeStyle = r() < 0.6 ? o.dark : o.light;
+      g.lineWidth = lerp(1.6, 4, r());
+      g.setLineDash([lerp(12, 50, r()), lerp(3, 12, r()), lerp(8, 30, r()), lerp(3, 10, r())]);
+      g.beginPath();
+      seg(x, y, angleAt(x, y) + (r() - 0.5) * 0.2, lerp(50, 170, r()), (r() - 0.5) * 16);
+      g.stroke();
+    }
+    g.setLineDash([]);
+    // 3 short strokes, 9 to 15 px, in three close tones, gathered in loose clusters
+    const spread = 0.4 + o.scribble * 1.4;
     const layer = (col, cover, widthK) => {
       if (!(cover > 0)) return;
-      const n = Math.round(((o.w * o.h * cover) / (o.len * o.width * widthK)) * 1.6);
+      const n = Math.round(((area * cover) / (o.len * o.width * widthK)) * 2.2);
       const paths = [new Path2D(), new Path2D(), new Path2D()];
       for (let i = 0; i < n; i++) {
         const x = r() * o.w, y = r() * o.h;
-        // strokes gather in loose clusters
-        if (r() > 0.42 + 0.58 * (0.5 + 0.5 * noise2(x * 0.007, y * 0.007, o.seed + 3))) continue;
-        const a = angleAt(x, y) + (r() - 0.5) * 0.5;
-        const L = o.len * lerp(0.6, 1.4, r());
-        const ca = Math.cos(a), sa = Math.sin(a);
-        const bend = (r() - 0.5) * L * 0.3;
+        // strokes gather where a field is high: thick scribbled zones beside quieter painted ones
+        if (r() > smoothstep(-0.3, 0.45, noise2(x * 0.006, y * 0.006, o.seed + 3))) continue;
+        const a = angleAt(x, y) + (r() - 0.5) * spread;
+        const L = o.len * lerp(0.55, 1.3, r());
+        const ca = Math.cos(a), sa = Math.sin(a), bend = (r() - 0.5) * L * 0.3;
         const p = paths[(r() * 3) | 0];
         p.moveTo(x - (ca * L) / 2, y - (sa * L) / 2);
         p.quadraticCurveTo(x - sa * bend, y + ca * bend, x + (ca * L) / 2, y + (sa * L) / 2);
@@ -2601,13 +2645,16 @@
       g.strokeStyle = col;
       [0.75, 1, 1.3].forEach((k, j) => {
         g.lineWidth = o.width * widthK * k;
-        g.globalAlpha = [0.8, 0.9, 1][j];
+        g.globalAlpha = alphaK * [0.75, 0.88, 1][j];
         g.stroke(paths[j]);
       });
-      g.globalAlpha = 1;
     };
-    layer(o.dark, o.cover[0], 1);
-    layer(o.light, o.cover[1], 0.85);
+    let alphaK = 0.92;
+    layer(o.dark2, o.cover[0] * 0.55, 0.9);
+    layer(o.dark, o.cover[0] * 0.45, 0.85);
+    alphaK = 0.7;
+    layer(o.light, o.cover[1], 0.8);
+    g.globalAlpha = 1;
     return c;
   }
 
@@ -2790,6 +2837,18 @@
     }
   };
 
+  /** footShadow(ctx, x, y, rx, o): the one falling shadow, a flat spot under the feet (STYLE.md 2). */
+  lib.footShadow = (ctx, x, y, rx, o = {}) => {
+    const ground = o.ground || (o.machine ? pal.pavement : pal.cityPastel);
+    ctx.save();
+    ctx.globalAlpha *= o.alpha != null ? o.alpha : 0.35;
+    ctx.fillStyle = o.color || lib.mix(ground, pal.ink, 0.55);
+    ctx.beginPath();
+    ctx.ellipse(x, y, Math.max(1, rx), Math.max(1, o.ry != null ? o.ry : rx * 0.2), 0, 0, TAU);
+    ctx.fill();
+    ctx.restore();
+  };
+
   lib.puff = (ctx, x, y, o = {}) => {
     const p = clamp(o.p != null ? o.p : 0.3);
     if (p >= 1) return;
@@ -2849,6 +2908,8 @@
     const shown = o.p == null ? chars.length : Math.round(chars.length * clamp(o.p));
     const outline = o.outline || null;
     const ow = o.outlineWidth != null ? o.outlineWidth : Math.max(2.5, size * 0.07);
+    // each letter is re-inked at its own weight (0 = the face as it is)
+    const inkK = (o.ink != null ? o.ink : face === 'note' ? 1 : 0.4) * jit;
     ctx.translate(x, y);
     if (o.rot) ctx.rotate(o.rot);
     for (let i = 0; i < chars.length; i++) {
@@ -2860,6 +2921,8 @@
       const turn = (r() * 2 - 1) * 5 * (Math.PI / 180) * jit;
       const lift = (r() * 2 - 1) * 0.08 * size * jit;
       const sc = 1 + (r() * 2 - 1) * 0.06 * jit;
+      const sx = 1 + (r() * 2 - 1) * 0.05 * jit;
+      const weight = size * (0.006 + 0.03 * r()) * inkK;
       let px = mx, py = dy0 + lift, pr = turn;
       if (o.arc) {
         // letters stand on an arc of radius o.arc whose centre is below the line (negative: above)
@@ -2871,15 +2934,21 @@
       ctx.save();
       ctx.translate(px, py);
       ctx.rotate(pr);
-      ctx.scale(sc, sc);
+      ctx.scale(sc * sx, sc);
+      ctx.lineJoin = 'round';
       if (outline) {
-        ctx.lineJoin = 'round';
-        ctx.lineWidth = ow * 2;
+        ctx.lineWidth = ow * 2 + weight;
         ctx.strokeStyle = outline;
         ctx.strokeText(ch, 0, 0);
       }
-      ctx.fillStyle = (o.colors && o.colors[i % o.colors.length]) || (i === 0 && o.firstColor) || o.color || pal.ink;
+      const fillC = (o.colors && o.colors[i % o.colors.length]) || (i === 0 && o.firstColor) || o.color || pal.ink;
+      ctx.fillStyle = fillC;
       ctx.fillText(ch, 0, 0);
+      if (weight > 0.5) {
+        ctx.lineWidth = weight;
+        ctx.strokeStyle = fillC;
+        ctx.strokeText(ch, 0, 0);
+      }
       ctx.restore();
     }
     ctx.restore();
@@ -2920,6 +2989,8 @@
    *   - quantise their own cycles on twos from o.t (seconds) unless o.ones is true
    *   - return anchors in frame pixels; scenes hang things on anchors instead of guessing pixels
    *   - accept o.rig: joint targets in design units that override the pose (see the rig of each)
+   *   - draw their own shadow spot on the ground (o.shadow false to leave it out, o.ground the
+   *     color under them that the spot darkens)
    *
    * lib.cast
    *   hero(ctx, x, y, o)     the boy. (x, y): ground under him (on the bicycle: under the bottom bracket,
@@ -2947,11 +3018,12 @@
    *     returns { head, headR, eye, eyeFar, mouth, hand, handFar, hold, chest, neck, top, ground,
    *               seat, grip, pedal, axleFront, axleRear, wheelR }
    *   owner(ctx, x, y, o)    the booth's owner. (x, y): ground between his feet. o.h standing height px.
-   *     o.facing, o.view 'side' (default) | 'back' (three-quarter from behind), o.t, o.k
+   *     o.facing, o.view 'side' (default) | 'back' (three-quarter from behind: the broad torso, legs and
+   *     shadow sit 27 units right of x, under the head; shoulders 112 units apart), o.t, o.k
    *     o.pose
    *       'stand' (tired slump), 'lean' (chin on his hand, elbow on the counter), 'serve' (a burger held
    *       out), 'push' (flat hand forward on the counter at o.target), 'rake' (o.k 0..1 sweeps the hand
-   *       back along the counter), 'tap' (one finger taps, o.k < 0.5 down), 'point' (straight up),
+   *       back along the counter from o.target), 'tap' (one finger taps, o.k < 0.5 down), 'point' (straight up),
    *       'catch' (o.k < 0.5 open hand up, then closed), 'read' (a ticket, o.lines), 'phone' (the handset
    *       in his hand at the ear), 'listen' (the handset pinned between ear and shoulder, hands forward),
    *       'sigh' (o.k 0..1: the shoulders drop, lids half close; puff from anchors.mouth), 'type' (both
@@ -2970,16 +3042,21 @@
    *     o.lines (ticket, ['RECOMMENDED:', '$6.89'])
    *     returns { slot, ticketTip, hopper, hopperNeck, eye, dial: { x, y, r }, needleTip, top, ground, body }
    * lib.props
-   *   burger(x, y: centre)     o.w px, o.bites 0..3, o.rot. Returns { top, bottom, bite, center }
-   *   bike(x, y: ground)       o.h hero height px (its scale), o.phase, o.wheel, o.layer 'all'|'far'|'mid'|'near'
-   *   priceTag(x, y: card top centre)  o.w, o.h px, o.price, o.swing radians (about the string tops),
-   *                            o.strings 'up' | 'dangle' | 'none', o.drop px, o.size (glyph height px)
+   *   burger(x, y: centre)     o.w px (0.69 as tall), o.bites 0..3, o.rot. Returns { top, bottom, bite, center }
+   *   bike(x, y: ground)       o.h hero height px (its scale: wheel radius 47/300 of it), o.phase, o.wheel,
+   *                            o.layer 'all'|'far'|'mid'|'near'
+   *   priceTag(x, y: card top centre)  o.w, o.h px, o.price, o.swing radians, o.pivot 'strings' | 'top',
+   *                            o.hang 'corners' (G1, default) | 'holes' (G4), o.strings 'up' | 'dangle' | 'none',
+   *                            o.drop px, o.size (glyph height px, default 2/3 of h), o.baseline (px below the card
+   *                            top, default 0.767 h), o.slots [[x0, x1]...]
+   *                            (frame x per glyph, G4), o.count (glyphs shown), o.popLast (scale of the newest)
    *   booth(x, y: ground, front centre)  o.w px (580 draws storyboard G1 from (690, 1480)), o.price,
    *                            o.sign, o.swing, o.layer 'all' | 'back' | 'front', o.mode 'bg' | 'cel'.
    *                            Returns { window, shelf, counterY, tagTop, sign, owner, ownerH }
    *   house(x, y: ground)      o.h px, o.kind 'modest' (fence, small window) | 'rich' (columns, gate,
    *                            fountain), o.fence, o.gate, o.fountain, o.mode 'bg' | 'cel'
-   *   gauge(x, y: pivot)       o.r px, o.level 0..1, o.labels, o.title ('WILLINGNESS TO PAY', or false)
+   *   gauge(x, y: pivot)       o.r px, o.level 0..1, o.labels, o.title ('SENSITIVITY TO PRICE' or false),
+   *                            o.caption ('based on willingness to pay in your area' or false)
    *   ticket(x, y: top centre) o.w, o.h px, o.lines ['RECOMMENDED:', '$6.89'], o.rot
    *   phone(x, y: bottom centre)  desk telephone: o.w px, o.lifted (handset off), o.ring with o.t
    *   handset(x, y: centre)    o.w px, o.rot; returns { ear, mouth }
@@ -3185,6 +3262,57 @@
     return c;
   }
 
+  /** Sutherland-Hodgman: the part of polygon subj inside the convex polygon clip (c: a point inside clip). */
+  function clipConvex(subj, clip, c) {
+    let out = subj;
+    for (let i = 0; i < clip.length && out.length; i++) {
+      const a = clip[i], b = clip[(i + 1) % clip.length];
+      const side = (p) => (b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0]);
+      const sc = side(c);
+      const inp = out;
+      out = [];
+      for (let j = 0; j < inp.length; j++) {
+        const p = inp[j], q = inp[(j + 1) % inp.length];
+        const sp = side(p) * sc, sq = side(q) * sc;
+        if (sp >= 0) out.push(p);
+        if ((sp >= 0) !== (sq >= 0)) out.push(lerp2(p, q, sp / (sp - sq)));
+      }
+    }
+    return out;
+  }
+
+  /*
+   * No seams (STYLE.md 5, 9): a limb drawn over the body must not close its contour across the joint
+   * like a cut-out piece. limbTube draws the tube pts (design units) of width w, and leaves its outline
+   * out where it lies on the body (bodyDesign, its outline in design units) within reach of the joint.
+   * Nothing is painted over, so the collar, the apron and the other arm stay whole.
+   */
+  function limbTube(ctx, K, pts, w, color, bodyDesign, joint) {
+    const P = pts.map(K.T);
+    let cut = null;
+    if (bodyDesign) {
+      const B = lib.smoothPts(K.TT(bodyDesign), true, 4);
+      const { NX, NY } = inwardNormals(B);
+      const d = K.lw * 0.8;
+      const inset = B.map((p, i) => [p[0] + NX[i] * d, p[1] + NY[i] * d]);
+      const c = K.T(joint), r = (w / 2) * K.s + K.lw + 1.5;
+      const disc = [];
+      for (let i = 0; i < 28; i++) disc.push([c[0] + Math.cos((i / 28) * TAU) * r, c[1] + Math.sin((i / 28) * TAU) * r]);
+      cut = clipConvex(inset, disc, c);
+    }
+    ctx.save();
+    if (cut && cut.length > 2) {
+      ctx.beginPath();
+      ctx.rect(-1e5, -1e5, 2e5, 2e5);
+      cut.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])));
+      ctx.closePath();
+      ctx.clip('evenodd');
+    }
+    tube(ctx, P, w * K.s, pal.ink, K.lw);
+    ctx.restore();
+    tube(ctx, P, w * K.s, color, 0);
+  }
+
   /** A shoe under the ankle a (design units), toe along angle ang; len and height in design units. */
   function drawShoe(ctx, K, a, ang, len, ht, front, fill, id) {
     const L = lerp(len * 0.42, len, front);
@@ -3198,11 +3326,13 @@
   }
 
   // ---------------------------------------------------------------------------
-  // The bicycle (design units of the hero: the hero stands 300 tall; wheel radius 56)
+  // The bicycle (design units of the hero: the hero stands 300 tall; wheel radius 47, saddle and bars
+  // raised, so a boy of his proportions reaches the pedals and stands over it with a foot down)
   // ---------------------------------------------------------------------------
   const BIKE = {
-    R: 56, tyre: 8, rear: [-98, -56], front: [98, -56], bb: [-4, -58], crank: 20, ring: 14,
-    seat: [-40, -116], saddle: [-46, -127], headTop: [74, -120], headBot: [81, -100], stem: [68, -148], grip: [50, -160], tubeW: 8,
+    R: 47, tyre: 7, rear: [-82, -47], front: [82, -47], bb: [-3, -49], crank: 17, ring: 12,
+    seat: [-33, -97], saddle: [-40, -120], post: [-38, -117], headTop: [62, -101], headBot: [68, -84], fork: [75, -66],
+    stem: [58, -130], grip: [44, -140], tubeW: 7,
   };
   function bikePoints(phase) {
     const a = phase * TAU;
@@ -3231,24 +3361,24 @@
         ctx.beginPath();
         for (let i = 0; i < 8; i++) {
           const a = wheel * K.f + (i * Math.PI) / 4 + id;
-          ctx.moveTo(C[0] + Math.cos(a) * 5 * K.s, C[1] + Math.sin(a) * 5 * K.s);
+          ctx.moveTo(C[0] + Math.cos(a) * 4 * K.s, C[1] + Math.sin(a) * 4 * K.s);
           ctx.lineTo(C[0] + Math.cos(a) * (R - tw), C[1] + Math.sin(a) * (R - tw));
         }
         ctx.stroke();
         ctx.restore();
-        K.cel(ctx, ell(c[0], c[1], 6, 6, 0, 14), pal.white, id + 2);
+        K.cel(ctx, ell(c[0], c[1], 5, 5, 0, 14), pal.white, id + 2);
       }
       K.tubes(ctx, [
         [BIKE.seat, BIKE.headTop], [BIKE.bb, BIKE.headBot], [BIKE.bb, BIKE.seat], [BIKE.bb, BIKE.rear],
-        [BIKE.seat, BIKE.rear], [BIKE.headTop, BIKE.headBot], [BIKE.headBot, [90, -80], BIKE.front],
+        [BIKE.seat, BIKE.rear], [BIKE.headTop, BIKE.headBot], [BIKE.headBot, BIKE.fork, BIKE.front],
       ], BIKE.tubeW, pal.green);
-      K.tubes(ctx, [[BIKE.headTop, BIKE.stem, BIKE.grip], [BIKE.seat, [-44, -124]]], 5, pal.white);
+      K.tubes(ctx, [[BIKE.headTop, BIKE.stem, BIKE.grip], [BIKE.seat, BIKE.post]], 5, pal.white);
       const cw = Math.max(2.5, K.lw * 0.6);
-      K.line(ctx, [[BIKE.bb[0], BIKE.bb[1] - BIKE.ring], [BIKE.rear[0], BIKE.rear[1] - 6]], 64, { width: cw, taper: [1, 1] });
-      K.line(ctx, [[BIKE.bb[0], BIKE.bb[1] + BIKE.ring], [BIKE.rear[0], BIKE.rear[1] + 6]], 65, { width: cw, taper: [1, 1] });
+      K.line(ctx, [[BIKE.bb[0], BIKE.bb[1] - BIKE.ring], [BIKE.rear[0], BIKE.rear[1] - 5]], 64, { width: cw, taper: [1, 1] });
+      K.line(ctx, [[BIKE.bb[0], BIKE.bb[1] + BIKE.ring], [BIKE.rear[0], BIKE.rear[1] + 5]], 65, { width: cw, taper: [1, 1] });
       K.cel(ctx, ell(BIKE.bb[0], BIKE.bb[1], BIKE.ring, BIKE.ring, 0, 22), pal.white, 66);
       const sd = BIKE.saddle;
-      K.cel(ctx, [[sd[0] - 17, sd[1] - 2], [sd[0] - 12, sd[1] - 7], [sd[0] + 6, sd[1] - 6], [sd[0] + 16, sd[1] - 3], [sd[0] + 14, sd[1] + 2], [sd[0] - 4, sd[1] + 4], [sd[0] - 16, sd[1] + 3]], pal.shoe, 67);
+      K.cel(ctx, [[sd[0] - 15, sd[1] - 2], [sd[0] - 11, sd[1] - 6], [sd[0] + 5, sd[1] - 5], [sd[0] + 14, sd[1] - 3], [sd[0] + 12, sd[1] + 2], [sd[0] - 4, sd[1] + 4], [sd[0] - 14, sd[1] + 3]], pal.shoe, 67);
     }
     if (layer === 'near' || layer === 'all') crank(pedalN, 71);
     return { pedalN, pedalF };
@@ -3257,14 +3387,14 @@
   function drawBikeFront(ctx, K, layer) {
     if (layer === 'back') {
       for (const sx of [-1, 1]) {
-        K.tubes(ctx, [[[sx * 4, -58], [sx * 22, -60]]], 5, pal.white);
-        K.cel(ctx, [[sx * 22 - 8, -63], [sx * 22 + 8, -63], [sx * 22 + 8, -56], [sx * 22 - 8, -56]], pal.ink, sx > 0 ? 70 : 71, { smooth: false });
+        K.tubes(ctx, [[[sx * 4, -49], [sx * 20, -51]]], 5, pal.white);
+        K.cel(ctx, [[sx * 20 - 7, -54], [sx * 20 + 7, -54], [sx * 20 + 7, -48], [sx * 20 - 7, -48]], pal.ink, sx > 0 ? 70 : 71, { smooth: false });
       }
       return;
     }
-    K.cel(ctx, lib.capsulePts(0, -56, 112, 6, Math.PI / 2, 36), pal.ink, 60);
-    K.tubes(ctx, [[[-7, -54], [-9, -104]], [[7, -54], [9, -104]], [[0, -100], [0, -124]]], 6, pal.green);
-    K.tubes(ctx, [[[0, -124], [0, -150]], [[-46, -156], [-30, -160], [30, -160], [46, -156]]], 5, pal.white);
+    K.cel(ctx, lib.capsulePts(0, -47, 94, 5, Math.PI / 2, 36), pal.ink, 60);
+    K.tubes(ctx, [[[-6, -45], [-8, -86]], [[6, -45], [8, -86]], [[0, -84], [0, -104]]], 6, pal.green);
+    K.tubes(ctx, [[[0, -104], [0, -130]], [[-42, -136], [-28, -140], [28, -140], [42, -136]]], 5, pal.white);
   }
 
   // ---------------------------------------------------------------------------
@@ -3277,7 +3407,7 @@
     const k = clamp(o.k != null ? o.k : 0);
     const R = {
       pose, stage: 0, tilt: 0, face: 'smile', capLift: 0, flip: false, sq: null, bike: null, bikeFront: false,
-      kindN: 'fist', kindF: 'fist', hold: null, holdW: 72, look: null, rot: 0, pivot: null, armsFront: false, stalk: 0,
+      kindN: 'fist', kindF: 'fist', hold: null, holdW: 75, look: null, rot: 0, pivot: null, armsFront: false, stalk: 0,
     };
     const side = () => Object.assign(R, {
       turn: 1, front: 1, hip: [0, -106], neck: [2, -190], head: [6, -236], hipN: [4, -104], hipF: [-6, -104],
@@ -3321,15 +3451,15 @@
     };
     const straddle = (back) => {
       side();
-      R.bike = { phase: 0.62, wheel: 0 };
-      R.hip = back ? [-20, -122] : [-12, -120];
-      const lean = back ? -10 : 4;
+      R.bike = { phase: 0.15, wheel: 0 };
+      R.hip = back ? [-12, -106] : [-4, -104];
+      const lean = back ? -10 : 3;
       R.neck = add2(R.hip, [Math.sin(lean * DEG) * HB.torso, -Math.cos(lean * DEG) * HB.torso]);
       R.head = add2(R.neck, [Math.sin(lean * 0.5 * DEG) * HB.neck, -Math.cos(lean * 0.5 * DEG) * HB.neck]);
       R.hipN = add2(R.hip, [3, 2]);
       R.hipF = add2(R.hip, [-3, 0]);
-      R.ankleN = back ? [34, -12] : [12, -12];
-      R.ankleF = add2(bikePoints(0.62).pedalF, [-3, -10]);
+      R.ankleN = back ? [30, -12] : [12, -12];
+      R.ankleF = add2(bikePoints(0.15).pedalF, [-3, -10]);
       R.kneeN = [1, -0.2];
       R.kneeF = [1, -0.4];
       shoulders();
@@ -3347,16 +3477,16 @@
     };
     switch (pose) {
       case 'ride':
-        ride(24, HB.torso, [-42, -136], o.cadence != null ? o.cadence : 1.1, 0.5, HB.neck);
+        ride(22, HB.torso, [-38, -128], o.cadence != null ? o.cadence : 1.1, 0.5, HB.neck);
         break;
       case 'crouch':
-        ride(44, 74, [-42, -136], 0, 0.6, 42);
+        ride(42, 74, [-38, -128], 0, 0.6, 42);
         R.tilt = 0.12;
         R.face = 'determined';
         R.elbowN = R.elbowF = [-0.5, 0.8];
         break;
       case 'dash':
-        ride(46, 92, [-38, -140], o.cadence != null ? o.cadence : 2.6, 0.8, HB.neck);
+        ride(44, 92, [-34, -134], o.cadence != null ? o.cadence : 2.6, 0.8, HB.neck);
         R.tilt = 0.1;
         R.face = 'grin';
         R.elbowN = R.elbowF = [-0.4, -1];
@@ -3367,13 +3497,13 @@
         break;
       case 'coins':
         straddle(false);
-        R.handN = target([46, -244]);
+        R.handN = target([46, -238]);
         R.elbowN = [0.4, 1];
         R.hold = add2(R.handN, [4, -24]);
         break;
       case 'slap':
         straddle(false);
-        R.handN = target([72, -166]);
+        R.handN = target([72, -150]);
         R.kindN = 'open';
         R.elbowN = [-0.3, -1];
         break;
@@ -3398,8 +3528,8 @@
         side();
         R.stage = stage3(k);
         R.face = ['open', 'chomp', 'chew'][R.stage];
-        R.tilt = [-0.1, 0.06, 0][R.stage];
-        R.hold = [[94, -204], [54, -210], [46, -156]][R.stage];
+        R.tilt = [-0.04, 0.06, 0][R.stage];
+        R.hold = [[60, -199], [42, -208], [46, -156]][R.stage];
         R.handN = add2(R.hold, [-12, 14]);
         R.handF = add2(R.hold, [16, 10]);
         R.elbowN = R.elbowF = [0, 1];
@@ -3446,19 +3576,19 @@
       case 'spin':
         R.stage = stage3(k);
         if (R.stage === 0) {
-          ride(44, 74, [-42, -136], 0, 0.6, 42);
+          ride(42, 74, [-38, -128], 0, 0.6, 42);
           R.tilt = 0.12;
           R.face = 'determined';
         } else if (R.stage === 1) {
           front();
           R.bikeFront = true;
           Object.assign(R, {
-            hip: [0, -136], neck: [0, -218], head: [0, -265], hipN: [10, -134], hipF: [-10, -134],
-            ankleN: [22, -70], ankleF: [-22, -70], kneeN: [1, -0.3], kneeF: [-1, -0.3],
-            shN: [21, -206], shF: [-21, -206], handN: [44, -160], handF: [-44, -160], elbowN: [1, 0.2], elbowF: [-1, 0.2], face: 'O',
+            hip: [0, -124], neck: [0, -206], head: [0, -253], hipN: [10, -122], hipF: [-10, -122],
+            ankleN: [20, -60], ankleF: [-20, -60], kneeN: [1, -0.3], kneeF: [-1, -0.3],
+            shN: [21, -194], shF: [-21, -194], handN: [40, -140], handF: [-40, -140], elbowN: [1, 0.2], elbowF: [-1, 0.2], face: 'O',
           });
         } else {
-          ride(30, HB.torso, [-42, -136], 0, 0.5, HB.neck);
+          ride(30, HB.torso, [-38, -128], 0, 0.5, HB.neck);
           R.flip = true;
           R.face = 'grin';
         }
@@ -3505,12 +3635,12 @@
     }
     K.cel(ctx, PP(head), pal.skinKid, 1);
     // 2 hair under the cap at the back, spiking past the outline (both sides from the front); ears; blush
-    const tuft = [[-0.52, -0.44], [-0.98, -0.42], [-1.12, -0.3], [-0.98, -0.2], [-1.14, -0.06], [-0.94, -0.02], [-0.96, 0.12], [-0.74, 0.04], [-0.62, -0.16]];
+    const tuft = [[-0.5, -0.6], [-0.98, -0.56], [-1.12, -0.44], [-0.98, -0.34], [-1.14, -0.2], [-0.94, -0.16], [-0.96, -0.02], [-0.74, -0.1], [-0.62, -0.32]];
     const tufts = tu < 0.35 ? [1, -1] : [1];
     tufts.forEach((m, i) => {
       const kx = m > 0 ? 1 - 0.14 * tu : 1;
       K.cel(ctx, PP(tuft.map((q) => [q[0] * m * kx, q[1]])), pal.hairYellow, 35 + i);
-      K.line(ctx, PP([[-0.66 * m * kx, -0.34], [-0.86 * m * kx, -0.2]]), 37 + i, { width: fw * 0.7 });
+      K.line(ctx, PP([[-0.66 * m * kx, -0.48], [-0.86 * m * kx, -0.34]]), 37 + i, { width: fw * 0.7 });
     });
     const earU = -(0.9 - 0.24 * tu);
     (tu < 0.35 ? [earU, -earU] : [earU]).forEach((eu, i) => {
@@ -3519,32 +3649,32 @@
       K.line(ctx, PP([[eu + 0.06 * sg, -0.03], [eu - 0.03 * sg, 0.07], [eu + 0.04 * sg, 0.16]]), 22 + i, { width: fw * 0.7 });
     });
     const bl = face === 'bliss' ? 1.4 : 1;
-    const blush = tu > 0.5 ? [[-0.1 + 0.34 * tu, 0.32]] : [[-0.44 + 0.3 * tu, 0.32], [0.44 + 0.2 * tu, 0.32]];
+    const blush = tu > 0.5 ? [[-0.12 + 0.34 * tu, 0.2]] : [[-0.44 + 0.3 * tu, 0.2], [0.44 + 0.2 * tu, 0.2]];
     blush.forEach((b, i) => K.cel(ctx, PP(ell(b[0], b[1], 0.15 * bl, 0.1 * bl, 0, 18)), face === 'bliss' ? pal.blush : pal.blushKid, 30 + i, { width: 0 }));
     if (capLift > 0.05) {
-      K.cel(ctx, PP([[-0.98, -0.3], [-0.85, -0.78], [-0.55, -1.0], [-0.4, -1.22], [-0.22, -1.02], [0.0, -1.24], [0.16, -1.02], [0.38, -1.2], [0.52, -0.96], [0.82, -0.82], [0.98, -0.3], [0.6, -0.42], [0, -0.48], [-0.6, -0.42]]), pal.hairYellow, 39);
+      K.cel(ctx, PP([[-0.98, -0.46], [-0.85, -0.9], [-0.55, -1.08], [-0.4, -1.28], [-0.22, -1.1], [0.0, -1.3], [0.16, -1.1], [0.38, -1.27], [0.52, -1.04], [0.82, -0.94], [0.98, -0.46], [0.6, -0.58], [0, -0.64], [-0.6, -0.58]]), pal.hairYellow, 39);
     }
-    // 3 the cap's crown
+    // 3 the cap's crown, set high on the head (the eyes sit at 0.23 of the radius above the center)
     const liftP = (q) => {
-      const p = rot2([q[0], q[1] + 0.4], -0.3 * capLift);
-      return [p[0], p[1] - 0.4 - capLift];
+      const p = rot2([q[0], q[1] + 0.56], -0.3 * capLift);
+      return [p[0], p[1] - 0.56 - capLift];
     };
-    const dome = [[-1.02, -0.36]];
+    const dome = [[-1.0, -0.52]];
     for (let i = 0; i <= 12; i++) {
       const a = Math.PI + (i / 12) * Math.PI;
-      dome.push([-0.03 + Math.cos(a) * 1.04, -0.4 + Math.sin(a) * 0.76]);
+      dome.push([-0.03 + Math.cos(a) * 1.03, -0.6 + Math.sin(a) * 0.68]);
     }
-    dome.push([1.0, -0.42], [0.55, -0.49], [0, -0.52], [-0.55, -0.47]);
+    dome.push([0.98, -0.56], [0.55, -0.62], [0, -0.65], [-0.55, -0.6]);
     K.cel(ctx, PP(dome.map(liftP)), pal.cap, 40);
-    K.line(ctx, PP([[-0.9, -0.46], [0, -0.58], [0.88, -0.5]].map(liftP)), 41, { width: fw * 0.7 });
+    K.line(ctx, PP([[-0.9, -0.6], [0, -0.71], [0.88, -0.64]].map(liftP)), 41, { width: fw * 0.7 });
     // 4 eyes (on stalks when they pop out)
     const pop = face === 'pop';
-    const erx = pop ? 0.22 : 0.165, ery = pop ? 0.29 : 0.22;
-    const ev = pop ? -0.06 : 0.02;
+    const erx = pop ? 0.2 : 0.15, ery = pop ? 0.26 : 0.19;
+    const ev = pop ? -0.27 : -0.23;
     const happy = face === 'chew' || face === 'chomp' || face === 'bliss';
     const lid = face === 'determined' ? 0.34 : face === 'glare' ? 0.46 : face === 'sad' ? 0.22 : face === 'sniff' ? 0.55 : 0;
     const lk = R.look || [0.4 * tu, 0];
-    const eyes = [[-0.3 + 0.48 * tu, 1, -1], [0.3 + 0.34 * tu, 1 - 0.3 * tu, 1]];
+    const eyes = [[-0.28 + 0.46 * tu, 1, -1], [0.28 + 0.36 * tu, 1 - 0.3 * tu, 1]];
     const stalk = R.stalk || 0;
     const sdir = dir2(R.stalkDir != null ? R.stalkDir : -0.55);
     const centres = eyes.map(([u]) => [u + sdir[0] * stalk * 0.85, ev + sdir[1] * stalk * 0.85]);
@@ -3569,7 +3699,7 @@
       });
     });
     // 5 brows
-    const bv = pop ? -0.5 : -0.29;
+    const bv = pop ? -0.62 : -0.47;
     eyes.forEach(([u, kx, sideE], i) => {
       if (stalk > 0.3) return;
       const inner = sideE < 0 ? 1 : -1;
@@ -3578,13 +3708,13 @@
       K.line(ctx, PP([a, [u, bv - 0.05 - (pop ? 0.03 : 0)], b]), 50 + i, { width: fw, taper: [fw * 0.5, fw * 1.6] });
     });
     // 6 nose
-    const nu = 0.92 * tu, nv = 0.15;
+    const nu = 0.92 * tu, nv = 0.1;
     K.cel(ctx, PP(ell(nu, nv, 0.12, 0.11, 0, 18)), pal.skinKid, 55);
     if (face === 'sniff') {
       for (let i = 0; i < 2; i++) K.line(ctx, PP([[nu + 0.16, nv - 0.06 + i * 0.1], [nu + 0.3, nv - 0.1 + i * 0.12]]), 56 + i, { width: Math.max(2.5, fw * 0.6), taper: [1, 2] });
     }
     // 7 mouth
-    const mu = 0.5 * tu, mv = 0.5;
+    const mu = 0.56 * tu, mv = 0.48;
     const mw = 0.21 * (1 - 0.2 * tu);
     const serif = (q, dx) => K.line(ctx, PP([[q[0] - dx * 0.03, q[1] - 0.05], [q[0] + dx * 0.01, q[1] + 0.03]]), 63 + (dx > 0 ? 1 : 0), { width: fw * 0.8, taper: [1, 1] });
     const cavity = (deep, wide) => {
@@ -3624,10 +3754,10 @@
       K.cel(ctx, PP(ell(mu, mv + 0.03, 0.05, 0.05, 0, 12)), pal.mouth, 61);
     }
     // 8 the visor
-    const vis3 = [[0.4, -0.5], [0.92, -0.53], [1.36, -0.44], [1.42, -0.34], [0.96, -0.37], [0.44, -0.41]];
-    const visF = [[-0.8, -0.44], [0, -0.47], [0.8, -0.44], [0.7, -0.3], [0, -0.24], [-0.7, -0.3]];
+    const vis3 = [[0.4, -0.66], [0.92, -0.69], [1.36, -0.6], [1.42, -0.5], [0.96, -0.53], [0.44, -0.57]];
+    const visF = [[-0.8, -0.62], [0, -0.66], [0.8, -0.62], [0.7, -0.5], [0, -0.47], [-0.7, -0.5]];
     K.cel(ctx, PP(vis3.map((q, i) => liftP(lerp2(visF[i], q, tu)))), pal.cap, 70);
-    return { mouth: P(mu, mv), eye: P(centres[0][0], centres[0][1]), eyeFar: P(centres[1][0], centres[1][1]), top: P(0, -1.18 - capLift) };
+    return { mouth: P(mu, mv), eye: P(centres[0][0], centres[0][1]), eyeFar: P(centres[1][0], centres[1][1]), top: P(0, -1.28 - capLift) };
   }
 
   function hero(ctx, x, y, o = {}) {
@@ -3639,10 +3769,15 @@
     const f = R.flip ? -f0 : f0;
     const K = kit(x, y, s, f, o, 1100, R.rot + (o.rot || 0), R.pivot);
     const skin = pal.skinKid;
+    let body = null; // the shirt's outline in design units, once drawn
+    if (o.shadow !== false) {
+      const rx = R.bike ? (R.bikeFront ? 44 : BIKE.front[0] + BIKE.R * 0.6) : 46;
+      lib.footShadow(ctx, x + f * (R.bike ? 0 : R.front < 1 ? 0 : 3) * s, y, rx * s, { ground: o.ground, machine: K.brush });
+    }
     const arm = (sh, hand, pref, kind, near) => {
       const el = ik2(sh, hand, HB.upper, HB.fore, pref);
-      K.tubes(ctx, [[sh, el, hand]], HB.armW, skin);
-      K.tubes(ctx, [[sh, lerp2(sh, el, 0.5)]], HB.sleeveW, pal.red);
+      limbTube(ctx, K, [sh, el, hand], HB.armW, skin, body, sh);
+      limbTube(ctx, K, [sh, lerp2(sh, el, 0.5)], HB.sleeveW, pal.red, body, sh);
       return drawHand(ctx, K, hand, angOf(sub2(hand, el)), HB.hand, kind, skin, near ? 80 : 85, -1);
     };
     const leg = (hip, ankle, footA, knee, id) => {
@@ -3661,7 +3796,8 @@
       const map = (u, v) => add2(R.hip, add2(mul2(ev, v), mul2(nv, u))); // u > 0 is the front
       const b = R.front < 1 ? 0 : 2;
       const sack = [[-20, L + 1], [-26, L * 0.86], [-29, L * 0.55], [-31, L * 0.2], [-28, -2], [-12, -7], [6, -7], [24, -3], [31 + b, L * 0.2], [32 + b, L * 0.5], [27, L * 0.86], [18, L + 1], [0, L + 4]];
-      K.cel(ctx, sack.map((q) => map(q[0], q[1])), pal.red, 10);
+      body = sack.map((q) => map(q[0], q[1]));
+      K.cel(ctx, body, pal.red, 10);
       K.line(ctx, [map(-12, L * 0.92), map(0, L * 0.84), map(12, L * 0.92)], 11, { width: Math.max(2.6, K.lw * 0.7) });
     };
     const B = R.bike;
@@ -3753,11 +3889,14 @@
         R.kindN = 'open';
         R.elbowN = [-0.2, 1];
         break;
-      case 'rake':
-        R.handN = lerp2([112, COUNTER], [46, COUNTER], k);
+      case 'rake': {
+        // o.target: where the stroke starts; the hand sweeps 66 units back along the counter
+        const a = target([112, COUNTER]);
+        R.handN = lerp2(a, add2(a, [-66, 0]), k);
         R.kindN = 'open';
         R.elbowN = [-0.2, 1];
         break;
+      }
       case 'tap': {
         const down = o.k != null ? k < 0.5 : Math.floor(tq * 8) % 2 === 0;
         R.handN = target([84, COUNTER]);
@@ -3943,10 +4082,15 @@
     const layer = o.layer || 'all';
     const showBack = layer !== 'front', showFront = layer !== 'back';
     const skin = pal.skin;
-    const arm = (sh, hand, pref, kind, id) => {
+    let body = null; // the shirt's outline in design units, for the seams of arms drawn over it
+    // from behind the broad torso sits under the head (G2: head centre (180, 650), shoulders across x 0
+    // to 400 at y 800 when h is 1167 from (92.5, 1636)), so the legs and the shadow move with it
+    const U0 = back ? 27 : 0;
+    if (o.shadow !== false && showBack) lib.footShadow(ctx, x + f * (4 + U0) * s, y, (back ? 68 : 54) * s, { ground: o.ground, machine: K.brush });
+    const arm = (sh, hand, pref, kind, id, seam) => {
       const el = id === 85 && R.elbowAt ? R.elbowAt : ik2(sh, hand, OB.upper, OB.fore, pref);
-      K.tubes(ctx, [[sh, el, hand]], OB.armW, skin);
-      K.tubes(ctx, [[sh, lerp2(sh, el, 0.94)]], OB.sleeveW, pal.pink);
+      limbTube(ctx, K, [sh, el, hand], OB.armW, skin, seam ? body : null, sh);
+      limbTube(ctx, K, [sh, lerp2(sh, el, 0.94)], OB.sleeveW, pal.pink, seam ? body : null, sh);
       const cuff = lerp2(sh, el, 0.94);
       const ad = angOf(sub2(el, sh));
       const nrm = [-Math.sin(ad), Math.cos(ad)];
@@ -3963,30 +4107,40 @@
     const ev = mul2(e, 1 / L), nv = [-ev[1], ev[0]];
     const map = (u, v) => add2(R.hip, add2(mul2(ev, v), mul2(nv, u)));
     const sack = [[-20, L + 2], [-31, L * 0.86], [-31, L * 0.58], [-27, L * 0.25], [-25, 0], [-20, -8], [0, -10], [20, -8], [27, 0], [31, L * 0.3], [29, L * 0.6], [24, L * 0.88], [14, L + 2], [0, L + 5]];
+    const backSack = [[-30, L + 4], [-56, L * 0.96], [-68, L * 0.82], [-63, L * 0.5], [-53, L * 0.18], [-48, 0], [-36, -9], [0, -11], [36, -9], [48, 0], [53, L * 0.18], [63, L * 0.5], [68, L * 0.82], [56, L * 0.96], [30, L + 4], [0, L + 6]].map((q) => map(U0 + q[0], q[1]));
+    body = back ? backSack : sack.map((q) => map(q[0], q[1]));
+    if (back) {
+      R.shN = map(U0 + 56, L * 0.8);
+      R.shF = map(U0 - 56, L * 0.8);
+      R.hipN = add2(R.hipN, [U0 + 10, 0]);
+      R.hipF = add2(R.hipF, [U0 - 10, 0]);
+      R.ankleN = add2(R.ankleN, [U0 + 12, 0]);
+      R.ankleF = add2(R.ankleF, [U0 - 8, 0]);
+    }
     const anchors = {};
     let tip = R.handN;
     if (showBack) {
       if (back) {
         // from behind: the working arm reaches past his back, the other hangs on the near side
-        tip = arm(R.shN, R.handN, R.elbowN, R.kindN, 85);
+        tip = arm(R.shN, R.handN, R.elbowN, R.kindN, 85, false);
         leg(R.hipN, R.ankleN, 92);
         leg(R.hipF, R.ankleF, 91);
         K.tubes(ctx, [[R.neck, R.head]], 16, skin);
-        K.cel(ctx, sack.map((q) => map(-q[0], q[1])), pal.pink, 10);
+        K.cel(ctx, backSack, pal.pink, 10);
         // apron straps crossing the back, the bow at the waist, the neck loop
-        K.tubes(ctx, [[map(22, L * 0.86), map(-14, L * 0.22)], [map(-24, L * 0.86), map(14, L * 0.22)]], 7, pal.white);
-        K.cel(ctx, ell(...map(-8, L * 0.18), 9, 6, 0.5, 14), pal.white, 15);
-        K.cel(ctx, ell(...map(8, L * 0.18), 9, 6, -0.5, 14), pal.white, 16);
-        K.tubes(ctx, [[map(0, L * 0.16), map(-4, L * 0.02)], [map(0, L * 0.16), map(5, L * 0.0)]], 5, pal.white);
+        K.tubes(ctx, [[map(U0 + 50, L * 0.88), map(U0 - 22, L * 0.2)], [map(U0 - 50, L * 0.88), map(U0 + 22, L * 0.2)]], 7, pal.white);
+        K.cel(ctx, ell(...map(U0 - 9, L * 0.18), 10, 7, 0.5, 14), pal.white, 15);
+        K.cel(ctx, ell(...map(U0 + 9, L * 0.18), 10, 7, -0.5, 14), pal.white, 16);
+        K.tubes(ctx, [[map(U0, L * 0.16), map(U0 - 5, L * 0.02)], [map(U0, L * 0.16), map(U0 + 6, L * 0.0)]], 5, pal.white);
         const hd = ownerHead(ctx, K, R.head, OB.headR, R.tilt, R.face, tq, !!o.blink, true);
         Object.assign(anchors, { mouth: K.T(hd.mouth), ear: K.T(hd.ear), top: K.T(hd.top), eye: K.T(hd.eye) });
-        arm(R.shF, R.handF, R.elbowF, R.kindF, 80);
+        arm(R.shF, R.handF, R.elbowF, R.kindF, 80, true);
       } else {
-        if (!R.armsFront) arm(R.shF, R.handF, R.elbowF, R.kindF, 80);
+        if (!R.armsFront) arm(R.shF, R.handF, R.elbowF, R.kindF, 80, false);
         leg(R.hipF, R.ankleF, 91);
         leg(R.hipN, R.ankleN, 92);
         K.tubes(ctx, [[R.neck, R.head]], 16, skin);
-        K.cel(ctx, sack.map((q) => map(q[0], q[1])), pal.pink, 10);
+        K.cel(ctx, body, pal.pink, 10);
         // apron: bib to mid-thigh, strap round the neck, a pocket, the bow at the back
         const apron = [[4, L * 0.8], [26, L * 0.8], [28, L * 0.55], [33, L * 0.25], [36, -10], [38, -64], [34, -84], [-2, -86], [-8, -64], [-6, -10], [-2, L * 0.3]];
         K.line(ctx, [map(5, L * 0.8), map(-6, L + 4), map(-12, L + 2)], 12, { width: Math.max(2.6, K.lw * 0.7) });
@@ -4001,12 +4155,12 @@
     anchors.hold = K.T(R.hold || lerp2(R.handN, R.handF, 0.5));
     anchors.keys = K.T([66, -200]);
     if (showFront && !back) {
-      if (R.armsFront) arm(R.shF, R.handF, R.elbowF, R.kindF, 80);
+      if (R.armsFront) arm(R.shF, R.handF, R.elbowF, R.kindF, 80, true);
       if (typeof o.hold === 'function') o.hold(ctx, anchors);
       else if (R.holdKind === 'ticket' && o.ticket !== false) props.ticket(ctx, anchors.hold[0], anchors.hold[1] - 48 * s, { w: 76 * s, lines: o.lines, rot: f * -0.08, plate: o.plate, line: o.line, seed: 3 });
       else if (R.holdKind === 'handset' || R.holdKind === 'pinned') props.handset(ctx, anchors.hold[0], anchors.hold[1], { w: 66 * s, rot: f * (R.holdKind === 'pinned' ? 1.2 : 1.35), plate: o.plate, line: o.line, flip: f < 0 });
       else if (R.holdKind === 'burger' && o.burger !== false) props.burger(ctx, anchors.hold[0], anchors.hold[1], { w: 64 * s, plate: o.plate, line: o.line });
-      tip = arm(R.shN, R.handN, R.elbowN, R.kindN, 85);
+      tip = arm(R.shN, R.handN, R.elbowN, R.kindN, 85, true);
     }
     Object.assign(anchors, { head: K.T(R.head), headR: OB.headR * s, hand: K.T(tip), handFar: K.T(R.handF), chest: K.T(lerp2(R.hip, R.neck, 0.7)), ground: [x, y] });
     return anchors;
@@ -4161,16 +4315,27 @@
         lib.letters(ctx, str, p[0], p[1], { size: size * K.s, face: 'note', align: 'center', color: fg, seed: 40 + i });
       });
     }
-    if (o.title) {
-      const p = K.T([cx, cy - 262]);
-      lib.letters(ctx, o.title, p[0], p[1], { size: fitSize(ctx, o.title, 'round', (34 / CAP.round) * K.s, 520 * K.s), face: 'round', align: 'center', color: pal.ink, seed: 47 });
-    }
+    // the title and the caption on white strips, as on the machine's face, so they read on any ground
+    const strip = (str, face, cap, base, maxW, id, jitter) => {
+      const sz = fitSize(ctx, str, face, (cap / CAP[face]) * K.s, maxW * K.s);
+      const w = lib.letters(ctx, str, 0, 0, { size: sz, face, measure: true }).w / K.s;
+      const c2 = (sz / K.s) * CAP[face];
+      K.cel(ctx, lib.rrectPts(cx - w / 2 - 16, base - c2 - 12, w + 32, c2 + 26, 8, 3), pal.white, id, { width: Math.max(2.5, K.lw * 0.6) });
+      const p = K.T([cx, base]);
+      lib.letters(ctx, str, p[0], p[1], { size: sz, face, align: 'center', color: pal.ink, seed: id + 2, jitter });
+    };
+    if (o.title) strip(o.title, 'round', 34, cy - 262, 520, 45, 1);
+    if (o.caption) strip(o.caption, 'note', 22, cy + 64, 480, 46, 0.6);
     return K.T(add2(c, mul2(d, 160)));
   }
   props.gauge = (ctx, x, y, o = {}) => {
     const r = o.r || 300;
     const K = kit(x, y, r / 190, 1, o, 3300);
-    const tip = gaugeDraw(ctx, K, 0, 0, o.level != null ? o.level : 0.5, { labels: o.labels, title: o.title === false ? null : o.title || 'WILLINGNESS TO PAY' });
+    const tip = gaugeDraw(ctx, K, 0, 0, o.level != null ? o.level : 0.5, {
+      labels: o.labels,
+      title: o.title === false ? null : o.title || 'SENSITIVITY TO PRICE',
+      caption: o.caption === false ? null : o.caption || 'based on willingness to pay in your area',
+    });
     return { tip, pivot: [x, y], r };
   };
 
@@ -4207,8 +4372,9 @@
     const K = kit(x, y, s, 1, o, 3100);
     const B = (p) => [p[0] * sx + dx, p[1] * sy];
     const BB = (arr) => arr.map(B);
-    // 1 legs and shoes, toes turned out
+    // 1 the shadow spot, legs and shoes, toes turned out
     const hop = pose === 'hop';
+    if (o.shadow !== false) lib.footShadow(ctx, x, y, 280 * s, { ground: o.ground, machine: K.brush, ry: 34 * s });
     for (const side of [-1, 1]) {
       const top = B([side * 150, -180]);
       const ank = hop ? [side * 140, -26] : [side * 150, -50];
@@ -4331,7 +4497,14 @@
   const BURGER_OUTLINE = [[-48, -14], [-40, -28], [-24, -38], [0, -42], [24, -38], [40, -28], [48, -14], [52, -7], [55, -1], [53, 14], [50, 22], [48, 30], [42, 38], [0, 39], [-42, 38], [-48, 30], [-50, 22], [-53, 14], [-55, -1], [-52, -7]];
   props.burger = (ctx, x, y, o = {}) => {
     const s = (o.w || 220) / 100;
-    const K = kit(x, y, s, 1, o, 3500, o.rot || 0);
+    // the design is drawn 0.85 as tall as it is listed, so the burger is 0.69 as tall as wide (G5)
+    const K0 = kit(x, y, s, 1, o, 3500, o.rot || 0);
+    const fl = (pts) => pts.map((p) => [p[0], p[1] * 0.85]);
+    const K = Object.assign({}, K0, {
+      T: (p) => K0.T([p[0], p[1] * 0.85]),
+      TT: (pts) => K0.TT(fl(pts)),
+      cel: (c, pts, fill, id, extra) => K0.cel(c, fl(pts), fill, id, extra),
+    });
     const bites = Math.max(0, Math.min(3, Math.round(o.bites || 0)));
     const B = [[54, -14, 20], [56, 14, 19], [36, -40, 18]].slice(0, bites);
     const cut = (fn) => {
@@ -4392,26 +4565,51 @@
 
 
   props.priceTag = (ctx, x, y, o = {}) => {
-    // G1: card 280 x 150 under two strings 30 px long; G4: card 440 x 280. (x, y) is the card's top centre.
+    // (x, y) is the card's top center. G1: 280 x 150, strings to the corners, rocks about the string
+    // tops; G4: 440 x 280, punched holes, glyph slots, rocks about the card's top center.
     const w = o.w || 280, h = o.h || 150;
     const drop = o.drop != null ? o.drop : h * 0.2;
-    const K = kit(x, y - drop, 1, 1, o, 3600, o.swing || 0);
-    const hx = w / 2 - 0.09 * w, hy = drop + 0.107 * h;
+    const pivotTop = o.pivot === 'top';
+    const K = kit(x, pivotTop ? y : y - drop, 1, 1, o, 3600, o.swing || 0);
+    const oy = pivotTop ? 0 : drop; // the card's top in K's units
     const sw = Math.max(2.6, K.lw * 0.6);
     const strings = o.strings || 'up';
+    const corners = o.hang !== 'holes'; // default: the G1 card, strings to its top corners
+    const hx = w / 2 - 0.09 * w, hy = oy + 0.107 * h;
     if (strings === 'up') {
-      K.line(ctx, [[-hx * 0.97, 0], [-hx, hy]], 1, { width: sw, taper: [1, 1] });
-      K.line(ctx, [[hx * 0.97, 0], [hx, hy]], 2, { width: sw, taper: [1, 1] });
+      if (corners) {
+        K.line(ctx, [[-(w / 2 - 20), oy - drop], [-(w / 2 - 3), oy + 3]], 1, { width: sw, taper: [1, 1] });
+        K.line(ctx, [[w / 2 - 20, oy - drop], [w / 2 - 3, oy + 3]], 2, { width: sw, taper: [1, 1] });
+      } else {
+        K.line(ctx, [[-hx, oy - drop], [-hx, hy]], 1, { width: sw, taper: [1, 1] });
+        K.line(ctx, [[hx, oy - drop], [hx, hy]], 2, { width: sw, taper: [1, 1] });
+      }
     }
-    K.cel(ctx, lib.rrectPts(-w / 2, drop, w, h, 0.064 * h + 4, 4), pal.tag, 3);
-    for (const sx of [-1, 1]) K.cel(ctx, ell(sx * hx, hy, 0.022 * w, 0.022 * w, 0, 12), pal.white, sx > 0 ? 4 : 5, { width: Math.max(2.5, K.lw * 0.6) });
-    if (strings === 'dangle') {
-      for (const sx of [-1, 1]) K.line(ctx, [[sx * hx, hy], [sx * (hx + 0.05 * w), hy - 0.12 * h], [sx * (hx + 0.12 * w), hy + 0.2 * h], [sx * (hx + 0.1 * w), hy + 0.55 * h]], sx > 0 ? 6 : 7, { width: sw, taper: [1, 4] });
+    K.cel(ctx, lib.rrectPts(-w / 2, oy, w, h, 0.064 * h, 4), pal.tag, 3);
+    if (!corners) {
+      for (const sx of [-1, 1]) K.cel(ctx, ell(sx * hx, hy, 0.022 * w, 0.022 * w, 0, 12), pal.white, sx > 0 ? 4 : 5, { width: Math.max(2.5, K.lw * 0.6) });
+      if (strings === 'dangle') {
+        for (const sx of [-1, 1]) K.line(ctx, [[sx * hx, hy], [sx * (hx + 0.05 * w), hy - 0.12 * h], [sx * (hx + 0.12 * w), hy + 0.2 * h], [sx * (hx + 0.1 * w), hy + 0.55 * h]], sx > 0 ? 6 : 7, { width: sw, taper: [1, 4] });
+      }
     }
+    // the price: glyph height o.size, baseline o.baseline below the card's top
     const price = o.price || '$5.69';
-    const size = fitSize(ctx, price, 'note', (o.size || 0.62 * h) / CAP.note, 0.92 * w);
-    K.text(ctx, price, [0, drop + 0.79 * h], size, { face: 'note', align: 'center', color: pal.ink, seed: hash('tag', price) & 255, jitter: 0.6 });
-    return { pivot: [x, y - drop], center: K.T([0, drop + h / 2]), bottom: K.T([0, drop + h]), holes: [K.T([-hx, hy]), K.T([hx, hy])] };
+    const chars = Array.from(price);
+    const count = o.count != null ? Math.max(0, Math.min(chars.length, o.count)) : chars.length;
+    const base = oy + (o.baseline != null ? o.baseline : (115 / 150) * h); // G1: 115 below the top at h 150
+    const fsz = (o.size || (100 / 150) * h) / CAP.note; // G1: glyphs 100 tall at h 150
+    const seed = hash('tag', price) & 255;
+    if (o.slots) {
+      chars.forEach((ch, i) => {
+        if (i >= count || !o.slots[i]) return;
+        const [a, b] = o.slots[i];
+        const sz = fitSize(ctx, ch, 'note', fsz, (b - a) * 1.1) * (i === count - 1 && o.popLast ? o.popLast : 1);
+        K.text(ctx, ch, [(a + b) / 2 - x, base], sz, { face: 'note', align: 'center', color: pal.ink, seed: seed + i, jitter: 0.6 });
+      });
+    } else if (count > 0) {
+      K.text(ctx, chars.slice(0, count).join(''), [0, base], fitSize(ctx, price, 'note', fsz, 0.92 * w), { face: 'note', align: 'center', color: pal.ink, seed, jitter: 0.6 });
+    }
+    return { pivot: pivotTop ? [x, y] : [x, y - drop], center: K.T([0, oy + h / 2]), bottom: K.T([0, oy + h]), holes: [K.T([-hx, hy]), K.T([hx, hy])] };
   };
 
   props.booth = (ctx, x, y, o = {}) => {
@@ -4444,7 +4642,7 @@
       K.text(ctx, sign, [-10, -805], fitSize(ctx, sign, 'round', 90 / CAP.round, 470), { face: 'round', align: 'center', color: pal.red, seed: 21 });
       if (o.price !== false) {
         const tp = K.T([-10, -730]);
-        props.priceTag(ctx, tp[0], tp[1], { w: 280 * s, h: 150 * s, drop: 30 * s, price: o.price || '$5.69', swing: o.swing || 0, plate: o.plate, line: o.line });
+        props.priceTag(ctx, tp[0], tp[1], { w: 280 * s, h: 150 * s, drop: 30 * s, hang: 'corners', size: 100 * s, baseline: 115 * s, price: o.price || '$5.69', swing: o.swing || 0, plate: o.plate, line: o.line });
       }
     }
     // the owner standing behind the counter: head centre (20, -375), head height 130 (storyboard G1);

@@ -3,7 +3,7 @@ FILM.scene({
   id: 'hero-faces',
   draw(ctx, t, info) {
     const L = info.lib, P = L.pal, C = L.cast;
-    ctx.fillStyle = P.paper;
+    ctx.fillStyle = P.fieldMint; // the scene's light field (art bible 2.3)
     ctx.fillRect(0, 0, info.W, info.H);
     L.text(ctx, 'hero · faces (head radius 77 px), and line 11 at the bottom', 40, 60, { size: 28, color: P.ink, weight: 400 });
     const faces = ['smile', 'neutral', 'grin', 'open', 'O', 'chew', 'bliss', 'gulp', 'lick', 'jaw', 'glare', 'determined', 'sniff', 'pant', 'pop', 'sad'];

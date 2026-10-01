@@ -3,7 +3,7 @@ FILM.scene({
   id: 'hero-bike',
   draw(ctx, t, info) {
     const L = info.lib, P = L.pal, C = L.cast;
-    ctx.fillStyle = P.paper;
+    ctx.fillStyle = P.fieldSky; // the scene's light field (art bible 2.3)
     ctx.fillRect(0, 0, info.W, info.H);
     const label = (s, x, y) => L.text(ctx, s, x, y, { size: 22, color: P.slate, align: 'center', weight: 400 });
     const ground = (y) => L.pencil(ctx, [[20, y], [1060, y + 2]], { color: L.mix(P.grass, P.ink, 0.35), width: 2, seed: y });

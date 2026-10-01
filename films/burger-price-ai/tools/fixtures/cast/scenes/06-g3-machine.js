@@ -8,7 +8,7 @@ FILM.scene({
     L.dense(ctx, null, { bounds: [0, 1480, 1080, 440], base: P.pavement, dir: 'perspective', vp: [540, 900], cover: [0.14, 0.04], seed: 22 });
     L.ragged(ctx, [[0, 1480], [1080, 1478]], { base: P.nightSky, seed: 4 });
     const map = R.map(ctx, 80, 400, { w: 920, h: 300, n: 140, dotR: 7, mono: true, booths: 12, style: 'land', pinned: true, seed: 9 });
-    const m = C.machine(ctx, 540, 1480, { h: 660, pose: 'print', k: 0.75, level: 0.62, scope: 0, t: 0.2 });
+    const m = C.machine(ctx, 540, 1480, { h: 660, pose: 'print', k: 1, level: 0.62, scope: 0, t: 0.2 });
     R.flow(ctx, [[map.dots[20].x, map.dots[20].y], [m.hopper[0] - 60, 650], m.hopper], { t: 0.3, n: 6, size: 34, seed: 2 });
     R.flow(ctx, [[map.dots[90].x, map.dots[90].y], [m.hopper[0] + 80, 640], m.hopper], { t: 0.3, n: 6, size: 34, seed: 3, kind: 'coin' });
     const mark = (x, y) => {
