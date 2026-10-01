@@ -36,14 +36,30 @@
 
   // G1 (storyboard): booth front centre on the ground line, tag card top centre, the hero's stop mark
   const G1 = { boothX: 690, ground: 1480, boothW: 580, tagTop: [680, 750], price: '$6.89' };
-  // the hero's size comes from the bicycle lib.js draws: G1 wants wheels of radius 80 px (art bible: h 510.6
-  // at 47 of 300). bikeUnits reads the bicycle's own anchors in his design units (layer 'none' draws nothing)
-  const bikeUnits = (L) => L.props.bike(null, 0, 0, { h: 300, layer: 'none' });
-  const STOP = 290; // ground point at the stop mark: wheels at x 150 and 430, radius 80
+  const WHEEL_R = 80; // G1: the wheel radius at the ground line y 1480
+  const STOP = 290; // ground point at the stop mark, as in 01: wheels at x 150 and 430
   const DASH_X = 100; // the stretched dash drawing (storyboard)
   const BEAT = { crouch: 6, coil: 8, spin: 12, dash: 15, gone: 16, blinkA: 18, blinkB: 22 }; // shot frames
 
   let BOOTH = null; // the booth's anchors, captured while the street plate is painted (a pure function of G1)
+
+  // the hero's measures come from the cast's own anchors, so the lib may refine his proportions: one probe
+  // at height 300 into a 1 px canvas, cached (a pure function of the lib), gives per unit of height the wheel
+  // radius, the front axle and the head, each from his ground point
+  const heroUnit = (L) => L.cached(ID + '|hero-unit', () => {
+    const c = FILM.makeCanvas ? FILM.makeCanvas(1, 1) : document.createElement('canvas');
+    c.width = c.height = 1;
+    const a = L.cast.hero(c.getContext('2d'), 0, 0, { h: 300, pose: 'ride', phase: 0, shadow: false });
+    return { wheelR: a.wheelR / 300, front: a.axleFront[0] / 300, head: [a.head[0] / 300, a.head[1] / 300] };
+  });
+  // the same probe for this shot's own needs: the grip (the squashed body keeps its hands on it) and the rear
+  // axle (the yank turns about the rear tyre), in his design units (height 300, from his ground point)
+  const bikeUnit = (L) => L.cached(ID + '|bike-unit', () => {
+    const c = FILM.makeCanvas ? FILM.makeCanvas(1, 1) : document.createElement('canvas');
+    c.width = c.height = 1;
+    const a = L.cast.hero(c.getContext('2d'), 0, 0, { h: 300, pose: 'ride', phase: 0, shadow: false });
+    return { grip: a.grip, axleRear: a.axleRear };
+  });
 
   const seedOf = (L, ...k) => L.hash(ID, ...k) & 0x7fffffff;
 
@@ -71,7 +87,7 @@
     L.softWash(g, L.blobPts(860, 190, 118, 28, sd('cloud', 1), 0.22), { color: P.paper, alpha: 0.85, soft: 12, marks: 0.4, rim: 0.06, seed: sd('cloud', 2) });
     L.softWash(g, L.blobPts(196, 540, 132, 30, sd('cloud', 3), 0.22), { color: P.paper, alpha: 0.85, soft: 12, marks: 0.4, rim: 0.06, seed: sd('cloud', 4) });
     // the lawn under everything, as 01's meadow
-    L.softWash(g, L.rectPts(-20, 1254, 1120, 236, 20), { color: L.mix(P.grass, P.paper, 0.45), solid: true, marks: 0.5, rim: 0, seed: sd('lawn') });
+    L.softWash(g, L.rectPts(-20, 1254, 1120, 236, 20), { color: L.mix(P.grass, P.fieldSky, 0.45), solid: true, marks: 0.5, rim: 0, seed: sd('lawn') });
 
     // the cypress behind the booth's right edge, where 01 has its tree: a tall dark flame
     const cyp = L.mix(P.grass, P.trunk, 0.55);
@@ -171,7 +187,7 @@
     return {
       x, y,
       o: {
-        h, facing: -1, pose: 'serve',
+        h, facing: -1, pose: 'serve', shadow: false,
         face: f >= BEAT.gone ? 'surprised' : 'tired',
         blink: (f >= BEAT.blinkA && f < BEAT.blinkA + 2) || (f >= BEAT.blinkB && f < BEAT.blinkB + 2),
         rig: { hold: unit(BURGER[0], BURGER[1]), handN: unit(BURGER[0] + 25, BURGER[1] + 22) },
@@ -223,8 +239,9 @@
       const t = L.clamp(tIn, 0, info.dur);
       const f = Math.min(23, Math.floor(t * 24 + 1e-6)); // shot frame, for the moves on ones
       const sd = (...k) => seedOf(L, ...k);
-      const B = bikeUnits(L);
-      const HS = 80 / B.wheelR; // his design units to px: wheel radius 80 (G1)
+      const h = WHEEL_R / heroUnit(L).wheelR; // his standing height px (art bible: 510.6 at 47 of 300)
+      const HS = h / 300; // his design units to px
+      const B = bikeUnit(L);
       const hx = (u) => STOP + u * HS; // design units to frame px at the stop mark, facing right
       const hy = (v) => G1.ground + v * HS;
 
@@ -258,7 +275,7 @@
       L.cast.owner(ctx, ow.x, ow.y, Object.assign({ layer: 'front' }, ow.o));
 
       // 6 the tag
-      L.props.priceTag(ctx, G1.tagTop[0], G1.tagTop[1], { w: 280, h: 150, drop: 30, hang: 'corners', pivot: 'strings', size: 100, baseline: 115, price: G1.price, swing: tagSwing(L, info.T, f) });
+      L.props.priceTag(ctx, G1.tagTop[0], G1.tagTop[1], { w: 280, h: 150, drop: 30, price: G1.price, swing: tagSwing(L, info.T, f) });
 
       // 7 the exit: the dust cloud at the stop mark (kicked back behind the rear tyre, thinning on twos) and
       // five speed lines along his path
@@ -273,7 +290,7 @@
 
       // 8 the hero
       const hero = heroAt(t, f, B, hx, hy);
-      if (hero) L.cast.hero(ctx, hero.x, G1.ground, Object.assign({ h: 300 * HS, facing: 1 }, hero.o));
+      if (hero) L.cast.hero(ctx, hero.x, G1.ground, Object.assign({ h, facing: 1 }, hero.o));
     },
   });
 })();
