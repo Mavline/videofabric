@@ -12,7 +12,7 @@
 //   4 the ticket: props.ticket's slip with the words lettered at G8's sizes
 //   5 the smear of the catch, on ones, behind the arm
 //   6 the owner, three-quarter from behind (G2)
-//   7 the caption, white, popping on over 3 frames from frame 0
+//   7 the caption, white over an ink pass, popping on over 3 frames from frame 0
 (() => {
   'use strict';
   const ID = 'owner-ticket';
@@ -137,15 +137,15 @@
   }
 
   // ---- layer 4: the ticket ----
-  // props.ticket's slip (perforated top, torn bottom) with the words lettered at G8's sizes in ink, as on
-  // the machine's strip in 12: RECOMMENDED: cap 26 and $6.89 cap 72, each shrunk to fit FIT px so both sit
-  // in G8's box (x 300 to 540, y 610 to 790) when the slip is held up. In the note face the box is narrower
-  // than those caps need (299 and 280 px), so the words come out at caps of about 20 and 58.
+  // props.ticket's slip (perforated top, torn bottom) with the words lettered in ink, as on the machine's
+  // strip in 12: RECOMMENDED: cap 26 and $6.89 cap 72, each shrunk only if wider than FIT px. G8's box for
+  // them (x 300 to 540) held these caps at only about 20 and 58 in the note face, so the lead widened it to
+  // x 300 to 640 (2026-10-01): held up, the slip covers about x 303 to 633, y 588 to 812, clear of his head.
   // Drawn about its centre, turned by rot, at size k (it grows as it comes in through the window toward
   // the camera); the contour stays LINE at every size.
-  const TW = 250, TH = 225; // the slip in his hand, px
-  const BASE1 = 64, BASE2 = 160; // the two baselines below the slip's top edge, px
-  const FIT = 224; // the widest a line may be: held at x 428, the words stay inside G8's x 300 to 540
+  const TW = 330, TH = 225; // the slip in his hand, px
+  const BASE1 = 68, BASE2 = 166; // the two baselines below the slip's top edge, px
+  const FIT = 300; // the widest a line may be: held at x 468, the words stay inside x 318 to 618
   function ticket(ctx, L, cx, cy, rot, k) {
     const P = L.pal;
     const fit = (str, size, seed, tracking) => {
@@ -178,15 +178,15 @@
   // key drawings: frame -> owner pose, his working wrist (frame px), lean, sag, head tilt (+ forward and
   // down), and the ticket [cx, cy, rot, size]. A frame holds the last key at or before it: the snap of
   // the catch (6, 7, 8) is on ones, everything else on twos.
-  const READ = (tilt, sag, lean = 0.02) => ({ pose: 'read', wrist: [419, 826], lean, sag, tilt, tk: [428, 700, -0.03, 1] });
+  const READ = (tilt, sag, lean = 0.02) => ({ pose: 'read', wrist: [419, 826], lean, sag, tilt, tk: [468, 700, -0.03, 1] });
   const KEYS = {
     0: { pose: 'push', wrist: [396, 1080], lean: 0, sag: 0.35, tilt: 0.22, tk: [805, 585, -0.45, 0.62] }, // bored at the counter
     2: { pose: 'push', wrist: [396, 1080], lean: 0, sag: 0.2, tilt: -0.02, tk: [745, 622, 0.3, 0.75] }, // he looks up at it
     4: { pose: 'push', wrist: [352, 1088], lean: -0.04, sag: 0.45, tilt: -0.12, tk: [790, 598, -0.2, 0.88] }, // anticipation: he dips
-    6: { pose: 'catch', k: 0.2, wrist: [700, 728], lean: 0.12, sag: 0, tilt: -0.2, tk: [775, 600, 0.12, 1] }, // the snap: arm stretched, hand open
-    7: { pose: 'catch', k: 0.8, wrist: [726, 713], lean: 0.15, sag: 0, tilt: -0.16, tk: [760, 610, 0.06, 1] }, // the fist closes on its edge
-    8: { pose: 'catch', k: 0.8, wrist: [722, 701], lean: 0.16, sag: 0, tilt: -0.14, tk: [752, 598, 0.02, 1] }, // overshoot
-    10: { pose: 'read', wrist: [585, 767], lean: 0.08, sag: 0, tilt: 0, tk: [600, 650, -0.02, 1] }, // he brings it to his face
+    6: { pose: 'catch', k: 0.2, wrist: [700, 738], lean: 0.12, sag: 0, tilt: -0.2, tk: [778, 622, 0.1, 1] }, // the snap: arm stretched, hand open
+    7: { pose: 'catch', k: 0.8, wrist: [726, 723], lean: 0.15, sag: 0, tilt: -0.16, tk: [760, 620, 0.06, 1] }, // the fist closes on its edge
+    8: { pose: 'catch', k: 0.8, wrist: [722, 711], lean: 0.16, sag: 0, tilt: -0.14, tk: [752, 608, 0.02, 1] }, // overshoot
+    10: { pose: 'read', wrist: [585, 767], lean: 0.08, sag: 0, tilt: 0, tk: [640, 650, -0.02, 1] }, // he brings it to his face
     12: READ(0.08, 0.05), // T 23.0: he reads
     14: READ(0.14, 0.18), // and his head and shoulders sink
     16: READ(0.2, 0.3),
@@ -203,21 +203,26 @@
   }
 
   // ---- layer 7: the caption (G8) ----
-  // McDonald's: / "a tool, not a mandate": white handwriting straight on the wall (art bible 9.2), left edge
-  // x 80, baselines 300 and 380, cap height 56, both lines shrunk together if the longer overflows G8's
-  // x 80 to 800 (in the note face the quote is 972 px wide at cap 56, so both lines come out at cap 41).
-  // It pops with outBack over 3 frames on ones from frame 0, growing from its left edge.
-  const CAPTION = [["McDonald's:", 300], ['"a tool, not a mandate"', 380]];
+  // McDonald's: / "a tool, / not a mandate": white handwriting on the wall (art bible 9.2), left edge x 80,
+  // cap height 56. G8 gives two lines (baselines 300 and 380), but in the note face the quote is 972 px wide
+  // at cap 56, so the lead split it into three lines on baselines 300, 380 and 460 (2026-10-01): the widest
+  // is about 610 px, all lines shrink together only if one overflows x 80 to 800. Two passes as in 14: ink
+  // with an ink contour 5.5 wide, then white, so the letters part from the patchy wall. The block pops with
+  // outBack over 3 frames on ones from frame 0, growing from its left edge.
+  const CAPTION = [["McDonald's:", 300], ['"a tool,', 380], ['not a mandate"', 460]];
   function caption(ctx, L, f) {
-    let size = 56 / 0.71;
-    const w = Math.max(...CAPTION.map(([s, y], i) => L.letters(ctx, s, 80, y, { size, face: 'note', seed: sd('cap', i), measure: true }).w));
-    if (w > 720) size *= 720 / w;
+    const P = L.pal;
+    const base = { size: 56 / 0.71, face: 'note' };
+    const w = Math.max(...CAPTION.map(([s, y], i) => L.letters(ctx, s, 80, y, Object.assign({ seed: sd('cap', i), measure: true }, base)).w));
+    if (w > 720) base.size *= 720 / w;
     const k = f < 3 ? L.ease.outBack((f + 1) / 3) : 1;
     ctx.save();
-    ctx.translate(80, 340);
+    ctx.translate(80, 352);
     ctx.scale(k, k);
-    ctx.translate(-80, -340);
-    CAPTION.forEach(([s, y], i) => L.letters(ctx, s, 80, y, { size, face: 'note', color: L.pal.white, seed: sd('cap', i) }));
+    ctx.translate(-80, -352);
+    for (const pass of [{ color: P.ink, outline: P.ink, outlineWidth: 5.5 }, { color: P.white }]) {
+      CAPTION.forEach(([s, y], i) => L.letters(ctx, s, 80, y, Object.assign({ seed: sd('cap', i) }, base, pass)));
+    }
     ctx.restore();
   }
 
@@ -243,8 +248,8 @@
       ticket(ctx, L, ...key.tk);
 
       // 5 the smear of the snap, along the hand's path (2 frames)
-      if (f === CATCH) L.smear(ctx, [[420, 1010], [560, 850], [690, 740]], { colors: [P.skin, P.pink], width: 40, seed: sd('smear', 1) });
-      if (f === CATCH + 1) L.smear(ctx, [[600, 790], [680, 735], [720, 716]], { colors: [P.skin], width: 34, seed: sd('smear', 2) });
+      if (f === CATCH) L.smear(ctx, [[420, 1015], [560, 858], [690, 750]], { colors: [P.skin, P.pink], width: 40, seed: sd('smear', 1) });
+      if (f === CATCH + 1) L.smear(ctx, [[600, 800], [680, 745], [720, 726]], { colors: [P.skin], width: 34, seed: sd('smear', 2) });
 
       // 6 the owner from behind: his right hand catches and holds; the left hangs
       const rig = Object.assign(ownerRig(L, key.lean, key.sag, key.tilt), { handN: D(key.wrist) });
