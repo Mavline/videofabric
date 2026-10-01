@@ -14,7 +14,7 @@
 //   G6 counter: 1.75 on the cut, then one step down every 16th, 0 on T 27.875 (the bell), held
 // Layers, back to front:
 //   1 the card's street, one cached plate per card (no black line in it)
-//   2 behind the hero: speed lines, the tyre streak, dust
+//   2 behind the hero: 05's speed trail (mirrored, he rides left), the tyre streak, dust
 //   3 the hero: a smear in his own colours, or his cel drawing (lib.cast.hero)
 //   4 the G6 mile counter, screen-fixed
 (function () {
@@ -65,8 +65,24 @@
     const u = (p) => [p[0] / 300, p[1] / 300];
     return { wheelR: a.wheelR / 300, front: a.axleFront[0] / 300, head: u(a.head), headR: a.headR / 300, rear: u(a.axleRear), seat: u(a.seat), chest: u(a.chest) };
   });
-  // the dash drawing at height h, facing right: its anchors relative to his ground point give the smear its
-  // bands and the speed lines their height
+  // speedTrail: three speed lines on twos, thin tapering strokes 60 to 90 px long in pavement grey at half
+  // opacity, 12 to 24 px behind the rider's back (two thirds of a head behind the chest), the saddle and the
+  // rear tyre, at their heights. (x, y) the hero's ground point, h his height, k the drawing on twos.
+  function speedTrail(ctx, L, x, y, h, u, k) {
+    const at = (p, dx) => [x + (p[0] + dx) * h, y + p[1] * h];
+    [at(u.chest, -0.65 * u.headR), at(u.seat, -0.4 * u.wheelR), at(u.rear, -u.wheelR)].forEach((p, i) =>
+      L.speedLines(ctx, p[0], p[1], 0, { n: 1, spread: 0, len: [60, 90], gap: 12, width: 4, alpha: 0.5, seed: 21 + i * 3 + (k % 3) }));
+  }
+  // he rides left: 05's trail drawn in a frame mirrored about his ground point x, so its points and its
+  // direction turn round with him and the function stays verbatim
+  function mirrored(ctx, x, fn) {
+    ctx.save();
+    ctx.translate(2 * x, 0);
+    ctx.scale(-1, 1);
+    fn();
+    ctx.restore();
+  }
+  // the dash drawing at height h, facing right: its anchors relative to his ground point give the smear its bands
   const dashShape = (L, h) => L.cached(ID + '|dash-shape|' + h, () => {
     const c = FILM.makeCanvas ? FILM.makeCanvas(1, 1) : document.createElement('canvas');
     c.width = c.height = 1;
@@ -331,14 +347,16 @@
     });
   }
 
-  // the stretched drawing of the pass: the dash, drawn 1.4 times long and 0.86 high about his ground point;
-  // the line is thinned so it stays 3.5 to 5.7 px after the stretch (art bible 3.2)
-  function heroStretched(ctx, L, h, x, t, face) {
+  // the stretched drawing of the pass: the dash with 05's speed trail behind it, drawn 1.4 times long and
+  // 0.86 high about his ground point; the line is thinned so it stays 3.5 to 5.7 px after the stretch
+  // (art bible 3.2)
+  function heroStretched(ctx, L, h, u, x, t, k, face) {
     const sx = 1.4, sy = 0.86;
     ctx.save();
     ctx.translate(x, GROUND);
     ctx.scale(sx, sy);
     ctx.translate(-x, -GROUND);
+    mirrored(ctx, x, () => speedTrail(ctx, L, x, GROUND, h, u, k));
     L.cast.hero(ctx, x, GROUND, { h, facing: -1, pose: 'dash', t, ones: true, cadence: 6, cycle: 4, face, look: [1, 0], line: L.LINE / Math.sqrt(sx * sy) });
     ctx.restore();
   }
@@ -357,18 +375,16 @@
       const h = WHEEL_R / u.wheelR;
       const R = WHEEL_R;
       const a = dashShape(L, h);
-      const midY = GROUND + a.top[1] / 2, spread = -0.7 * a.top[1]; // where the speed lines run
 
       // 1 the street of this card
       L.plate(ctx, `${ID}|card${card}|3`, (g) => CARDS[card](g, L));
 
       if (card < 3) {
-        // 2 and 3: the pass, on ones: smear, smear, the stretched drawing, smear, smear, gone
+        // 2 and 3: the pass, on ones: smear, smear, the stretched drawing, smear, smear, gone; the smear is its
+        // own speed effect, the drawing carries 05's trail
         if (cf < 5) {
           const x = passX(cf);
-          const back = x - a.axleRear[0] + a.wheelR; // the back of his rear tyre
-          L.speedLines(ctx, back + (cf === 2 ? 70 : 170), midY, Math.PI, { n: 4, spread, len: [120, 260], gap: 16, width: 5, seed: sd('speed', card, cf) });
-          if (cf === 2) heroStretched(ctx, L, h, x, t, card === 2 ? 'grin' : 'determined');
+          if (cf === 2) heroStretched(ctx, L, h, u, x, t, f, card === 2 ? 'grin' : 'determined');
           else heroSmear(ctx, L, a, x, cf < 2 ? 340 : 260, sd('smear', card, cf));
         }
       } else {
@@ -377,7 +393,7 @@
         const x = stop + (cf < 3 ? SKID[cf] : 0);
         const rear = x - a.axleRear[0]; // the rear wheel's centre
         if (cf === 0) heroSmear(ctx, L, a, x + 340, 300, sd('smear', 3));
-        if (cf < 2) L.speedLines(ctx, rear + a.wheelR + 40, midY, Math.PI, { n: 4, spread, len: [100, 220], gap: 16, width: 5, seed: sd('speed', 3, cf) });
+        if (cf < 2) mirrored(ctx, x, () => speedTrail(ctx, L, x, GROUND, h, u, f));
         // the tyre's streak on the pavement behind the rear wheel's contact, and the dust kicked up there
         const streak = R * [0.62, 1.12, 1.62, 1.75][Math.min(3, cf)];
         L.speedLines(ctx, rear - 2, GROUND + 4, Math.PI, { n: 2, spread: 7, gap: 0, width: 6, len: [streak * 0.8, streak], seed: sd('skid') });

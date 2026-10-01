@@ -6,7 +6,8 @@
 //     y 1330..1480, the pavement from the G1 ground line y 1480 with its kerb at y 1600
 //   2 the laundry, flapping on twos (background: washes and pencil, no ink)
 //   3 three speed lines behind the back, the saddle and the rear tyre, on twos
-//   4 the hero riding, wheel radius 107: front wheel centre x = 40 + 700 t on twos, wheels on y 1480, four
+//   4 the hero riding, wheel radius 107: front wheel centre x = 40 + 760 t on twos (760 px/s in every ride
+//     shot, so the whole bicycle is out at the right edge by T 10.0), wheels on y 1480, four
 //     pedal drawings a turn on twos, the body bobbing 4 px a stroke; chewing with the jaw to T 9.0, the gulp
 //     (a lump down the throat, 3 frames on ones), the lick
 //   5 the G6 mile counter: 0, then 0.25 (T 8.5), 0.5 (T 9.0), 0.75 (T 9.5)
@@ -163,7 +164,7 @@
       // behind the front wheel centre
       const u = heroUnit(L);
       const h = 107 / u.wheelR;
-      const x = 40 + 700 * tw - u.front * h;
+      const x = 40 + 760 * tw - u.front * h;
       speedTrail(ctx, L, x, GROUND, h, u, k);
       const gf = Math.floor((t - 1) * 24 + 1e-6); // frames since T 9.0: the gulp is frames 0..2, on ones
       const face = gf < 0 ? 'chew' : gf < 3 ? 'gulp' : 'lick';
