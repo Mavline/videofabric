@@ -129,7 +129,7 @@ All three shots draw the booth with the same placement.
 - Sign board: x 420 to 940, y 560 to 720, with BURGERS hand-lettered, cap height 90, baseline y 675, centred on x 680 (about x 450 to 910).
 - Price tag: two strings from (560, 720) and (800, 720) to the card's top corners. Card x 540 to 820, y 750 to 900, tag fill, ink outline. The price is lettered in ink, glyph height 100, baseline y 865, centred on x 680 (about x 550 to 810): $5.69 in 01 and 18, $6.89 in 15. It rocks about (680, 720): plus or minus 2 degrees on twos in 01 and 18, up to 8 degrees in 15's gust.
 - Hero stop mark: rear wheel centre (150, 1400), front wheel centre (430, 1400), wheel radius 80, head centre (290, 1080), facing right. Slapped coins land on the shelf at (560, 1262).
-- Sky: paper from y 0 to 560. In 18 the lettering zone is x 80 to 940, y 230 to 540; nothing else must-read sits there in any G1 shot.
+- Sky: paper from y 0 to 560. In 18 the lettering zone is x 80 to 940, y 225 to 540; nothing else must-read sits there in any G1 shot.
 - Background, behind everything, painted without ink lines:
   - Modest street (01, 18): a wallYellow house x 0 to 380, y 860 to 1480, roof ridge at y 760 in roof; a picket fence in fence from x 0 to 400, y 1330 to 1480; a tree (trunk, grass) behind the booth's right edge, x 920 to 1080, y 700 to 1000; far hills in hillsFar along y 1150 to 1260; two pale wash clouds.
   - Rich street (15): a portico of four stone columns, x 20 to 380, y 780 to 1480, under a pediment from y 690 to 780 with cityPastel walls; a stone fountain basin x 60 to 340, y 1330 to 1480 with waterTop jets up to y 1200; round clipped bushes in grass; a tall cypress in place of the tree.
@@ -224,12 +224,12 @@ The camera stands inside, behind the counter, looking out through the window. Al
 | 12 | LOW / MEDIUM / HIGH | ink | 30 | LOW x 268 to 332, y 1115 to 1145; MEDIUM x 482 to 598, y 925 to 955; HIGH x 750 to 820, y 1115 to 1145 |
 | 12 | RECOMMENDED: | ink on ticket | 30 | x 420 to 660, y 1270 to 1300 |
 | 12 | $6.89 (ticket) | ink on ticket | 90 | x 430 to 650, y 1340 to 1430 |
-| 13 | McDonald's: / "a tool, not a mandate" | white | 56 | x 80 to 800, y 244 to 395 |
-| 13 | RECOMMENDED: $6.89 (ticket in his hand) | ink on ticket | 26 and 72 | x 300 to 540, y 610 to 790 |
-| 14 | Ex-owner: / "You don't really / have much of a choice / anymore." | white | 44 | x 80 to 590, y 1206 to 1475 |
+| 13 | McDonald's: / "a tool, / not a mandate" | white | 56 | x 80 to 520, y 244 to 460 |
+| 13 | RECOMMENDED: $6.89 (ticket in his hand) | ink on ticket | 26 and 72 | x 300 to 640, y 588 to 812 |
+| 14 | Ex-owner: / "You don't really / have much of a / choice anymore." | white | 44 | x 80 to 500, y 1206 to 1475 |
 | 17 | Same burger. / Different / neighborhood. | ink on titleSpot | 52, 52, 48 | x 80 to 455, y 278 to 520 |
-| 18 | Sources: Reuters / CNBC, / Engadget, Restaurant Business / Sept 29 – Oct 1, 2026 | ink on titleSpot | 36 | x 250 to 830, y 230 to 368 |
-| 18 | Reuters could not confirm the Fresno gap / came from the engine. | ink on titleSpot | 24 | x 280 to 800, y 378 to 440 |
+| 18 | Sources: Reuters / CNBC, / Engadget, Restaurant Business / Sept 29 – Oct 1, 2026 | ink on titleSpot | 33 | x 270 to 810, y 229 to 356 |
+| 18 | Reuters could not confirm the price gap / came from the pricing engine. | ink on titleSpot | 30 | x 215 to 865, y 366 to 442 |
 | 18 | Ideas & Technologies | titleBlue, I and T in titleYellow, ink outline | 56 | x 230 to 850, y 464 to 535 |
 
 Every box sits inside x 60 to 940 and y 220 to 1540, and none is under the Shorts button column (x 950 and beyond from y 1000 down). Hand lettering varies in width: a scene fits each line inside its box rather than trusting the cap height alone.
@@ -882,11 +882,11 @@ T 22.5 to 24.0, schematic, hard cut in.
 G2 on the same pixels as 02 and 08; through the window, the rich street, with no hero.
 The ticket flutters in through the top right of the window.
 The phone sits on the counter.
-Caption at the top, in the G2 caption zone: McDonald's: (baseline y 300) and "a tool, not a mandate" (baseline y 380), white, cap height 56, left edge x 80.
+Caption at the top, in the G2 caption zone, in three lines: McDonald's: (baseline y 300), "a tool, (baseline y 380) and not a mandate" (baseline y 460), white, cap height 56, left edge x 80.
 
 ### Forms
 
-As 02. The ticket as in 12, smaller in his hand: RECOMMENDED: at cap height 26 and $6.89 at cap height 72, held in the box x 300 to 540, y 610 to 790.
+As 02. The ticket as in 12, smaller in his hand: RECOMMENDED: at cap height 26 and $6.89 at cap height 72, held in the box x 300 to 640, y 588 to 812 (the ticket itself about x 303 to 633).
 
 ### Overlays
 
@@ -933,7 +933,7 @@ His head on the left, centre (300, 820), head height 300, turned right and up to
 His raised hand holds the G4 tag (x 480 to 920, y 300 to 580) by its lower left corner near (490, 570).
 His other hand over a keypad on the counter: x 620 to 920, y 1180 to 1440, 3 by 4 keys of 92 px with 12 px gaps (a screen strip on top if the prop has one).
 Counter top at y 1150, the warm wall behind.
-Caption at the lower left: Ex-owner: / "You don't really / have much of a choice / anymore." at baselines y 1250, 1320, 1390 and 1460, white, cap height 44, left edge x 80.
+Caption at the lower left: Ex-owner: / "You don't really / have much of a / choice anymore." at baselines y 1250, 1320, 1390 and 1460, white, cap height 44, left edge x 80.
 
 ### Forms
 
@@ -1137,13 +1137,13 @@ T 30.0 to 32.0, illustrated, hard cut in; its last frame loops into 01.
 ### Composition
 
 G1 on the same pixels as 01, on the modest street, with the $5.69 tag and the owner bored in the window, and no hero.
-In the sky's lettering zone, on titleSpot blobs, centred on x 540: Sources: Reuters / CNBC, (baseline y 266), Engadget, Restaurant Business (baseline y 312), Sept 29 – Oct 1, 2026 (baseline y 358), a small two-line note Reuters could not confirm the Fresno gap / came from the engine. (baselines y 402 and 432), and the channel mark Ideas & Technologies (baseline y 520).
+In the sky's lettering zone, on titleSpot blobs, centred on x 540: Sources: Reuters / CNBC, (baseline y 262), Engadget, Restaurant Business (baseline y 305), Sept 29 – Oct 1, 2026 (baseline y 348), a small two-line note Reuters could not confirm the price gap / came from the pricing engine. (baselines y 396 and 434), and the channel mark Ideas & Technologies (baseline y 520).
 
 ### Forms
 
 As 01.
-Source lines: ink, hand-lettered, cap height 36.
-Caveat note: ink, hand-lettered, cap height 24, smaller than the sources so it reads as a footnote.
+Source lines: ink, hand-lettered, cap height 33.
+Caveat note: ink, hand-lettered, cap height 30, smaller than the sources so it reads as a footnote.
 Channel mark: titleBlue letters with ink outlines, the I and the T in titleYellow, cap height 56, the baseline jumping a little from letter to letter as on the title card.
 
 ### Overlays
@@ -1169,7 +1169,7 @@ On the loop replay, the cut to 01's frame 0 keeps every G1 pixel: only the lette
 ### Subject
 
 Sources as captured on October 1, 2026: the Reuters report of September 29, 2026 as carried by CNBC; Engadget, September 29 to 30; Restaurant Business, October 1.
-The small note repeats Reuters' own caveat: it could not confirm that the Fresno gap came from the engine. It covers both the machine's $6.89 ticket and the franchise owner, while both Fresno stores are in fact company-run.
+The small note repeats Reuters' own caveat: it could not confirm that the price gap came from the pricing engine. It covers both the machine's $6.89 ticket and the franchise owner, while both Fresno stores are in fact company-run.
 
 ### Sound
 

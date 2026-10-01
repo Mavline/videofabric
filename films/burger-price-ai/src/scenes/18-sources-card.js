@@ -7,9 +7,10 @@
 //   3 the booth's front, painted once on a transparent plate
 //   4 the owner's front layer: his near arm on the shelf
 //   5 the $5.69 tag, rocking 2 degrees on twos on 01's global clock
-//   6 the titleSpot blobs in the sky's lettering zone, painted once
+//   6 the titleSpot blob under the sources, painted once
 //   7 the three source lines and the Reuters caveat, ink 'note' letters
-//   8 the channel mark, titleBlue 'round' capitals with the I and the T in titleYellow, drawing on
+//   8 the channel mark's own titleSpot blob and the mark, titleBlue 'round' capitals with the I and the T in
+//     titleYellow, both from T 30.5, the letters drawing on
 //
 // Beats (shot frames, t = T - 30): f0 (T 30.0) the booth, the sources and the caveat fully drawn; f12 (T 30.5)
 // the channel mark draws on over 12 frames on twos, then holds; f20 the owner draws breath, f24 (T 31.0) he
@@ -158,42 +159,43 @@
   }
 
   // ---------------------------------------------------------------------------
-  // The sources card (G8, art bible 9.1 and 9.4). Baselines and cap heights are the storyboard's, every line
-  // centred on x 540. A block of lines shares one size, shrunk only if its widest line overflows the column
-  // x 150 to 930 (the title card's column in 04): the G8 boxes are too narrow for these faces at these cap
-  // heights ('Engadget, Restaurant Business' at cap 36 is about 800 px against a 580 px box).
+  // The sources card (G8, art bible 9.1 and 9.4), every line centred on x 540. The channel mark keeps the
+  // storyboard's baseline and cap height; the sources and the caveat take the team lead's layout of
+  // 2026-10-01 (sources cap 33, caveat cap 30 in plainer words, so it reads on a phone). A block of lines
+  // shares one size, shrunk only if its widest line overflows the column x 150 to 930 (the title card's
+  // column in 04): the G8 boxes are too narrow for these faces at these cap heights. The caveat is set
+  // without the default letter spacing (track 0), or its first line would be about 880 px at cap 30.
   // ---------------------------------------------------------------------------
   const CX = 540;
   const COL_W = 780;
   const CAP = { note: 0.71, round: 0.74 }; // cap height as a share of the size (art bible 9)
-  const SOURCES = { lines: ['Sources: Reuters / CNBC,', 'Engadget, Restaurant Business', 'Sept 29 – Oct 1, 2026'], base: [266, 312, 358], cap: 36, seed: 1800 };
-  const CAVEAT = { lines: ['Reuters could not confirm the Fresno gap', 'came from the engine.'], base: [402, 432], cap: 24, seed: 1810 };
+  const SOURCES = { lines: ['Sources: Reuters / CNBC,', 'Engadget, Restaurant Business', 'Sept 29 – Oct 1, 2026'], base: [262, 305, 348], cap: 33, seed: 1800 };
+  const CAVEAT = { lines: ['Reuters could not confirm the price gap', 'came from the pricing engine.'], base: [396, 434], cap: 30, track: 0, seed: 1810 };
   const MARK = { str: 'Ideas & Technologies', base: 520, cap: 56, seed: 1820, at: 12 }; // at: frame of T 30.5
 
-  // pad: extra width per unit of size (an ink outline adds 0.14, as in 04)
-  function fitSize(ctx, L, lines, cap, face, pad = 0) {
+  // pad: extra width per unit of size (an ink outline adds 0.14, as in 04); tracking: lib.letters' spacing
+  function fitSize(ctx, L, lines, cap, face, pad = 0, tracking) {
     const size = cap / CAP[face];
-    const w = Math.max(...lines.map((s) => L.letters(ctx, s, 0, 0, { size, face, measure: true }).w + pad * size));
+    const w = Math.max(...lines.map((s) => L.letters(ctx, s, 0, 0, { size, face, tracking, measure: true }).w + pad * size));
     return w > COL_W ? (size * COL_W) / w : size;
   }
 
   function noteBlock(ctx, L, B) {
-    const size = fitSize(ctx, L, B.lines, B.cap, 'note');
-    B.lines.forEach((s, i) => L.letters(ctx, s, CX, B.base[i], { size, face: 'note', align: 'center', color: L.pal.ink, seed: B.seed + i }));
+    const size = fitSize(ctx, L, B.lines, B.cap, 'note', 0, B.track);
+    B.lines.forEach((s, i) => L.letters(ctx, s, CX, B.base[i], { size, face: 'note', align: 'center', tracking: B.track, color: L.pal.ink, seed: B.seed + i }));
   }
 
   function drawCard(ctx, L, f) {
     const P = L.pal;
-    // 6 one blob under the sources and the caveat, one under the channel mark
-    L.plate(ctx, ID + '|blobs', (g) => {
-      L.spot(g, CX, 334, 470, 128, { seed: L.hash(ID, 'spot', 1) & 0x7fffffff, irr: 0.08 });
-      L.spot(g, CX, 505, 470, 44, { seed: L.hash(ID, 'spot', 2) & 0x7fffffff, irr: 0.08 });
-    });
+    // 6 the blob under the sources and the caveat
+    L.plate(ctx, ID + '|blob-sources', (g) => L.spot(g, CX, 334, 470, 128, { seed: L.hash(ID, 'spot', 1) & 0x7fffffff, irr: 0.08 }));
     // 7 sources and the caveat
     noteBlock(ctx, L, SOURCES);
     noteBlock(ctx, L, CAVEAT);
-    // 8 the channel mark: six drawings on twos from T 30.5, complete on the sixth (T 30.917), then held
+    // 8 the channel mark on its own blob, both from T 30.5: six drawings on twos, complete on the sixth
+    // (T 30.917), then held
     if (f < MARK.at) return;
+    L.plate(ctx, ID + '|blob-mark', (g) => L.spot(g, CX, 505, 470, 44, { seed: L.hash(ID, 'spot', 2) & 0x7fffffff, irr: 0.08 }));
     const size = fitSize(ctx, L, [MARK.str], MARK.cap, 'round', 0.14);
     const colors = Array.from(MARK.str).map((c) => (c === 'I' || c === 'T' ? P.titleYellow : P.titleBlue));
     const p = Math.min(1, (((f - MARK.at) >> 1) + 1) / 6);

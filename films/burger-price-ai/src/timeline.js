@@ -194,7 +194,7 @@
         mode: 'illustrated',
         title: 'Sources, and the booth again',
         transitionIn: cut,
-        brief: `G1 on the same pixels as 01: the modest street, the $5.69 tag, the owner bored in the window, no hero. Hand-lettered sources on titleSpot blobs in the sky zone: Sources: Reuters / CNBC, / Engadget, Restaurant Business / Sept 29 – Oct 1, 2026, a small two-line note Reuters could not confirm the Fresno gap came from the engine., and the channel mark Ideas & Technologies drawing on from 30.5. The owner yawns at 31.0 and is back in 01's frame-0 pose by 31.5, so the last frame loops into 01.`,
+        brief: `G1 on the same pixels as 01: the modest street, the $5.69 tag, the owner bored in the window, no hero. Hand-lettered sources on titleSpot blobs in the sky zone: Sources: Reuters / CNBC, / Engadget, Restaurant Business / Sept 29 – Oct 1, 2026, a small two-line note Reuters could not confirm the price gap came from the pricing engine., and the channel mark Ideas & Technologies drawing on from 30.5. The owner yawns at 31.0 and is back in 01's frame-0 pose by 31.5, so the last frame loops into 01.`,
       },
     ],
     cues: [
