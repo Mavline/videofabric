@@ -11,8 +11,8 @@
 // The engine, instruments, effects and master chain below are film-agnostic. Per film the music
 // agent replaces three things: the CH chord table, the MIX.ride section automation, and the whole
 // score() function — composing against FILM.TIMELINE.bpm and FILM.TIMELINE.cues so hits land on
-// the cuts. What ships here is a demo score that gives the stub pass a pulse; see the skill's
-// reference/music.md before composing.
+// the cuts. The score below is this film's: a puppet-jazz band (pizzicato, xylophone, a clarinet-like
+// reed, a small cymbal, a woodblock) with every cue of FILM.TIMELINE at its time; see the score section.
 (function () {
   'use strict';
   const FILM = window.FILM;
@@ -34,10 +34,9 @@
     // Master tilt EQ in dB: a low shelf under the subs, presence and air for phone speakers.
     eq: { low: -4, presence: 5, air: 3 },
     comp: { threshold: -18, knee: 10, ratio: 2, attack: 0.006, release: 0.2 },
-    // Section fader rides in dB at global times, pre-compressor: quiet egg, hushed pupa, full drop,
-    // hushed winter, and an ending level that meets the opening level at the loop seam.
-    // Per film: section fader rides in dB at global times, pre-compressor (see reference/music.md).
-    ride: [[0, 0]],
+    // Section fader rides in dB at global times, pre-compressor: the cold open a touch forward, then
+    // level, and a lift through the last half-second that meets the opening level at the loop seam.
+    ride: [[0, 1], [1.9, 1], [2.0, 0], [31.5, 0], [32, 1]],
   };
 
   // ---------------------------------------------------------------- pitch
@@ -1309,34 +1308,873 @@
   }
 
   // ---------------------------------------------------------------- the score
-  // DEMO SCORE — replace wholesale when composing the film. It gives the stub pass a pulse and
-  // shows the engine idiom: instruments take absolute global times, score() is re-invoked per bar
-  // and the engine windows each call, so scheduling the whole piece here is correct. Everything
-  // below derives from FILM.TIMELINE, so it runs at any bpm and duration.
+  // "One burger, two prices", scored for a puppet-jazz band in the manner of 1960s-70s Soviet cartoon
+  // music: pizzicato strings (an oom-pah bass and off-beat chords), a xylophone, a clarinet-like reed
+  // (high and low), a small cymbal and a woodblock. F major on the street, D minor at the machine and
+  // with the owner. Every tune is original: the burger motif (F A C A, then C E F), the ride tune
+  // (A C F D E C Bb G), the machine ostinato (D A F A on 16ths). Times are global seconds on the
+  // 120 bpm grid (a beat 0.5 s, a 16th 0.125 s); every FILM.TIMELINE cue is implemented by hand at
+  // its own time and tagged "cue" below.
+
+  // Pizzicato chord voicings, sounding pitches.
   const CH = {
-    home: ['D3', 'A3', 'D4', 'F#4'],
-    away: ['G3', 'B3', 'D4', 'G4'],
+    F: ['A3', 'C4', 'F4'],
+    Fwide: ['F3', 'A3', 'C4', 'F4'],
+    Fmaj7: ['A3', 'C4', 'E4'],
+    F6: ['A3', 'D4', 'F4'],
+    F69: ['A3', 'D4', 'G4', 'C5'],
+    Bb6: ['Bb3', 'D4', 'G4'],
+    C7: ['Bb3', 'E4', 'G4'],
+    dim: ['B3', 'D4', 'F4', 'Ab4'],
+    A7: ['G3', 'C#4', 'E4'],
+    Dm: ['A3', 'D4', 'F4'],
+    Dsus: ['A3', 'D4', 'G4'],
+    Gm: ['G3', 'Bb3', 'D4'],
   };
 
-  function score(E, I) {
-    const { kick, hat, kalimba, pad, sub } = I;
-    const bpm = (FILM.TIMELINE && FILM.TIMELINE.bpm) || 120;
-    const DUR = (FILM.TIMELINE && FILM.TIMELINE.duration) || 32;
-    const BAR = 240 / bpm;
-    const BEAT = 60 / bpm;
-    const motif = ['D5', 'F#5', 'A5', 'E5'];
-    for (let beat = 0; beat * BEAT < DUR - 1e-9; beat++) {
-      const t = Math.round(beat * BEAT * 1000) / 1000;
-      const down = beat % 4 === 0;
-      kick(t, down ? 0.8 : 0.5, down ? 'full' : 'felt');
-      hat(t + BEAT / 2, 0.1);
-      kalimba(t + BEAT / 2, hz(motif[beat % 4]), 0.2, { hall: 0.15, delay: 0.1, pan: beat % 2 ? 0.15 : -0.15 });
-      if (down) {
-        const home = beat % 8 === 0;
-        pad(t, Math.min(t + BAR, DUR), home ? CH.home : CH.away, 0.28, { att: 0.05, rel: 0.1, cut0: 900, cut1: 1400, hall: 0.15 });
-        sub(t, Math.min(t + BAR, DUR), home ? 'D2' : 'G1', 0.4, { att: 0.02, rel: 0.08 });
+  // Karplus-Strong plucked string rendered into a buffer: one period of low-passed seeded noise
+  // circulating through a fractional delay line with a two-point average and a loss tuned to t60.
+  // The pitch glides f0 to f1 over `glide` seconds (a zing, a boop). Normalised to a peak of 1.
+  function pluckBuffer(ctx, key, f0, f1, glide, t60, secs, bright) {
+    const sr = ctx.sampleRate;
+    const n = Math.ceil(secs * sr);
+    const buf = ctx.createBuffer(1, n, sr);
+    const y = buf.getChannelData(0);
+    const r = lib.rng(lib.hash('film-pluck', key));
+    const exc = Math.ceil(sr / f0);
+    const gN = Math.max(1, glide * sr);
+    let f = f0;
+    let rho = Math.pow(10, -3 / (t60 * f0));
+    let lp = 0;
+    let peak = 1e-9;
+    for (let i = 0; i < n; i++) {
+      if (glide > 0 && i <= gN) {
+        f = f0 * Math.pow(f1 / f0, i / gN);
+        rho = Math.pow(10, -3 / (t60 * f));
       }
+      let v = 0;
+      if (i < exc) {
+        lp += bright * (r() * 2 - 1 - lp);
+        v = lp;
+      }
+      const d = i - (sr / f - 0.5);
+      if (d >= 1) {
+        const j = Math.floor(d);
+        const a = d - j;
+        v += rho * 0.5 * (y[j] + (y[j + 1] - y[j]) * a + y[j - 1] + (y[j] - y[j - 1]) * a);
+      }
+      y[i] = v;
+      if (Math.abs(v) > peak) peak = Math.abs(v);
     }
+    const fade = Math.floor(0.03 * sr);
+    for (let i = 0; i < n; i++) y[i] = (y[i] / peak) * (i > n - fade ? (n - i) / fade : 1);
+    return buf;
+  }
+
+  // The band and its sound effects, built once per render on the engine's primitives and instruments.
+  function band(E, I) {
+    const ctx = E.ctx;
+    const B = {};
+    const plucks = {};
+    // Inside the booth (shots 02, 08, 13 and 14) the band is heard through the wall, low-passed at 1.5 kHz.
+    const muff = (t) => ((t >= 2 && t < 3.5) || (t >= 13 && t < 16) || (t >= 22.5 && t < 26) ? 1500 : 0);
+    B.out = (node, t, bus, o) => {
+      const c = o.open ? 0 : muff(t);
+      if (c) {
+        const f = E.filt('lowpass', c, 0.7);
+        node.connect(f);
+        node = f;
+      }
+      return E.out(node, bus, o);
+    };
+
+    // Pizzicato: a plucked string, cached per pitch, glide, length and one of three seeded variants.
+    // o: glide [note, secs], bright (excitation), dec (t60), lpx (low-pass as a multiple of the pitch),
+    // bus, pan, sends, open (not muffled in the booth).
+    B.pizz = (t, note, vel, o) => {
+      o = o || {};
+      const f0 = hz(note);
+      const f1 = o.glide ? hz(o.glide[0]) : f0;
+      const gl = o.glide ? o.glide[1] : 0;
+      const t60 = o.dec || Math.min(1.1, Math.max(0.2, 0.9 * Math.pow(110 / f0, 0.6)));
+      const V = E.voice(t, t60 + 0.05, false);
+      if (!V) return;
+      const bright = o.bright || 0.45;
+      const key = [note, f1, gl, t60, bright, lib.hash('film-pizz', t) % 3].join('|');
+      const s = ctx.createBufferSource();
+      s.buffer = plucks[key] || (plucks[key] = pluckBuffer(ctx, key, f0, f1, gl, t60, t60 + 0.05, bright));
+      const lp = E.filt('lowpass', Math.min(10000, Math.max(f0, f1) * (o.lpx || 10)), 0.6);
+      const g = E.gain(vel);
+      s.connect(lp);
+      lp.connect(g);
+      B.out(g, t, o.bus || 'keys', o);
+      V.buf(s, 0);
+    };
+    B.bass = (t, note, vel, o) => B.pizz(t, note, vel, Object.assign({ bus: 'bass', room: 0.12, lpx: 16 }, o));
+    const spread = [-0.3, 0.1, 0.35, -0.12];
+    // The pad bus sits low in the mix, so the off-beat chords play half again as loud as written.
+    B.pah = (t, notes, vel, o) => notes.forEach((n, i) => B.pizz(t, n, vel * 1.5, Object.assign({ bus: 'pad', pan: spread[i % 4], dec: 0.35 }, o)));
+
+    // Xylophone: a hard-mallet bar ringing its tuned twelfth (3f) and a short third mode, with a click.
+    B.xylo = (t, note, vel, o) => {
+      o = o || {};
+      const f = hz(note);
+      vel *= 0.7; // the xylophone's level against the band
+      const dec = o.dec || Math.min(0.9, Math.max(0.22, 0.6 * Math.sqrt(700 / f)));
+      const V = E.voice(t, dec + 0.05, false);
+      if (!V) return;
+      const g = E.gain(1);
+      for (const [k, a, d] of [
+        [1, 1, 1],
+        [3, 0.3, 0.35],
+        [6.27, 0.09, 0.12],
+      ]) {
+        if (f * k > 15000) continue;
+        const s = E.osc('sine', f * k);
+        const sg = E.gain(0);
+        V.env(sg.gain, perc(vel * a, 0.001, dec * d));
+        s.connect(sg);
+        sg.connect(g);
+        V.osc(s, dec * d + 0.02);
+      }
+      const n = E.noise(V, ['xylo', t, f]);
+      const nf = E.filt('bandpass', Math.min(8000, f * 3.5), 1.3);
+      const ng = E.gain(0);
+      V.env(ng.gain, perc(vel * 0.5, 0.0004, 0.006));
+      n.connect(nf);
+      nf.connect(ng);
+      ng.connect(g);
+      B.out(g, t, o.bus || 'keys', o);
+    };
+
+    // Clarinet-like reed: an odd-harmonic wave on a gliding pitch, tongued re-attacks between detached
+    // notes, a delayed vibrato and a breath of noise. phrase: [[t, note, glide]]; a note with a glide is
+    // slurred into. o: att, rel, sus (level at tEnd relative to vel; above 1 it swells), cut, vib (depth),
+    // rate, wave, breath, bus, pan, sends, open.
+    B.clar = (phrase, tEnd, vel, o) => {
+      o = o || {};
+      vel *= 0.4; // the reed's level against the band
+      const t0 = phrase[0][0];
+      const rel = o.rel || 0.07;
+      const len = tEnd - t0 + rel;
+      const V = E.voice(t0, len, true);
+      if (!V) return;
+      const f0 = hz(phrase[0][1]);
+      const depth = o.vib === undefined ? 0.005 : o.vib;
+      const pp = [[0, f0]];
+      const amp = [
+        [0, 0],
+        [o.att || 0.025, vel],
+      ];
+      const vib = [[0, 0]];
+      phrase.forEach(([t, nm, gl], i) => {
+        const a = t - t0;
+        const b = (i + 1 < phrase.length ? phrase[i + 1][0] : tEnd) - t0;
+        const f = hz(nm);
+        if (i > 0) {
+          pp.push([a, hz(phrase[i - 1][1]), 'set'], [a + Math.max(0.004, gl || 0), f, 'exp']);
+          if (!gl) amp.push([a - 0.02, vel, 'lin'], [a, vel * 0.4, 'lin'], [a + 0.02, vel, 'lin']);
+        }
+        if (depth && b - a > 0.3) vib.push([a, 0, 'set'], [a + 0.15, 0, 'set'], [Math.min(b, a + 0.45), f * depth, 'lin'], [b, f * depth, 'lin']);
+      });
+      amp.push([tEnd - t0, vel * (o.sus === undefined ? 0.9 : o.sus), 'lin'], [len, 0, 'lin']);
+      const pitch = ctx.createConstantSource();
+      V.env(pitch.offset, pp);
+      const osc = E.osc(o.wave || E.softSquare, 0);
+      pitch.connect(osc.frequency);
+      const lfo = E.osc('sine', o.rate || 5);
+      const vg = E.gain(0);
+      V.env(vg.gain, vib);
+      lfo.connect(vg);
+      vg.connect(osc.frequency);
+      const lp = E.filt('lowpass', o.cut || Math.min(3600, Math.max(900, f0 * 4)), 0.8);
+      const g = E.gain(0);
+      V.env(g.gain, amp);
+      osc.connect(lp);
+      lp.connect(g);
+      if (o.breath !== 0) {
+        const n = E.noise(V, ['reed', t0]);
+        const nf = E.filt('bandpass', Math.min(5000, f0 * 5), 1.5);
+        const ng = E.gain(o.breath || 0.06);
+        n.connect(nf);
+        nf.connect(ng);
+        ng.connect(g);
+      }
+      B.out(g, t0, o.bus || 'amb', o);
+      V.osc(pitch);
+      V.osc(osc);
+      V.osc(lfo);
+    };
+
+    // Small cymbal: bright noise and a metallic ring. An attack of 6 ms or more brushes it; a short
+    // dec chokes it.
+    B.cym = (t, vel, dec, o) => {
+      o = o || {};
+      const V = E.voice(t, dec + 0.05, false);
+      if (!V) return;
+      const att = o.att || 0.002;
+      const g = E.gain(1);
+      const n = E.noise(V, ['cym', t], true);
+      const hp = E.filt('highpass', o.hp || 4500, 0.7);
+      const ng = E.gain(0);
+      V.env(ng.gain, [[0, 0], [att, vel], [att + Math.min(0.1, dec * 0.25), vel * 0.45, 'exp'], [dec, FLOOR, 'exp']]);
+      n.connect(hp);
+      hp.connect(ng);
+      ng.connect(g);
+      if (!o.brush) {
+        for (const [f, a] of [
+          [3170, 0.07],
+          [4410, 0.05],
+          [5870, 0.045],
+          [7230, 0.035],
+        ]) {
+          const s = E.osc('sine', f);
+          const sg = E.gain(0);
+          V.env(sg.gain, perc(vel * a, 0.001, dec * 0.7));
+          s.connect(sg);
+          sg.connect(g);
+          V.osc(s);
+        }
+      }
+      B.out(g, t, 'perc', o);
+    };
+
+    // Struck metal from fixed partials [f, amp, decay]: the bicycle bell, the register, the phone.
+    B.metal = (t, vel, parts, o) => {
+      o = o || {};
+      const len = Math.max(...parts.map((p) => p[2]));
+      const V = E.voice(t, len + 0.02, false);
+      if (!V) return;
+      const g = E.gain(0.6); // bright metal sits high after the master's presence lift
+      for (const [f, a, d] of parts) {
+        const s = E.osc('sine', f);
+        const sg = E.gain(0);
+        V.env(sg.gain, perc(vel * a, o.att || 0.0006, d));
+        s.connect(sg);
+        sg.connect(g);
+        V.osc(s, d + 0.01);
+      }
+      E.out(g, o.bus || 'sfx', o);
+    };
+    // Bicycle bell: partials 2.6, 5.9 and 7.3 kHz, each doubled a few Hz apart so it shimmers; 0.35 s.
+    const BIKE = [
+      [2600, 1, 0.35],
+      [2622, 0.7, 0.33],
+      [5900, 0.45, 0.24],
+      [5941, 0.3, 0.22],
+      [7300, 0.3, 0.16],
+    ];
+    B.bike = (t, vel) => B.metal(t, vel, BIKE, { room: 0.15, pan: -0.15 });
+
+    // A tone gliding f0 to f1 with a percussive envelope. o: wave, glide (secs), wob [Hz, depth as a
+    // fraction of f0], att, lp, bus, pan, sends.
+    B.tone = (t, len, f0, f1, vel, o) => {
+      o = o || {};
+      const V = E.voice(t, len + 0.02, false);
+      if (!V) return;
+      const s = E.osc(o.wave || 'sine', f0);
+      if (f1 !== f0) V.env(s.frequency, [[0, f0], [o.glide || len, f1, 'exp']]);
+      if (o.wob) {
+        const lfo = E.osc('sine', o.wob[0]);
+        const lg = E.gain(f0 * o.wob[1]);
+        lfo.connect(lg);
+        lg.connect(s.frequency);
+        V.osc(lfo);
+      }
+      const g = E.gain(0);
+      V.env(g.gain, [[0, 0], [o.att || 0.002, vel], [len, FLOOR, 'exp']]);
+      let last = s;
+      if (o.lp) {
+        const f = E.filt('lowpass', o.lp, 0.7);
+        s.connect(f);
+        last = f;
+      }
+      last.connect(g);
+      E.out(g, o.bus || 'sfx', o);
+      V.osc(s);
+    };
+
+    // Coins: short FM clinks.
+    B.clink = (t, f, vel, pan) => I.fmBell(t, f, vel * 0.7, { ratio: 1.47, index: 1.6, dec: 0.08, att: 0.0006, bus: 'sfx', pan, room: 0.15 });
+
+    // Skid: band-passed noise sweeping 2.5 kHz down to 700 Hz over 0.25 s with a gritty 30 Hz flutter.
+    // Heard from inside the booth it sweeps an octave lower under a 1.2 kHz low-pass.
+    B.skid = (t, vel, muffled) => {
+      const len = 0.27;
+      const amp = [[0, 0]];
+      for (let k = 0; k / 30 < len - 0.03; k++) {
+        const pk = vel * (1 - (0.5 * k) / 30 / len);
+        amp.push([k / 30 + 0.003, pk], [k / 30 + 1 / 60, pk * 0.4]);
+      }
+      amp.push([len, FLOOR, 'exp']);
+      const f = muffled ? [[0, 1150], [0.25, 450, 'exp']] : [[0, 2500], [0.25, 700, 'exp']];
+      I.nz(t, len, { type: 'bandpass', q: 2.2, f, amp, type2: muffled ? 'lowpass' : null, f2: 1200, key: 'skid', room: 0.12 });
+    };
+
+    // Friction zip: band noise rising 1.2 to 3 kHz over 120 ms, grained by a fast flutter.
+    B.zip = (t, vel) => {
+      const amp = [[0, 0]];
+      for (let k = 0; k * 0.012 < 0.11; k++) amp.push([k * 0.012 + 0.002, vel * (k % 2 ? 0.7 : 1)], [k * 0.012 + 0.008, vel * 0.3]);
+      amp.push([0.13, FLOOR, 'exp']);
+      I.nz(t, 0.13, { type: 'bandpass', q: 2, f: [[0, 1200], [0.12, 3000, 'exp']], amp, key: 'zip', pan: -0.2 });
+    };
+
+    // High-passed whoosh with a hard front.
+    B.whoosh = (t, len, vel, o) =>
+      I.nz(t, len, Object.assign({ type: 'highpass', q: 0.7, f: [[0, 1800], [len, 4500, 'exp']], amp: [[0, 0], [0.004, vel], [len * 0.4, vel * 0.5, 'exp'], [len, FLOOR, 'exp']], stereo: true, key: 'whoosh' }, o));
+
+    // The snatch: an 80 ms whoosh and a bright pizzicato C5.
+    B.snatch = (t) => {
+      B.whoosh(t, 0.08, 0.25);
+      B.pizz(t, 'C5', 0.4, { bright: 0.7, open: true, lpx: 14, pan: 0.15 });
+    };
+
+    // Cash register: bell partials 2.1 and 5.3 kHz ringing 0.6 s, a 60 ms drawer clatter, a low chunk.
+    B.kaching = (t, vel) => {
+      B.metal(
+        t,
+        vel,
+        [
+          [2100, 1, 0.6],
+          [2113, 0.6, 0.55],
+          [5300, 0.5, 0.35],
+          [5327, 0.3, 0.3],
+        ],
+        { room: 0.2, pan: 0.2 }
+      );
+      const amp = [[0, 0]];
+      [0, 0.011, 0.019, 0.032, 0.041, 0.052].forEach((a, i) => amp.push([a + 0.0008, vel * (i ? 0.45 : 0.7)], [a + 0.006, vel * 0.08]));
+      amp.push([0.06, FLOOR, 'exp']);
+      I.nz(t, 0.06, { type: 'bandpass', q: 1.2, f: [[0, 3200]], amp, key: 'clatter', pan: 0.2 });
+      B.tone(t, 0.05, 110, 100, vel * 0.9, {});
+    };
+
+    // Chomp: a 50 ms crunch (noise between 1.5 and 4 kHz in crackles) over a sine thock 140 to 80 Hz.
+    B.chomp = (t, vel) => {
+      const r = lib.rng(lib.hash('film-crunch', t));
+      const amp = [
+        [0, 0],
+        [0.0008, vel],
+      ];
+      for (let k = 1; k < 7; k++) amp.push([k * 0.007, vel * (0.2 + 0.3 * r())], [k * 0.007 + 0.0035, vel * (0.5 + 0.4 * r())]);
+      amp.push([0.05, FLOOR, 'exp']);
+      I.nz(t, 0.05, { type: 'bandpass', q: 0.7, f: [[0, 2450]], amp, key: 'crunch', room: 0.1 });
+      B.tone(t, 0.09, 140, 80, vel * 0.9, { glide: 0.05 });
+    };
+
+    // Chewing: a soft squelch, noise low-passed near 400 Hz with a wet resonance.
+    B.squelch = (t, vel) => I.nz(t, 0.06, { type: 'lowpass', q: 4, f: [[0, 300], [0.06, 460, 'exp']], amp: [[0, 0], [0.006, vel], [0.06, FLOOR, 'exp']], key: 'squelch', pan: 0.1 });
+
+    // Pencil scribble: band noise in strokes with a jittered amplitude; the first stroke is the hardest.
+    B.scribble = (t, len, f0, f1, vel) => {
+      const r = lib.rng(lib.hash('film-pencil', t));
+      const amp = [
+        [0, 0],
+        [0.002, vel],
+      ];
+      let a = 0.012;
+      while (a < len - 0.025) {
+        amp.push([a, vel * (0.12 + 0.2 * r())], [a + 0.006 + 0.006 * r(), vel * (0.4 + 0.4 * r())]);
+        a += 0.016 + 0.012 * r();
+      }
+      amp.push([len, FLOOR, 'exp']);
+      I.nz(t, len, { type: 'highpass', q: 0.7, f: [[0, f0]], type2: 'lowpass', f2: f1, amp, key: 'pencil', pan: 0.15 });
+    };
+
+    // Gulp: a sine falling 300 to 120 Hz over 120 ms with a 25 Hz wobble, and a wet click above it.
+    B.gulp = (t, vel) => {
+      B.tone(t, 0.15, 300, 120, vel, { glide: 0.12, wob: [25, 0.12], att: 0.003 });
+      I.nz(t, 0.03, { type: 'bandpass', q: 3, f: [[0, 1000], [0.03, 650, 'exp']], amp: perc(vel * 0.3, 0.001, 0.02), key: 'gulp' });
+    };
+
+    // Fountain jet: band noise near 4 kHz, 0.2 s.
+    B.fountain = (t, vel) =>
+      I.nz(t, 0.24, { type: 'bandpass', q: 0.9, f: [[0, 4000], [0.2, 3300, 'exp']], amp: [[0, 0], [0.004, vel], [0.06, vel * 0.6, 'exp'], [0.22, FLOOR, 'exp']], stereo: true, key: 'fountain', hall: 0.1 });
+
+    // Sniff: two short rising noise puffs.
+    B.sniff = (t, vel) =>
+      [0, 0.09].forEach((d, i) =>
+        I.nz(t + d, 0.06, { type: 'bandpass', q: 1.4, f: [[0, 1600 + i * 600], [0.06, 2600 + i * 600, 'exp']], amp: [[0, 0], [0.004, vel], [0.06, FLOOR, 'exp']], key: 'sniff', pan: 0.1 })
+      );
+
+    // Snare-like stroke for the roll.
+    B.snare = (t, vel) => I.nz(t, 0.07, { type: 'bandpass', q: 0.7, f: [[0, 3200]], amp: perc(vel, 0.0008, 0.04), key: 'snare', room: 0.12 });
+
+    // Slide whistle: a near-sine gliding f0 to f1, with a breathy chiff at the start.
+    B.swhistle = (t, len, f0, f1, vel) => {
+      const V = E.voice(t, len + 0.04, false);
+      if (!V) return;
+      const g = E.gain(0);
+      V.env(g.gain, [[0, 0], [0.008, vel], [len - 0.02, vel * 0.9], [len + 0.03, 0]]);
+      for (const [k, a] of [
+        [1, 1],
+        [2, 0.12],
+      ]) {
+        const s = E.osc('sine', f0 * k);
+        V.env(s.frequency, [[0, f0 * k], [len, f1 * k, 'exp']]);
+        const sg = E.gain(a);
+        s.connect(sg);
+        sg.connect(g);
+        V.osc(s);
+      }
+      E.out(g, 'sfx', { hall: 0.12 });
+      I.nz(t, 0.03, { type: 'bandpass', q: 1.5, f: [[0, Math.min(6000, f0 * 4)]], amp: perc(vel * 0.6, 0.001, 0.012), key: 'chiff' });
+    };
+
+    // Boing: a twanged spring at 220 Hz with a 12 Hz vibrato of 40 percent, decaying over 0.5 s.
+    B.boing = (t, vel) => {
+      const V = E.voice(t, 0.55, false);
+      if (!V) return;
+      const lfo = E.osc('sine', 12);
+      const dep = E.gain(0);
+      V.env(dep.gain, [[0, 88], [0.5, 30, 'exp']]);
+      lfo.connect(dep);
+      const g = E.gain(0);
+      V.env(g.gain, [[0, 0], [0.003, vel], [0.5, FLOOR, 'exp']]);
+      const lp = E.filt('lowpass', 3500, 0.7);
+      for (const [type, a] of [
+        ['sine', 0.6],
+        ['sawtooth', 0.6],
+      ]) {
+        const s = E.osc(type, 220);
+        dep.connect(s.frequency);
+        const sg = E.gain(a);
+        s.connect(sg);
+        sg.connect(lp);
+        V.osc(s);
+      }
+      lp.connect(g);
+      E.out(g, 'sfx', { room: 0.2 });
+      V.osc(lfo);
+    };
+
+    // Machine hum: a 55 Hz saw low-passed at 300 Hz with a 2 Hz wobble in pitch and level.
+    B.hum = (t0, t1, vel) => {
+      const len = t1 - t0;
+      const V = E.voice(t0, len, true);
+      if (!V) return;
+      const s = E.osc('sawtooth', 55);
+      const lfo = E.osc('sine', 2);
+      const dg = E.gain(1.2);
+      lfo.connect(dg);
+      dg.connect(s.frequency);
+      const lp = E.filt('lowpass', 300, 0.9);
+      const am = E.gain(1);
+      const ag = E.gain(0.25);
+      lfo.connect(ag);
+      ag.connect(am.gain);
+      const g = E.gain(0);
+      V.env(g.gain, [[0, 0], [0.15, vel], [len - 0.15, vel], [len, 0]]);
+      s.connect(lp);
+      lp.connect(am);
+      am.connect(g);
+      E.out(g, 'amb');
+      V.osc(s);
+      V.osc(lfo);
+    };
+
+    // Receipt stream: soft granular paper rustle between 2 and 6 kHz, kept clear of the listed cue times.
+    B.rustle = (t0, len, vel, clear) =>
+      I.play(
+        t0,
+        len,
+        () => {
+          const r = lib.rng(lib.hash('film-rustle', t0));
+          const grains = flapGrains(r, 0, len - 0.1, 110, { amp: 0.22, f0: 2000, f1: 4000, width: 0.8 }).filter((g) => clear.every((c) => t0 + g.t + g.dur < c - 0.005 || t0 + g.t > c + 0.012));
+          return grainBuffer(ctx, 'rustle' + t0, len, grains);
+        },
+        vel,
+        { sustain: true, room: 0.1 }
+      );
+
+    // Hopper gulp: a jaw click and a sine thunk at 80 Hz, then the swallow.
+    B.gobble = (t, vel) => {
+      I.nz(t, 0.012, { type: 'highpass', q: 0.7, f: [[0, 2500]], amp: perc(vel * 0.7, 0.0003, 0.004), key: 'gobble' });
+      B.tone(t, 0.14, 120, 80, vel, { glide: 0.03 });
+      B.tone(t + 0.07, 0.1, 90, 60, vel * 0.6, {});
+    };
+
+    // Creaky squeak: a saw gliding 300 to 900 Hz (with a seeded stick-slip jitter) through a narrow
+    // band-pass that tracks its third harmonic.
+    B.squeak = (t, len, vel) => {
+      const V = E.voice(t, len + 0.02, false);
+      if (!V) return;
+      const r = lib.rng(lib.hash('film-squeak', t));
+      const fp = [[0, 300]];
+      for (let k = 1; k <= 12; k++) fp.push([(k / 12) * len, 300 * Math.pow(3, k / 12) * (0.96 + 0.08 * r()), 'lin']);
+      const s = E.osc('sawtooth', 300);
+      V.env(s.frequency, fp);
+      const bp = E.filt('bandpass', 900, 7);
+      V.env(bp.frequency, [[0, 900], [len, 2700, 'exp']]);
+      const g = E.gain(0);
+      V.env(g.gain, [[0, 0], [0.006, vel], [len * 0.7, vel * 0.8], [len, FLOOR, 'exp']]);
+      s.connect(bp);
+      bp.connect(g);
+      E.out(g, 'sfx', { room: 0.2 });
+      V.osc(s);
+    };
+
+    // Whirr: band noise chopped at 40 Hz.
+    B.whirr = (t, len, vel) => {
+      const amp = [[0, 0]];
+      for (let k = 0; k * 0.025 < len - 0.03; k++) amp.push([k * 0.025 + 0.004, vel], [k * 0.025 + 0.0125, vel * 0.35]);
+      amp.push([len, FLOOR, 'exp']);
+      I.nz(t, len, { type: 'bandpass', q: 2.5, f: [[0, 600], [len, 900, 'exp']], amp, key: 'whirr' });
+    };
+
+    // Clunk: a 40 ms sine at 150 Hz and a click.
+    B.clunk = (t, vel) => {
+      B.tone(t, 0.06, 150, 140, vel, {});
+      I.nz(t, 0.012, { type: 'highpass', q: 0.7, f: [[0, 2200]], amp: perc(vel * 0.7, 0.0003, 0.004), key: 'clunk' });
+    };
+
+    // Ratchet click: a short resonant noise tick at f.
+    B.ratchet = (t, f, vel) => I.nz(t, 0.02, { type: 'bandpass', q: 5, f: [[0, f]], amp: perc(vel, 0.0004, 0.01), key: 'ratchet', pan: 0.2 });
+
+    // Typewriter click: a 3 ms high-passed noise burst with a 1.8 kHz tick.
+    B.typeClick = (t, vel) => {
+      I.nz(t, 0.005, { type: 'highpass', q: 0.7, f: [[0, 3000]], amp: perc(vel, 0.0002, 0.0015), key: 'type' });
+      B.tone(t, 0.03, 1800, 1800, vel * 0.3, {});
+    };
+
+    // Paper flutter: noise band-passed 1 to 3 kHz, amplitude-modulated at 14 Hz, dying away over 0.25 s.
+    B.flutter = (t, vel) => {
+      const amp = [[0, 0]];
+      for (let k = 0; k < 4; k++) amp.push([k / 14 + 0.004, vel * (1 - k * 0.25)], [k / 14 + 0.5 / 14, vel * 0.1]);
+      amp.push([0.25, FLOOR, 'exp']);
+      I.nz(t, 0.25, { type: 'bandpass', q: 1.1, f: [[0, 1000], [0.25, 3000, 'exp']], amp, key: 'flutter', room: 0.2, panEnv: [[0, -0.3], [0.25, 0.2, 'lin']] });
+    };
+
+    // Soft paper snap.
+    B.paperSnap = (t, vel) => I.nz(t, 0.04, { type: 'bandpass', q: 1, f: [[0, 2800], [0.04, 1600, 'exp']], amp: perc(vel, 0.0005, 0.015), key: 'snap', pan: 0.2 });
+
+    // Telephone bell: a 20 Hz striker hitting two bells, 1.1 and 1.4 kHz, in turn (40 strikes a second).
+    B.phone = (t, len, vel) => {
+      for (let k = 0; k * 0.025 < len; k++) {
+        const f = k % 2 ? 1400 : 1100;
+        B.metal(
+          t + k * 0.025,
+          vel * (k ? 0.7 : 1),
+          [
+            [f, 1, 0.22],
+            [f * 2.76, 0.25, 0.07],
+            [f * 5.4, 0.1, 0.03],
+          ],
+          { att: 0.0004, room: 0.2, pan: 0.25 }
+        );
+      }
+    };
+
+    // A muffled voice in the receiver: a saw on a seeded wobbly pitch, band-passed 400 to 1500 Hz, with a
+    // moving vowel; one syllable per [t, len].
+    B.squawk = (sylls, vel) => {
+      const t0 = sylls[0][0];
+      const end = sylls[sylls.length - 1];
+      const len = end[0] + end[1] - t0 + 0.02;
+      const V = E.voice(t0, len, true);
+      if (!V) return;
+      const r = lib.rng(lib.hash('film-squawk', t0));
+      const fp = [[0, 180]];
+      const vow = [[0, 700]];
+      for (let k = 1; k * 0.03 < len; k++) {
+        fp.push([k * 0.03, 180 * (0.85 + 0.35 * r()), 'lin']);
+        vow.push([k * 0.03, 600 + 700 * r(), 'lin']);
+      }
+      const amp = [[0, 0]];
+      for (const [t, l] of sylls) amp.push([t - t0 + 0.008, vel], [t - t0 + l * 0.6, vel * 0.8], [t - t0 + l, 0]);
+      const s = E.osc('sawtooth', 180);
+      V.env(s.frequency, fp);
+      const hp = E.filt('highpass', 400, 0.8);
+      const lp = E.filt('lowpass', 1500, 0.8);
+      const pk = E.filt('peaking', 700, 2.5);
+      pk.gain.value = 9;
+      V.env(pk.frequency, vow);
+      const g = E.gain(0);
+      V.env(g.gain, amp);
+      s.connect(hp);
+      hp.connect(lp);
+      lp.connect(pk);
+      pk.connect(g);
+      E.out(g, 'sfx', { pan: 0.3, room: 0.1 });
+      V.osc(s);
+    };
+
+    // Sigh: breath noise band-passed 1.2 kHz falling to 420 Hz, 0.1 s in, 0.6 s out.
+    B.sigh = (t, vel) => I.nz(t, 0.72, { type: 'bandpass', q: 1.1, f: [[0, 1200], [0.7, 420, 'exp']], amp: [[0, 0], [0.1, vel], [0.7, FLOOR, 'exp']], stereo: true, sustain: true, key: 'sigh', room: 0.2 });
+
+    // Keypad: a 5 ms plastic click through a 2.5 kHz resonance with a 120 Hz thump.
+    B.key = (t, vel) => {
+      I.nz(t, 0.01, { type: 'bandpass', q: 4, f: [[0, 2500]], amp: perc(vel, 0.0003, 0.005), key: 'key', pan: -0.2 });
+      B.tone(t, 0.04, 120, 110, vel * 0.5, {});
+    };
+
+    // Whip: a crack and a short swish across the frame.
+    B.whip = (t, vel, pan) => {
+      I.nz(t, 0.014, { type: 'highpass', q: 0.7, f: [[0, 3000]], amp: perc(vel, 0.0003, 0.005), pan, key: 'crack' });
+      I.nz(t, 0.14, { type: 'bandpass', q: 1.2, f: [[0, 1200], [0.12, 4500, 'exp']], amp: [[0, 0], [0.006, vel * 0.5], [0.14, FLOOR, 'exp']], panEnv: [[0, Math.min(1, pan + 0.3)], [0.14, Math.max(-1, pan - 0.3), 'lin']], key: 'whip' });
+    };
+    return B;
+  }
+
+  function score(E, I) {
+    const B = E.band || (E.band = band(E, I));
+    const { pizz, bass, pah, xylo, clar, cym, bike, tone, clink } = B;
+    const { tock, nz, fmBell } = I;
+    const range = (a, b, step) => {
+      const out = [];
+      for (let k = 0; a + k * step < b - 1e-9; k++) out.push(Math.round((a + k * step) * 10000) / 10000);
+      return out;
+    };
+    const R = (key) => lib.rng(lib.hash('burger-score', key));
+    const brush = (t, vel) => cym(t, (vel || 0.2) * 0.45, 0.2, { att: 0.006, brush: true, pan: 0.3 });
+    const motif = (notes, vel, o) => notes.forEach(([n, t], i) => xylo(t, n, Array.isArray(vel) ? vel[i] : vel, o));
+    const run = (notes, t0, step) => notes.map((n, i) => [n, t0 + i * step]);
+
+    // =========================================================== ACT 1: a burger for $5.69 (F major)
+    // ---- bar 1 (0-2) the booth. cue 0: the bicycle bell twice; the band starts on the burger motif.
+    bike(0, 0.22);
+    bike(0.125, 0.18);
+    bass(0, 'F2', 0.9);
+    bass(1.0, 'F2', 0.8);
+    pah(0.5, CH.F, 0.26);
+    pah(1.5, CH.F, 0.2);
+    brush(0.5);
+    brush(1.5);
+    // cue 1: the coins held up on C6 E6; the slap lands on F6
+    motif([['F5', 0], ['A5', 0.25], ['C6', 0.5], ['A5', 0.75], ['C6', 1.0], ['E6', 1.125], ['F6', 1.5]], [0.42, 0.34, 0.38, 0.32, 0.4, 0.36, 0.3]);
+    // cue 0.5: the skid, with a plunk on C3
+    B.skid(0.5, 0.42);
+    bass(0.5, 'C3', 0.6);
+    // cue 1.5: the coins slapped, three clinks on 32nds over a woodblock
+    tock(1.5, 0.15, 900);
+    [3800, 4400, 5100].forEach((f, i) => clink(1.5 + i * 0.0625, f, 0.26 - i * 0.04, [-0.2, 0.15, 0.3][i]));
+
+    // ---- bar 2 (2-4) inside booth one: the band through the wall, a low reed holding F3
+    B.zip(2.0, 0.32); // cue 2: the burger slides
+    clar([[2.0, 'F3']], 3.45, 0.3, { att: 0.04 });
+    bass(2.0, 'Bb1', 0.85);
+    bass(3.0, 'C2', 0.85);
+    pah(2.5, CH.Bb6, 0.28);
+    brush(2.5, 0.16);
+    B.snatch(2.5); // cue 2.5
+    B.kaching(3.0, 0.28); // cue 3: the register
+    // cue 3.5: outside again at full bandwidth; the mouth opens on a rising reed glissando C4 to C5
+    pah(3.5, CH.C7, 0.3);
+    brush(3.5);
+    clar([[3.5, 'C4'], [3.51, 'C5', 0.47]], 3.98, 0.3, { att: 0.02, rel: 0.02 });
+
+    // ---- bar 3 (4-6) cue 4: the chomp on a pizzicato F major chord
+    B.chomp(4.0, 0.48);
+    bass(4.0, 'F2', 0.9);
+    pah(4.0, CH.Fwide, 0.3);
+    [4.5, 4.75, 5.0].forEach((t) => B.squelch(t, 0.45)); // cue 4.5: chewing
+    pah(4.5, CH.F, 0.24);
+    brush(4.5, 0.16);
+    bass(5.0, 'C2', 0.8);
+    // cue 5: bliss, a pentatonic xylophone run F5 to F6 on 32nds over a high reed A5 with a slow vibrato
+    motif(run(['F5', 'G5', 'A5', 'C6', 'D6', 'F6'], 5.0, 0.0625), 0.34);
+    clar([[5.0, 'A5']], 5.9, 0.2, { att: 0.07, vib: 0.01, rate: 4.2 });
+    pah(5.5, CH.C7, 0.24);
+    brush(5.5, 0.16);
+
+    // ---- bar 4 (6-8) the title. cue 6: the stinger, the whole band on F6/9 and a small-cymbal crash
+    bass(6.0, 'F2', 0.95);
+    pah(6.0, CH.F69, 0.26);
+    xylo(6.0, 'D6', 0.26);
+    xylo(6.0, 'G6', 0.22);
+    clar([[6.0, 'C5']], 6.09, 0.28, { att: 0.01, rel: 0.03 });
+    cym(6.0, 0.1, 0.6, { pan: 0.2, hall: 0.15 });
+    motif([['A5', 6.125], ['C6', 6.25], ['F6', 6.375]], 0.5); // cues 6.125, 6.25, 6.375: the words pop
+    B.scribble(6.5, 0.25, 3000, 6000, 0.3); // cue 6.5: the byline
+    // cue 7: the burger bounces on a pizzicato boop gliding F3 to C4; a C7 turnaround into the ride
+    pizz(7.0, 'F3', 0.42, { glide: ['C4', 0.12], bright: 0.3, open: true });
+    bass(7.0, 'C2', 0.7);
+    bass(7.5, 'E2', 0.7);
+    pah(7.5, CH.C7, 0.26);
+    brush(7.5, 0.16);
+    motif([['A4', 7.25], ['Bb4', 7.5], ['B4', 7.75]], 0.3);
+
+    // =========================================================== ACT 2: two miles
+    // ---- bars 5-7 (8-13) cue 8: the ride. A walking pizzicato bass on quarters, chords on 2 and 4,
+    // brushes, freewheel ticks on 16ths, the ride tune on the xylophone, then the reed an octave up.
+    [['F2', 8.0], ['A2', 8.5], ['C3', 9.0], ['Bb2', 9.5], ['A2', 10.0], ['D3', 10.5], ['C3', 11.0], ['Bb2', 11.5], ['F2', 12.0], ['C3', 12.5]].forEach(([n, t]) => bass(t, n, 0.75));
+    [[8.5, CH.F6], [9.5, CH.C7], [10.5, CH.F6], [11.0, CH.C7], [12.5, CH.F6]].forEach(([t, c]) => pah(t, c, 0.24));
+    range(8.5, 13.0, 1.0).forEach((t) => brush(t, 0.16));
+    range(8.0, 12.95, 0.125).forEach((t, i) => nz(t, 0.006, { type: 'highpass', q: 0.7, f: [[0, 6000]], amp: perc(i % 2 ? 0.05 : 0.08, 0.0003, 0.002), pan: i % 2 ? 0.25 : -0.25, key: 'freewheel' }));
+    motif([['A4', 8.0], ['C5', 8.25], ['F5', 8.5], ['D5', 8.75], ['E5', 9.0], ['C5', 9.25], ['Bb4', 9.5], ['G4', 9.75]], [0.4, 0.32, 0.38, 0.32, 0.34, 0.32, 0.36, 0.32]);
+    // cue 8.5: the mile counter steps, a tiny woodblock at 1.6 kHz on every beat to 11.5
+    range(8.5, 11.75, 0.5).forEach((t) => tock(t, 0.12, 1600, { pan: -0.35 }));
+    B.gulp(9.0, 0.3); // cue 9
+    // cue 10: the fountain jets on the beats; the reed takes the tune up an octave
+    [10.0, 10.5, 11.0].forEach((t) => B.fountain(t, 0.3));
+    clar([[10.0, 'A5'], [10.25, 'C6'], [10.5, 'F6'], [10.75, 'D6'], [11.0, 'E6'], [11.25, 'C6']], 11.45, 0.24, { att: 0.015, vib: 0 });
+    // cue 11.5: the columns, a brassy colour (the reed doubled by a low-passed saw a fifth below) and a
+    // pizzicato run up F major on 32nds
+    clar([[11.5, 'G5'], [11.75, 'C6'], [12.0, 'A5']], 12.45, 0.26, { att: 0.015, vib: 0.004 });
+    clar([[11.5, 'C5'], [11.75, 'F5'], [12.0, 'D5']], 12.45, 0.16, { att: 0.03, wave: E.brassSaw, cut: 1600, breath: 0, vib: 0 });
+    run(['F3', 'G3', 'A3', 'Bb3', 'C4', 'D4', 'E4', 'F4'], 11.5, 0.0625).forEach(([n, t], i) => pizz(t, n, 0.34 + i * 0.02, { dec: 0.3, pan: -0.3 + i * 0.08 }));
+    // cue 12: two miles, a bicycle bell and a xylophone C7
+    bike(12.0, 0.2);
+    xylo(12.0, 'C7', 0.3);
+    // cue 12.5: the sniff, and the tune doubles into 16ths for the sprint
+    B.sniff(12.5, 0.3);
+    motif(run(['A4', 'C5', 'F5', 'D5'], 12.5, 0.125), [0.38, 0.32, 0.36, 0.32]);
+
+    // ---- bars 7-8 (13-16) inside booth two: the band thins to pizzicato and the low reed
+    B.skid(13.0, 0.5, true); // cue 13: the skid outside, through the wall
+    bass(13.0, 'F2', 0.85);
+    pah(13.5, CH.F, 0.26);
+    bass(14.0, 'Bb1', 0.85);
+    pah(14.5, CH.C7, 0.26);
+    clar([[13.0, 'F3'], [14.0, 'D3'], [14.5, 'E3']], 14.95, 0.3, { att: 0.04 });
+    [4200, 4800, 3900].forEach((f, i) => clink(13.5 + i * 0.125, f, 0.28, [-0.3, 0.2, 0.35][i])); // cue 13.5
+    B.zip(14.0, 0.32); // cue 14
+    B.snatch(14.5); // cue 14.5
+    clink(14.5, 4600, 0.22, 0.25);
+    // cue 15: two dry knocks; the band stops on one held reed note that swells into the push-in
+    tock(15.0, 0.25, 950, { dec: 0.04 });
+    tock(15.125, 0.22, 950, { dec: 0.04 });
+    clar([[15.0, 'C4']], 15.96, 0.16, { att: 0.05, sus: 2.4, rel: 0.03 });
+    // cue 15.25: the push-in, a slide whistle rising two octaves and a roll from 16ths to 32nds
+    B.swhistle(15.25, 0.74, 400, 1600, 0.2);
+    [...range(15.25, 15.65, 0.125), ...range(15.6875, 15.95, 0.0625)].forEach((t, i) => B.snare(t, 0.12 + i * 0.03));
+
+    // =========================================================== ACT 3: where $6.89 comes from
+    // ---- bar 9 (16-18) cue 16: the tag. A shock stab on B D F Ab, a small-cymbal crash, a low boom.
+    bass(16.0, 'B1', 0.7, { dec: 0.5 });
+    pah(16.0, CH.dim, 0.3, { dec: 0.3 });
+    xylo(16.0, 'B5', 0.2);
+    xylo(16.0, 'F6', 0.18);
+    clar([[16.0, 'D5']], 16.09, 0.32, { att: 0.006, rel: 0.03 });
+    cym(16.0, 0.1, 0.4, { hall: 0.2 });
+    I.subDrop(16.0, 70, 45, 0.5, 0.45);
+    B.boing(16.125, 0.36); // cue 16.125: the eyes pop
+    B.scribble(16.25, 0.2, 2500, 5000, 0.32); // cue 16.25: +21%, and a falling reed A4 to E4
+    clar([[16.25, 'A4'], [16.3, 'E4', 0.3]], 16.65, 0.24, { att: 0.012 });
+    bass(16.5, 'F2', 1.0, { bright: 0.8, lpx: 20 }); // cue 16.5: the jaw drops
+    tone(16.5, 0.12, 95, 70, 0.4, { bus: 'bass' });
+    // cue 17: the burger trembles, a xylophone tremolo on E5 over A (the dominant of D minor)
+    range(17.0, 17.24, 0.05).forEach((t, i) => xylo(t, 'E5', i % 2 ? 0.26 : 0.32, { dec: 0.3 }));
+    bass(17.0, 'A1', 0.7, { dec: 0.6 });
+    clar([[17.0, 'D2']], 17.625, 0.3, { att: 0.1, rel: 0.35, cut: 600 }); // the low reed that outlasts the band
+    // cue 17.625: the band stops on a choked cymbal
+    cym(17.625, 0.18, 0.07);
+    pah(17.625, CH.A7, 0.3, { dec: 0.15 });
+    bass(17.625, 'A1', 0.7, { dec: 0.2 });
+
+    // ---- bars 10-11 (18-22.5) cue 18: the machine in D minor. Tick-tock on 8ths, a pizzicato ostinato
+    // on 16ths, a low reed pedal on D2 and the hum.
+    B.hum(18.0, 22.4, 0.14);
+    clar([[18.0, 'D2'], [21.5, 'F2']], 22.2, 0.2, { att: 0.03, cut: 600, vib: 0 });
+    const tick = (a, b) => range(a, b, 0.25).forEach((t, i) => tock(t, i % 2 ? 0.14 : 0.2, i % 2 ? 1200 : 900, { pan: i % 2 ? 0.35 : -0.35 }));
+    const ost = (a, b, notes) => range(a, b, 0.125).forEach((t, i) => pizz(t, notes[i % 4], i % 4 ? 0.26 : 0.34, { dec: 0.25, pan: 0.1 }));
+    tick(18.0, 20.0);
+    ost(18.0, 20.0, ['D3', 'A3', 'F3', 'A3']);
+    // cue 18.25: the receipt stream until 20.0, rustling paper and seeded coin clinks on 16ths
+    B.rustle(18.25, 1.75, 0.45, [18.5, 19.0, 19.5, 20.0]);
+    range(18.25, 20.0, 0.125).forEach((t) => {
+      const r = R('coin' + t);
+      if (r() < 0.75) clink(t, 3400 + r() * 2200, 0.08 + r() * 0.08, r() * 1.4 - 0.7);
+    });
+    [18.25, 18.5].forEach((t) => tock(t, 0.14, 2000, { bus: 'sfx', dec: 0.03 })); // cues 18.25, 18.5: caption ticks
+    [19.0, 19.5].forEach((t) => B.gobble(t, 0.5)); // cue 19: the hopper gulps
+    // ---- bar 11 (20-21) cue 20: the periscope, a creaky squeak, a whirr under the pan, a held Dsus4
+    B.squeak(20.0, 0.3, 0.26);
+    B.whirr(20.0, 0.5, 0.12);
+    bass(20.0, 'D2', 0.7);
+    pah(20.0, CH.Dsus, 0.22);
+    clar([[20.0, 'G4']], 20.95, 0.16, { att: 0.04 });
+    tock(20.25, 0.14, 2000, { bus: 'sfx', dec: 0.03 }); // cue 20.25: caption tick
+    B.clunk(20.5, 0.36); // cue 20.5: the view locks
+    ['C6', 'D6', 'E6'].forEach((n) => xylo(20.5, n, 0.2));
+    tone(20.875, 0.04, 1200, 1200, 0.3, { room: 0.15 }); // cue 20.875: the blink, a 40 ms blip
+    // ---- 21-22.5 cue 21: the gauge, ratchet clicks on 16ths rising 1 to 2 kHz
+    tick(21.0, 22.25);
+    ost(21.0, 21.5, ['D3', 'A3', 'F3', 'A3']);
+    ost(21.5, 22.25, ['F3', 'C4', 'A3', 'C4']); // cue 21.5: the ostinato steps up to F
+    [21.125, 21.25, 21.375, 21.5].forEach((t, i) => B.ratchet(t, 1000 * Math.pow(2, i / 3), 0.4));
+    fmBell(21.5, 2400, 0.28, { ratio: 1.41, index: 1.5, dec: 0.6, bus: 'sfx', room: 0.2 }); // the needle on MEDIUM
+    [21.75, 21.875, 22.0, 22.125].forEach((t) => B.typeClick(t, 0.38)); // cue 21.75: printing
+    nz(21.75, 0.5, { type: 'bandpass', q: 0.7, f: [[0, 2600]], amp: [[0, 0], [0.1, 0.05], [0.42, 0.05], [0.5, FLOOR, 'exp']], key: 'slide' });
+    fmBell(22.25, 1600, 0.32, { ratio: 3.51, index: 2.2, dec: 1.0, bus: 'sfx', room: 0.25 }); // cue 22.25: the ticket
+
+    // ---- bars 12-13 (22.5-26) inside booth two, weary in D minor: a slow pizzicato lament, a falling reed
+    B.flutter(22.5, 0.3); // cue 22.5: the ticket flutters in
+    B.paperSnap(22.75, 0.45); // cue 22.75: the catch
+    [['D2', 22.5], ['C#2', 23.5], ['D2', 24.0], ['Bb1', 24.5], ['A1', 25.0]].forEach(([n, t]) => bass(t, n, 0.75));
+    [[23.0, CH.Dm], [24.0, CH.Dm], [24.5, CH.Gm], [25.0, CH.A7]].forEach(([t, c]) => pah(t, c, 0.22));
+    clar([[22.5, 'A4'], [23.0, 'G4'], [23.25, 'F4'], [23.5, 'E4']], 23.95, 0.2, { att: 0.05 });
+    B.phone(23.5, 0.375, 0.3); // cue 23.5: the phone rings
+    B.squawk([[24.0, 0.11], [24.25, 0.11]], 0.3); // cue 24: the receiver squawks
+    B.sigh(24.5, 0.32); // cue 24.5: the sigh, doubled by the reed A4 F4 D4
+    clar([[24.5, 'A4'], [24.7, 'F4', 0.12], [24.9, 'D4', 0.15]], 24.98, 0.18, { att: 0.06 });
+    [25.0, 25.125, 25.25, 25.375].forEach((t) => B.key(t, 0.5)); // cue 25: the keys
+    fmBell(25.5, 1300, 0.3, { ratio: 1.4, index: 1.1, dec: 1.1, bus: 'sfx', room: 0.2 }); // cue 25.5: a tired ding
+    bass(25.5, 'D2', 0.8, { open: true });
+
+    // =========================================================== ACT 4: back to $5.69 (F major)
+    // ---- bar 14 (26-28) cue 26: the street, F major over a held pizzicato tremolo on C
+    range(26.0, 26.6, 0.0625).forEach((t, i) => pizz(t, 'C3', i ? 0.3 : 0.5, { dec: 0.25, pan: -0.1 }));
+    bass(26.0, 'C2', 0.8);
+    pah(26.0, CH.F, 0.3);
+    xylo(26.0, 'F5', 0.3);
+    xylo(26.0, 'C6', 0.24);
+    cym(26.0, 0.09, 0.5, { att: 0.004, pan: 0.2 });
+    B.swhistle(26.25, 0.25, 300, 900, 0.22); // cue 26.25: the crouch
+    B.swhistle(26.5, 0.2, 1600, 400, 0.22); // cue 26.5: the turn
+    // cue 26.625: the dash, a whoosh and a pizzicato zing; the ride tune comes back in 16ths on the reed
+    B.whoosh(26.625, 0.25, 0.2, { type2: 'lowpass', f2: 6500 });
+    pizz(26.625, 'C4', 0.4, { glide: ['C5', 0.06], bright: 0.8, lpx: 16 });
+    clar(run(['A4', 'C5', 'F5', 'D5', 'E5', 'C5', 'Bb4', 'G4', 'A4', 'C5', 'F5'], 26.625, 0.125).map(([n, t]) => [t, n]), 27.95, 0.22, { att: 0.01, vib: 0 });
+    // cues 27-27.75: the cascade back, a whip and a falling xylophone note on each card, then the skid
+    [['F6', 27.0], ['D6', 27.25], ['C6', 27.5], ['A5', 27.75]].forEach(([n, t], i) => {
+      B.whip(t, 0.32, 0.4 - i * 0.25);
+      xylo(t, n, 0.4);
+    });
+    bass(27.0, 'F2', 0.8);
+    bass(27.5, 'C2', 0.8);
+    pah(27.25, CH.F6, 0.22);
+    pah(27.75, CH.C7, 0.22);
+    B.skid(27.75, 0.36);
+    bike(27.875, 0.2); // cue 27.875: the counter at zero
+
+    // ---- bar 15 (28-30) cue 28: the bite again. The burger motif returns warm; the reed glissando.
+    clar([[28.0, 'C4'], [28.01, 'C5', 0.47]], 28.48, 0.3, { att: 0.02, rel: 0.02 });
+    bass(28.0, 'F2', 0.85);
+    xylo(28.0, 'F5', 0.38, { hall: 0.2 });
+    xylo(28.25, 'A5', 0.42, { hall: 0.2 }); // cue 28.25: "Same burger."
+    B.chomp(28.5, 0.48); // cue 28.5
+    pah(28.5, CH.Fwide, 0.3);
+    xylo(28.75, 'C6', 0.42, { hall: 0.2 }); // cue 28.75: "Different neighbourhood."
+    [28.75, 29.0, 29.25].forEach((t) => B.squelch(t, 0.42));
+    bass(29.0, 'C2', 0.8);
+    xylo(29.0, 'A5', 0.3, { hall: 0.2 });
+    // cue 29.5: bliss again
+    motif(run(['F5', 'G5', 'A5', 'C6', 'D6', 'F6'], 29.5, 0.0625), 0.34);
+    clar([[29.5, 'A5']], 29.95, 0.2, { att: 0.07, vib: 0.01, rate: 4.2 });
+    pah(29.5, CH.Fmaj7, 0.24);
+
+    // ---- bar 16 (30-32) cue 30: the closing cadence. Pizzicato F2 C3 F2 on the beats, the burger motif
+    // slower on the xylophone, the reed holding A4, a brushed swish.
+    bass(30.0, 'F2', 0.85);
+    bass(30.5, 'C3', 0.75);
+    bass(31.0, 'F2', 0.75);
+    cym(30.0, 0.12, 0.5, { att: 0.03, brush: true, pan: 0.3 });
+    clar([[30.0, 'A4']], 30.92, 0.2, { att: 0.05 });
+    motif([['F5', 30.0], ['A5', 30.5], ['C6', 31.0], ['A5', 31.25]], 0.36);
+    // cue 30.5: the channel mark, a xylophone sparkle C6 E6 G6 C7 on 32nds
+    motif(run(['C6', 'E6', 'G6', 'C7'], 30.5, 0.0625), [0.3, 0.27, 0.24, 0.21]);
+    pah(30.5, CH.C7, 0.2);
+    // cue 31: the owner yawns, a soft low reed glide F3 down to C3
+    clar([[31.0, 'F3'], [31.06, 'C3', 0.36]], 31.45, 0.2, { att: 0.08, cut: 900 });
+    // cue 31.5: a soft final F major chord, short
+    bass(31.5, 'F2', 0.6, { dec: 0.4 });
+    pah(31.5, CH.F, 0.22, { dec: 0.3 });
+    xylo(31.5, 'F5', 0.3);
+    xylo(31.5, 'A5', 0.24);
+    // cue 31.75: the pickup, C5 and E5 on 32nds, resolving onto the bell and the F of bar 1
+    xylo(31.75, 'C5', 0.3);
+    xylo(31.8125, 'E5', 0.32);
   }
 
   FILM.audio = {
