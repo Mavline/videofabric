@@ -8,13 +8,14 @@
 //   3 the booth's front, painted once on a transparent plate: walls, planks, shelf, posts, awning, BURGERS
 //   4 the owner's front layer: his near arm on the shelf
 //   5 the $5.69 tag, rocking 2 degrees on twos
-//   6 drawn effects behind the hero: speed lines, the tyre's streak, dust, the slam's speed lines
+//   6 drawn effects behind the hero: speed lines, the skid's trace, dust, the slam's speed lines
 //   7 the coins on the shelf and the impact star
 //   8 the hero on the bicycle (with his own shadow spot)
 //
 // Beats (shot frames, t = T): f0 the front wheel at x 40, pedalling on twos; f0-f11 rolls to the G1 stop mark,
 // easing out on twos; f12-f13 the skid on ones, f14 the foot down, hold (eyes on the tag, a blink); f20 the
-// hand goes to his pocket; f24 two coins up with a grin, a pop over 3 frames; f30 the wind-up; f35 the strike;
+// hand goes to his pocket; f24 two coins up in front of his face with a grin, a pop over 3 frames; f30 the wind-up,
+// the fist going up; f35 the strike;
 // f36 the slap on the shelf at (560, 1262), impact star f36-f37, the owner's brows rise, he leans in on twos
 // (f38, f40); hold. The owner dozes off on his fist (his head sinks on twos) until the slap.
 (function () {
@@ -144,20 +145,23 @@
       ctx.restore();
       return a;
     };
-    const st = m({ pose: 'straddle' }), co = m({ pose: 'coins' }), ri = m({ pose: 'ride', phase: 0 });
+    const st = m({ pose: 'straddle' }), ri = m({ pose: 'ride', phase: 0 });
     const h = (WHEEL_R * 300) / st.wheelR; // his standing height px
     const s = h / 300; // px per design unit
     const px = (u) => [STOP + u[0] * s, G1.ground + u[1] * s];
+    // the straddle's hip, from its chest anchor (60 percent of the way from the hip to the neck)
+    const hip = [(st.chest[0] - 0.6 * st.neck[0]) / 0.4, (st.chest[1] - 0.6 * st.neck[1]) / 0.4];
+    const ex = st.neck[0] - hip[0], ey = st.neck[1] - hip[1], el = Math.hypot(ex, ey);
     BASE = {
       h,
-      // the straddle's hip, from its chest anchor (60 percent of the way from the hip to the neck)
-      hip: [(st.chest[0] - 0.6 * st.neck[0]) / 0.4, (st.chest[1] - 0.6 * st.neck[1]) / 0.4],
+      hip,
+      // the near shoulder by the library's rule: 12 units down the torso from the neck, 3 forward
+      shN: [st.neck[0] - (ex * 12) / el + 3, st.neck[1] - (ey * 12) / el],
       neck: st.neck,
       head: st.head,
       px,
       frontDx: st.axleFront[0] * s, // bottom bracket to the front axle
       rearX: STOP + st.axleRear[0] * s, // the rear tyre's contact with the pavement
-      coinsHand: px(co.hand), // the raised fist of coins
       rideBack: (ri.chest[0] - 42) * s, // the back of his shirt while he pedals (42 = 0.14 of his height)
     };
     return BASE;
@@ -177,6 +181,17 @@
       neck, head: [neck[0] + hd[0], neck[1] + hd[1]],
       shN: [neck[0] + dn[0] + 3, neck[1] + dn[1]], shF: [neck[0] + dn[0] - 4, neck[1] + dn[1] - 1],
     };
+  }
+
+  // The fist of coins held up with the face clear: the near shoulder rolls 16 units forward on the chest, so the
+  // upper arm runs forward under the chin and the forearm rises in front of the face, right of the nose tip.
+  // wrist: where the wrist lands, from that shoulder, in px; sq lifts the whole figure (the stretch up of the
+  // wind-up), and o.target goes through that stretch too, so it is given before it.
+  function raise(B, wrist, sq) {
+    const sh = [B.shN[0] + 16, B.shN[1]];
+    const S = B.px([sh[0], sh[1] * sq]);
+    const w = [S[0] + wrist[0], S[1] + wrist[1]];
+    return { wrist: w, target: [w[0], G1.ground + (w[1] - G1.ground) / sq], rig: { shN: sh, elbowN: [1, 0.4], sq: sq === 1 ? null : [1, sq] } };
   }
 
   // the roll-in: one position per drawing on twos, easing out into the stop mark at t 0.5, with speed left
@@ -219,7 +234,8 @@
       const B = heroBase(ctx, L);
       const enter = 40 - B.frontDx; // frame 0: the front wheel's centre at x 40
       const pocket = B.px([B.hip[0] + 16, B.hip[1] + 8]);
-      const toCoins = (k) => [pocket[0] + (B.coinsHand[0] - pocket[0]) * k, pocket[1] + (B.coinsHand[1] - pocket[1]) * k];
+      const up = raise(B, [98, -86], 1); // the coins held up (f26 to f29)
+      const toCoins = (k) => [pocket[0] + (up.wrist[0] - pocket[0]) * k, pocket[1] + (up.wrist[1] - pocket[1]) * k];
       const strike = [COINS[0] - 60, COINS[1] - 72]; // the fist of coins over the shelf, one frame before the hit
       let x = STOP, ho;
       if (f < 12) {
@@ -237,13 +253,14 @@
         // the anticipation: the hand drops to his pocket, eyes on the owner
         ho = { pose: 'coins', coins: false, face: 'smile', look: [1, -0.1], target: f < 22 ? toCoins(-0.5) : toCoins(0) };
       } else if (f < 30) {
-        // coins up, a pop over 3 frames on ones: 60 percent, 8 percent past, home (the library's raised fist)
-        const target = f === 24 ? toCoins(0.6) : f === 25 ? toCoins(1.08) : null;
-        ho = { pose: 'coins', face: 'grin', look: [1, -0.1], target };
+        // coins up in front of his face, a pop over 3 frames on ones: 60 percent, 8 percent past, home
+        const k = toCoins(0.6); // the first drawing passes right of his chin, clear of the smile
+        const target = f === 24 ? [k[0] + 28, k[1] + 12] : f === 25 ? toCoins(1.08) : up.target;
+        ho = { pose: 'coins', face: 'grin', look: [1, -0.1], target, rig: up.rig };
       } else if (f < 35) {
-        // the wind-up on twos: the fist of coins goes back and up, the torso tips back
-        const k = f < 32 ? 0.5 : 1;
-        ho = { pose: 'coins', face: 'grin', look: [1, -0.1], target: [B.coinsHand[0] - 44 * k, B.coinsHand[1] - 30 * k], rig: leanRig(B, -0.2 * k) };
+        // the wind-up on twos: the fist goes up, not back, the whole figure stretching up after it
+        const w = f < 32 ? raise(B, [93, -96], 1.05) : raise(B, [88, -106], 1.1);
+        ho = { pose: 'coins', face: 'grin', look: [0.9, -0.5], target: w.target, rig: w.rig };
       } else if (f === 35) {
         // the strike, on ones: over the bars, the fist of coins already above the shelf
         ho = { pose: 'coins', face: 'grin', look: [1, 0.2], target: strike, rig: leanRig(B, 0.7) };
@@ -257,11 +274,8 @@
         const k = (rollX(enter, d + 1) - rollX(enter, d)) / (rollX(enter, 1) - rollX(enter, 0));
         L.speedLines(ctx, x + B.rideBack, 1236, 0, { n: 4, spread: 220, gap: 10, width: 5, len: [70 * k + 30, 170 * k + 40], seed: sd('speed', d) });
       }
-      if (f >= 12) {
-        // the tyre's streak on the pavement, behind the rear wheel's contact
-        const len = f === 12 ? 40 : f === 13 ? 70 : 96;
-        L.speedLines(ctx, B.rearX + 2, G1.ground + 4, 0, { n: 2, spread: 7, gap: 0, width: 6, len: [len * 0.8, len], seed: sd('skid') });
-      }
+      // the skid's trace from frame 12 to the end: the pavement's color darkened by a third, never black
+      if (f >= 12) L.pencil(ctx, [[70, 1478], [160, 1478]], { color: L.mix(L.pal.cityPastel, L.pal.ink, 1 / 3), width: 6, double: false, seed: sd('skid') });
       if (f >= 12 && f < 21) {
         const p = (f - 11) / 9;
         L.dust(ctx, B.rearX - 46, G1.ground - 22, { r: 78, p, dir: Math.PI + 0.25, n: 4, seed: sd('dust') });

@@ -2821,19 +2821,22 @@
     const dir = o.dir != null ? o.dir : Math.PI;
     const color = o.color || pal.pavement;
     const r = rng(hash('dust', o.seed == null ? 1 : o.seed));
+    // n grey swipes fanning back and up from (x, y), drifting out and fading as p grows (R22)
+    const up = Math.cos(dir) < 0 ? 1 : -1;
     for (let i = 0; i < n; i++) {
-      const d = R * 0.7 * i + R * 0.2 * p;
-      const cx = x + Math.cos(dir) * d + (r() - 0.5) * R * 0.4;
-      const cy = y + Math.sin(dir) * d - R * 0.35 * i * 0.5 + (r() - 0.5) * R * 0.2;
-      const rad = R * lerp(0.35, 0.55, r()) * (1 - i * 0.12);
-      const a0 = r() * TAU;
+      const t = n > 1 ? i / (n - 1) : 0.5;
+      const ang = dir + up * (0.08 + 0.4 * t + (r() - 0.5) * 0.1);
+      const u = [Math.cos(ang), Math.sin(ang)], nrm = [-u[1] * up, u[0] * up];
+      const d0 = R * (0.1 + 0.4 * p);
+      const len = R * lerp(1.0, 1.5, r()) * (1 + 0.4 * p) * (1 - 0.15 * t);
+      const bow = len * 0.14;
       const P = [];
-      for (let k = 0; k <= 18; k++) {
-        const a = a0 + (k / 18) * TAU * 1.15;
-        const rk = rad * (1 - 0.25 * (k / 18));
-        P.push([cx + Math.cos(a) * rk, cy + Math.sin(a) * rk * 0.8]);
+      for (let k = 0; k <= 8; k++) {
+        const v = k / 8;
+        const b = Math.sin(Math.PI * v) * bow;
+        P.push([x + u[0] * (d0 + len * v) + nrm[0] * b, y + u[1] * (d0 + len * v) + nrm[1] * b]);
       }
-      dryBrush(ctx, P, rad * 0.9, color, (1 - p) * 0.95, (o.seed || 1) * 17 + i);
+      dryBrush(ctx, P, R * lerp(0.22, 0.32, r()) * (1 - 0.2 * t), color, (1 - p) * 0.9, (o.seed || 1) * 17 + i);
     }
   };
 
@@ -3245,9 +3248,9 @@
     if (kind === 'open') {
       const parts = [];
       for (let i = 0; i < 3; i++) {
-        const a = dirA + (i - 1) * 0.3 * thumbSide;
-        const base = add2(c, add2(mul2(d, size * 0.3), mul2(nrm, (1 - i) * size * 0.3)));
-        parts.push({ pts: [base, add2(base, mul2(dir2(a), size * (0.95 - Math.abs(i - 1) * 0.12)))], w: size * 0.38 });
+        const a = dirA + (i - 1) * 0.45 * thumbSide;
+        const base = add2(c, add2(mul2(d, size * 0.3), mul2(nrm, (1 - i) * size * 0.36)));
+        parts.push({ pts: [base, add2(base, mul2(dir2(a), size * (0.95 - Math.abs(i - 1) * 0.12)))], w: size * 0.3 });
       }
       const tb = add2(c, mul2(nrm, size * 0.38));
       parts.push({ pts: [tb, add2(tb, mul2(dir2(dirA - thumbSide * 1.15), size * 0.6))], w: size * 0.38 });
@@ -3255,7 +3258,7 @@
       K.tubes(ctx, parts, size, fill);
       for (let i = 0; i < 2; i++) {
         const q0 = add2(c, add2(mul2(d, size * 0.42), mul2(nrm, (0.5 - i) * size * 0.3)));
-        K.line(ctx, [q0, add2(q0, mul2(d, -size * 0.16))], id + 3 + i, { width: crease, taper: [1, 2] });
+        K.line(ctx, [q0, add2(q0, mul2(d, -size * 0.1))], id + 3 + i, { width: crease, taper: [1, 2] });
       }
       return c;
     }
@@ -3696,8 +3699,8 @@
     const pop = face === 'pop';
     const erx = pop ? 0.2 : 0.15, ery = pop ? 0.26 : 0.19;
     const ev = pop ? -0.27 : -0.23;
-    const happy = face === 'chew' || face === 'chomp' || face === 'bliss';
-    const lid = face === 'determined' ? 0.34 : face === 'glare' ? 0.46 : face === 'sad' ? 0.22 : face === 'sniff' ? 0.55 : 0;
+    const happy = face === 'chomp' || face === 'bliss';
+    const lid = face === 'determined' ? 0.34 : face === 'glare' ? 0.46 : face === 'sad' ? 0.22 : face === 'sniff' ? 0.55 : face === 'chew' ? 0.25 : 0;
     const lk = R.look || [0.4 * tu, 0];
     const eyes = [[-0.28 + 0.46 * tu, 1, -1], [0.28 + 0.36 * tu, 1 - 0.3 * tu, 1]];
     const stalk = R.stalk || 0;
@@ -4047,10 +4050,11 @@
     const fw = clamp(rpx * 0.06, 2.6, K.lw);
     const cap = [[-0.74, -0.62], [-0.88, -1.0], [-0.3, -1.12], [0.36, -1.14], [0.84, -0.98], [0.72, -0.66], [0, -0.75]];
     const head = [];
+    const jawO = face === 'yawn' && !back ? 0.22 : 0; // a yawn drops the jaw with the mouth
     for (let i = 0; i < 44; i++) {
       const a = (i / 44) * TAU;
       const sn = Math.sin(a);
-      head.push([Math.cos(a) * 0.74 * (sn > 0 ? 1 - 0.12 * sn : 1) + 0.06 * Math.max(0, sn), sn]);
+      head.push([Math.cos(a) * 0.74 * (sn > 0 ? 1 - 0.12 * sn : 1) + 0.06 * Math.max(0, sn), sn * (sn > 0 ? 1 + jawO : 1)]);
     }
     if (back) {
       // from behind: the nose tip and a moustache end just show past the cheek; grey hair covers the back
@@ -4058,8 +4062,10 @@
       K.cel(ctx, PP([[0.5, 0.3], [0.78, 0.26], [0.86, 0.38], [0.62, 0.42]]), pal.hairGrey, 52);
       K.cel(ctx, PP(head), pal.skin, 1);
       K.cel(ctx, PP([[-0.7, -0.6], [-0.8, -0.2], [-0.72, 0.3], [-0.5, 0.62], [-0.2, 0.66], [0.06, 0.5], [0.18, 0.16], [0.14, -0.3], [0.2, -0.62]]), pal.hairGrey, 30);
-      K.line(ctx, PP([[-0.5, -0.2], [-0.42, 0.2]]), 31, { width: fw * 0.7 });
-      K.line(ctx, PP([[-0.24, -0.1], [-0.18, 0.3]]), 32, { width: fw * 0.7 });
+      // long tapering strands from the crown to the neck, in the hair's own darker tone (never ink)
+      const strand = lib.mix(pal.hairGrey, pal.ink, 0.33);
+      [[[-0.56, -0.52], [-0.64, -0.08], [-0.56, 0.32]], [[-0.34, -0.58], [-0.4, -0.08], [-0.34, 0.48]], [[-0.12, -0.58], [-0.16, -0.08], [-0.12, 0.46]], [[0.08, -0.54], [0.06, -0.14], [0.0, 0.26]]]
+        .forEach((pts, i) => K.line(ctx, PP(pts), 31 + i, { width: fw * 0.75, color: strand, taper: [fw * 1.5, fw * 3] }));
       K.cel(ctx, PP(ell(0.36, 0.04, 0.15, 0.24, 0, 20)), pal.skin, 20);
       K.line(ctx, PP([[0.31, -0.09], [0.41, 0.04], [0.32, 0.15]]), 21, { width: fw * 0.7 });
       if (turn > 0) {
@@ -4086,12 +4092,12 @@
     const shut = blink || face === 'yawn';
     const heavy = face === 'bored' || face === 'sigh' || face === 'resigned' ? 0.05 : 0;
     eyes.forEach(([u, kx, side], i) => {
-      if (face === 'surprised') {
-        K.cel(ctx, PP(ell(u, ev, 0.055 * kx, 0.075, 0, 12)), pal.ink, 40 + i, { width: 0 });
-        return;
-      }
       if (shut) {
         K.line(ctx, PP([[u - 0.09 * kx, ev], [u, ev + 0.03], [u + 0.09 * kx, ev]]), 40 + i, { width: fw });
+        return;
+      }
+      if (face === 'surprised') {
+        K.cel(ctx, PP(ell(u, ev, 0.055 * kx, 0.075, 0, 12)), pal.ink, 40 + i, { width: 0 });
         return;
       }
       const out = side;
@@ -4114,7 +4120,7 @@
     // 7 mouth under the moustache (drawn first, the moustache hangs over it)
     const mu = mx - 0.02, mv = 0.57;
     if (face === 'yawn') {
-      K.cel(ctx, PP(ell(mu, mv + 0.12, 0.14, 0.26, 0, 20)), pal.mouth, 55);
+      K.cel(ctx, PP(ell(mu, mv + 0.17, 0.12, 0.22, 0, 20)), pal.mouth, 55);
     } else if ((face === 'talk' && Math.floor(tq * 6) % 2 === 0) || face === 'surprised' || face === 'sigh') {
       K.cel(ctx, PP(ell(mu, mv, 0.09, face === 'surprised' ? 0.1 : 0.065, 0, 16)), pal.mouth, 55);
     } else {
@@ -4465,9 +4471,9 @@
     const pv = B([0, -330]);
     const gK = kit(...K.T(pv), s, 1, o, 3200);
     const tip = gaugeDraw(ctx, gK, 0, 0, o.level != null ? o.level : 0.5, { labels: o.labels });
-    K.cel(ctx, BB(lib.rrectPts(-250, -320, 500, 45, 8, 5)), pal.white, 3);
+    K.cel(ctx, BB(lib.rrectPts(-325, -320, 650, 45, 8, 5)), pal.white, 3);
     const src = o.source != null ? o.source : 'based on willingness to pay in your area';
-    if (src) K.text(ctx, src, B([0, -288]), fitSize(ctx, src, 'note', (22 / CAP.note) * s, 480 * s) / s, { face: 'note', align: 'center', color: pal.ink, seed: 62, jitter: 0.5 });
+    if (src) K.text(ctx, src, B([0, -288]), fitSize(ctx, src, 'note', (22 / CAP.note) * s, 620 * s) / s, { face: 'note', align: 'center', color: pal.ink, seed: 62, jitter: 0.5 });
     K.cel(ctx, BB(lib.rrectPts(-212, -272, 424, 44, 12, 5)), pal.machineDark, 4);
     K.cel(ctx, BB(lib.rrectPts(-200, -265, 400, 30, 10, 5)), pal.ink, 5);
     // 5 the ticket comes out bottom first, shuddering on ones while it prints
@@ -4897,7 +4903,7 @@
     const K = kit(x, y, 1, 1, o, 4500);
     const seed = o.seed == null ? 7 : o.seed;
     const sheet = lib.rectPts(0, 0, w, h, 20);
-    K.cel(ctx, sheet, pal.ticket, 1);
+    K.cel(ctx, sheet, pal.cityPastel, 1, { width: 0 });
     ctx.save();
     ctx.beginPath();
     lib.tracePath(ctx, K.TT(sheet), true);
@@ -4925,6 +4931,7 @@
       }
     }
     ctx.restore();
+    lib.ragged(ctx, K.TT(sheet), { closed: true, base: pal.cityPastel, seed: seed + 30 });
     // restaurants: dots coloured by a smooth price field so neighbours look alike (o.mono: all red)
     const n = o.n || 36;
     const dr = o.dotR || Math.min(w, h) * 0.024;
