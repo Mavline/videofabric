@@ -15,7 +15,8 @@
 //   3 the hero (G5): 03's opening bite pose, eyes on the tag, frozen mid-bite (at the open-mouth stage lib
 //     draws the burger behind his face); the take, the dropped jaw, the trembling grip
 //   4 tremble strokes around the burger (drawn effect, on ones)
-//   5 the red hand-scrawled +21% and its underline (G8 caption slot)
+//   5 the red hand-scrawled +21% and its underline (G8 caption slot), and above it the source line
+//     Reuters, Sept 29, 2026 in ink (art bible 10.15: a price on screen carries its source)
 //   6 the dip to black (art bible 7.5: never solid on the checked frames, 0.92 there)
 //
 // Beats (global T, shot t, shot frame). The reaction follows art bible 7.2: a hold, a burst of the eyes on
@@ -23,8 +24,9 @@
 //   T 16.0    t 0      f 0   frame 0: frozen mid-bite, eyes up on the tag; the tag swings 4, -2, 1 degrees on twos
 //   T 16.125  t 0.125  f 3   the take on ones: the eyes shoot out on stalks toward the tag (0.6, 1.24, 1.15, 1.15)
 //                             and the cap jumps off his hair (0.16, 0.38, 0.32, 0.32), both landing with the return
-//   T 16.25   t 0.25   f 6   the tag hangs still; +21% scrawls on over 3 frames on ones: "+2", "+21%", the underline
+//   T 16.25   t 0.25   f 6   the tag hangs still; +21% scrawls on over 3 frames on ones: "+2", "+21", "+21%"
 //   T 16.292  t 0.292  f 7   the eyes snap back and the cap drops (one in-between), home on f 8
+//   T 16.375  t 0.375  f 9   the underline, and the source line with it (no pop); both held to the dip
 //   T 16.5    t 0.5    f 12  the jaw drops, the mouth hangs open over the burger; held
 //   T 16.75   t 0.75   f 18  a blink, eyes shut for exactly 2 frames (life on the hold)
 //   T 17.0    t 1.0    f 24  the burger trembles on ones for 6 frames, with tremble strokes, then holds
@@ -83,6 +85,9 @@
   const TREMBLE = [[3, -1], [-3, 1], [3, 1], [-3, -1], [2, 0], [-2, 0]];
   // G8: +21%, red, cap height 120 (digits are 0.72 of the size in 'note'), box x 90 to 420, baseline 520
   const CAPTION = { text: '+21%', x0: 90, x1: 420, base: 520, cap: 120 };
+  // the source of the numbers, over +21% on the clear sky (its glyphs start at y 433): ink 'note',
+  // cap height 24 (0.71 of the size), fitted into 360 px, left edge x 90, baseline y 405
+  const SOURCE = { text: 'Reuters, Sept 29, 2026', x: 90, base: 405, cap: 24, w: 360 };
 
   // ---------------------------------------------------------------------------
   // 1 The rich street, painted once
@@ -202,7 +207,7 @@
     });
   }
 
-  /** +21% in the caption slot: "+2" on f 6, the whole word on f 7, the underline from f 8. */
+  /** +21% in the caption slot: "+2" on f 6, "+21" on f 7, the whole word on f 8, the underline from f 9. */
   function caption(ctx, L, fr) {
     if (fr < 6) return;
     const seed = L.hash(ID, 'caption') & 255;
@@ -210,11 +215,21 @@
     const w = L.letters(ctx, CAPTION.text, 0, 0, { size, face: 'note', measure: true, seed }).w;
     if (w > CAPTION.x1 - CAPTION.x0) size *= (CAPTION.x1 - CAPTION.x0) / w;
     const cx = (CAPTION.x0 + CAPTION.x1) / 2;
-    const b = L.letters(ctx, CAPTION.text, cx, CAPTION.base, { size, face: 'note', align: 'center', color: L.pal.red, p: fr === 6 ? 0.5 : 1, seed });
-    if (fr >= 8) {
+    const b = L.letters(ctx, CAPTION.text, cx, CAPTION.base, { size, face: 'note', align: 'center', color: L.pal.red, p: fr === 6 ? 0.5 : fr === 7 ? 0.75 : 1, seed });
+    if (fr >= 9) {
       const y = CAPTION.base + 26;
       L.stroke(ctx, [[b.x0 + 6, y + 6], [cx, y], [b.x1 - 4, y - 8]], { color: L.pal.red, width: 9, seed: L.hash(ID, 'underline') & 0x7fffffff, taper: [6, 14] });
     }
+  }
+
+  /** The source line, from f 9 with the underline, held; lettered like the tag's price (jitter 0.6). */
+  function sourceLine(ctx, L, fr) {
+    if (fr < 9) return;
+    const seed = L.hash(ID, 'source') & 255;
+    let size = SOURCE.cap / 0.71;
+    const w = L.letters(ctx, SOURCE.text, 0, 0, { size, face: 'note', jitter: 0.6, measure: true, seed }).w;
+    if (w > SOURCE.w) size *= SOURCE.w / w;
+    L.letters(ctx, SOURCE.text, SOURCE.x, SOURCE.base, { size, face: 'note', color: L.pal.ink, jitter: 0.6, seed });
   }
 
   FILM.scene({
@@ -231,8 +246,9 @@
       const a = g5Hero(ctx, L, heroAt(fr));
       // 4 the tremble
       if (fr >= 24 && fr < 30) trembleStrokes(ctx, L, fr, a.hold);
-      // 5 +21%
+      // 5 +21% and its source
       caption(ctx, L, fr);
+      sourceLine(ctx, L, fr);
       // 6 the dip: 0 on f 39, rising to 0.92 on f 45, held to the cut (it reads as black, and the gate's
       // last frame still holds a picture)
       const k = 0.92 * L.clamp((t - 1.625) / 0.25);
