@@ -2013,11 +2013,11 @@
     clar([[11.5, 'G5'], [11.75, 'C6'], [12.0, 'A5']], 12.45, 0.26, { att: 0.015, vib: 0.004 });
     clar([[11.5, 'C5'], [11.75, 'F5'], [12.0, 'D5']], 12.45, 0.16, { att: 0.03, wave: E.brassSaw, cut: 1600, breath: 0, vib: 0 });
     run(['F3', 'G3', 'A3', 'Bb3', 'C4', 'D4', 'E4', 'F4'], 11.5, 0.0625).forEach(([n, t], i) => pizz(t, n, 0.34 + i * 0.02, { dec: 0.3, pan: -0.3 + i * 0.08 }));
-    // cue 12: two miles, a bicycle bell and a xylophone C7
+    // cue 12: two miles, a bicycle bell and a xylophone C7; the sniff with the head lift
     bike(12.0, 0.2);
     xylo(12.0, 'C7', 0.3);
-    // cue 12.5: the sniff, and the tune doubles into 16ths for the sprint
-    B.sniff(12.5, 0.3);
+    B.sniff(12.0, 0.3);
+    // cue 12.5: the tune doubles into 16ths for the sprint
     motif(run(['A4', 'C5', 'F5', 'D5'], 12.5, 0.125), [0.38, 0.32, 0.36, 0.32]);
 
     // ---- bars 7-8 (13-16) inside booth two: the band thins to pizzicato and the low reed

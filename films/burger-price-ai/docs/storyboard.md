@@ -596,8 +596,8 @@ Two miles from the first booth, in the richest street of the trip.
 ### Sound
 
 T 11.5: a brassy colour (the clarinet doubled by a low-passed saw a fifth below) and a pizzicato run up the F major scale on 32nds.
-T 12.0: two miles: a single bicycle bell ring and a xylophone C7.
-T 12.5: the sniff (two short noise puffs), and the ride melody doubles into 16ths.
+T 12.0: two miles: a single bicycle bell ring and a xylophone C7, and the sniff (two short noise puffs) as he lifts his head.
+T 12.5: the sprint: the ride melody doubles into 16ths.
 
 ---
 
