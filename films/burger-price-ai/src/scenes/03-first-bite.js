@@ -1,9 +1,12 @@
 // 03 first-bite: The first bite. T 3.5 to 6.0 (shot t 0 to 2.5, frames 0 to 59), street plate (illustrated).
 //
 // G5 (the hero close-up at the counter) and G4 (the price tag, close) on their exact pixels, with the
-// calls of art bible section 8. 09 and 17 repeat this composition, and 17's frame 0 is this frame 0:
-// they copy g5Street, g4Tag, tagSwing, g5Hero, g5HeroOpen (with faceLayer), holdAt and HERO_OPEN
-// verbatim (the street's seeds come from REF, keep it 'first-bite').
+// calls of art bible section 8. 09 and 17 repeat this composition, and 17's frame 0 is this frame 0.
+// Shared pieces, copied verbatim (seeds come from REF, keep it 'first-bite'):
+//   - the place: HERO, HIP, HERO_OPEN, holdAt, g5Hero, g5Street, G4_SLOTS, tagSwing, g4Tag
+//   - the bite, one drawing per call, placed on frames by each shot's own heroAt: CHOMP_HOLD, CHEW_HOLD,
+//     BITE, biteWindUp(i), biteTeeth(i), biteAway(i), biteChew(c, lean), biteBliss(deg), bitePoint, crumbs,
+//     and the impact star call in draw
 //
 // Layers, back to front:
 //   1 the still street plate, painted once (lib.plate): the fieldSky light field, far hills, the corner
@@ -11,17 +14,19 @@
 //     edge the booth's window frame (G5: x 940 to 1080, from y 620 down). Washes and colored pencil.
 //   2 the $5.69 tag (G4): card x 480 to 920, y 300 to 580, strings up out of the frame, rocking
 //     plus or minus 2 degrees about (700, 300) on twos
-//   3 the hero: lib.cast.hero pose 'bite' from (304, 2024) at h 1289, head centre (330, 1010);
-//     the pose draws the burger in his hands (at G5's (560, 1170) while the mouth is open, with his face
-//     laid over it so the open mouth shows)
-//   4 drawn effects on the chomp: three crumbs on ones for 4 frames, an impact star for 2 frames
+//   3 the hero: lib.cast.hero pose 'bite' from (304, 2024) at h 1289, head centre (330, 1010); the pose
+//     draws the burger in his hands, at G5's (560, 1170) behind his face while the mouth is open
+//   4 drawn effects on the bite: three crumbs on ones for 4 frames, an impact star for 2 frames
 //
 // Beats (global T, shot t, shot frame):
 //   T 3.5    t 0      f 0   mouth wide open, burger raised, eyes on the burger (the pose 09 and 17 open on)
 //   T 3.75   t 0.25   f 6   wind-up on twos, 6 frames: he leans back 20 px, the head tips back
-//   T 4.0    t 0.5    f 12  bar 3 downbeat, the chomp on ones: the head lunges 20 px, the jaws close
-//   T 4.083  t 0.583  f 14  on ones the burger comes away with a crescent bite; cheeks puffed
-//   T 4.5    t 1.0    f 24  chew, and again at T 4.75 (f 30), on twos; he leans in (f 32) before the sway
+//   T 4.0    t 0.5    f 12  bar 3 downbeat: teeth in the burger, 3 frames on ones, the head lunged 20 px and
+//                           pressed into it, eyes squeezed shut; the star (2 frames), the crumbs (4)
+//   T 4.125  t 0.625  f 15  the burger comes away to his chest on twos (f 15, 17, 19), a big crescent bite
+//                           on the side of his mouth; cheeks full
+//   T 4.5    t 1.0    f 24  chew, and again at T 4.75 (f 30), on twos: the jaw drops, half shuts, shuts,
+//                           the head nodding with it; he leans in (f 32) before the sway
 //   T 5.0    t 1.5    f 36  bliss: eyes shut into arcs, deeper blush, a 6 degree sway back, held
 //   T 5.333  t 1.833  f 44  he leans further back (anticipation)
 //   T 5.5    t 2.0    f 48  the sway forward, 6 degrees the other side, held to the cut
@@ -45,38 +50,6 @@
   function g5Hero(ctx, L, o) {
     const rig = Object.assign({ pivot: HIP }, o.rig);
     return L.cast.hero(ctx, HERO.x, HERO.y, Object.assign({ h: HERO.h, pose: 'bite', shadow: false }, o, { rig }));
-  }
-
-  /**
-   * The open-mouth stage (k below 1/3): at G5's burger point the burger covers the mouth, so the face is
-   * laid over it. The same drawing without the burger (burger: false) is painted on a scratch layer and
-   * laid on the frame clipped to the head down to just under the chin: the open mouth shows, the burger
-   * tucks behind the cheek and keeps its G5 point, the near hand stays in front of it. The layer is
-   * cleared on every use, so nothing carries between frames (as lib.wallShadow does).
-   */
-  let faceLayer = null;
-  function g5HeroOpen(ctx, L, o) {
-    const a = g5Hero(ctx, L, o);
-    const cv = ctx.canvas;
-    if (!faceLayer || faceLayer.width !== cv.width || faceLayer.height !== cv.height) faceLayer = FILM.makeCanvas(cv.width, cv.height);
-    const g = faceLayer.getContext('2d');
-    g.setTransform(1, 0, 0, 1, 0, 0);
-    g.globalAlpha = 1;
-    g.globalCompositeOperation = 'source-over';
-    g.clearRect(0, 0, cv.width, cv.height);
-    g.setTransform(ctx.getTransform());
-    g5Hero(g, L, Object.assign({}, o, { burger: false }));
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, 0, 1080, a.head[1] + 0.92 * a.headR);
-    ctx.clip();
-    ctx.beginPath();
-    ctx.arc(a.head[0], a.head[1], 1.09 * a.headR, 0, 2 * Math.PI);
-    ctx.clip();
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.drawImage(faceLayer, 0, 0);
-    ctx.restore();
-    return a;
   }
 
   /** The G5 street behind him, painted once: the modest street (03 and 17). */
@@ -142,38 +115,79 @@
   }
 
   // ---------------------------------------------------------------------------
-  // The action, frame by frame (fr: frame of the shot, 0 to 59)
+  // The bite, drawing by drawing (shared with 17, which places the drawings on its own frames)
+  // ---------------------------------------------------------------------------
+  // where the bite pose holds the burger on the chomp (lib, k 0.5), and where he holds it after it: in
+  // front of his chest, right of the near sleeve so the bitten side (toward his mouth) shows
+  const CHOMP_HOLD = [42, -208];
+  const CHEW_HOLD = [72, -162];
+  // the bite: on the edge toward his mouth, big enough to read at a quarter of the frame size
+  // (lib props.burger: biteSide, biteSize = the bite's diameter as a share of the burger's width)
+  const BITE = { biteSide: 'left', biteSize: 0.48 };
+
+  /** Wind-up, drawing i of 3 on twos: he leans back to 20 px at the head, the head tipping back. */
+  function biteWindUp(i) {
+    const d = [0.45, 0.8, 1][i];
+    return Object.assign({}, HERO_OPEN, { rot: -2.05 * DEG * d, tilt: -0.1 - 0.07 * d });
+  }
+  /**
+   * Teeth in the burger, frame i of 3 on ones: the head 20 px forward and pressed into the burger, tipped
+   * forward, then easing off on the third frame (the lib has no squash for his head: the press and the tilt
+   * stand in for it).
+   */
+  function biteTeeth(i) {
+    const p = [1, 1, 0.5][i];
+    return { k: 0.5, rot: 2.05 * DEG, tilt: 0.06 + 0.08 * p, rig: { head: [6 + 3 * p, -236 + 2.5 * p] } };
+  }
+  /**
+   * The burger comes away from his mouth to his chest, drawing i of 3 on twos, the big bite on his mouth's
+   * side; he settles back, cheeks full, mouth shut. No chew phase yet, so the lib draws the burger over his
+   * chin and the bite is not hidden under it.
+   */
+  function biteAway(i) {
+    const u = [0.4, 0.8, 1][i];
+    const h = [CHOMP_HOLD[0] + (CHEW_HOLD[0] - CHOMP_HOLD[0]) * u, CHOMP_HOLD[1] + (CHEW_HOLD[1] - CHOMP_HOLD[1]) * u];
+    return Object.assign({ k: 0.9, rot: 2.05 * DEG * (1 - u), rig: holdAt(h) }, BITE);
+  }
+  /**
+   * Chewing, frame c of the 6 frames of one chew on an 8th, on twos: the jaw drops, half shuts, shuts (chew
+   * phase 1, 0.5, 0) and the head nods with it; c 6 or more is the rest between chews (jaw shut).
+   */
+  function biteChew(c, lean = 0) {
+    const rig = holdAt(CHEW_HOLD);
+    const o = Object.assign({ k: 0.9, chewPhase: 0, rot: lean, rig }, BITE);
+    if (c < 2) return Object.assign(o, { chewPhase: 1, tilt: 0.06, rig: Object.assign(rig, { head: [6.5, -233] }) });
+    if (c < 4) return Object.assign(o, { chewPhase: 0.5, tilt: 0.03, rig: Object.assign(rig, { head: [6.2, -234.5] }) });
+    return o;
+  }
+  /** Bliss, the burger at his chest, swayed by deg degrees about his hip (plus is forward). */
+  function biteBliss(deg) {
+    return Object.assign({ k: 0.9, face: 'bliss', rot: deg * DEG, rig: holdAt(CHEW_HOLD) }, BITE);
+  }
+  /** Where his teeth meet the burger: the star and the crumbs start here. */
+  const bitePoint = (a) => [a.mouth[0] + 0.3 * a.headR, a.mouth[1] - 0.12 * a.headR];
+
+  // ---------------------------------------------------------------------------
+  // 03's timing, frame by frame (fr: frame of the shot, 0 to 59)
   // ---------------------------------------------------------------------------
   function heroAt(fr) {
     if (fr < 6) return HERO_OPEN;
-    if (fr < 12) {
-      // wind-up on twos: three drawings leaning back to 20 px at the head, the head tipping back
-      const d = [0.45, 0.8, 1][(fr - 6) >> 1];
-      return Object.assign({}, HERO_OPEN, { rot: -2.05 * DEG * d, tilt: -0.1 - 0.07 * d });
-    }
-    if (fr < 14) return { k: 0.5, rot: 2.05 * DEG }; // the chomp, on ones: the head 20 px forward
-    if (fr < 15) return { k: 0.9, rot: 1 * DEG, rig: holdAt([44, -182]) }; // the burger comes away, on ones
-    if (fr < 36) {
-      // chewing on the 8ths (f 24, 30), on twos: jaw down, half, back; then he leans in before the sway
-      const lean = fr >= 32 ? [1, 2][(fr - 32) >> 1] * DEG : 0;
-      const c = fr >= 24 ? (fr - 24) % 6 : 6;
-      if (c < 2) return { k: 0.9, tilt: 0.1, rot: lean, rig: { head: [7, -231] } };
-      if (c < 4) return { k: 0.9, tilt: 0.05, rot: lean, rig: { head: [6.5, -233.5] } };
-      return { k: 0.9, rot: lean };
-    }
+    if (fr < 12) return biteWindUp((fr - 6) >> 1);
+    if (fr < 15) return biteTeeth(fr - 12);
+    if (fr < 24) return biteAway(Math.min(2, (fr - 15) >> 1));
+    // chewing on the 8ths (f 24, 30); he leans in (f 32) before the sway
+    if (fr < 36) return biteChew(fr >= 24 ? (fr - 24) % 6 : 6, fr >= 32 ? [1, 2][(fr - 32) >> 1] * DEG : 0);
     // bliss: the sway back pops in over 3 drawings (f 36) and holds; he leans further back (f 44);
     // the sway forward goes over 4 drawings (f 48) and holds to the cut
-    let sway;
-    if (fr < 44) sway = -6 * [0.6, 1.08, 1][Math.min(2, (fr - 36) >> 1)];
-    else if (fr < 48) sway = -7.5;
-    else sway = [-2.4, 1.8, 6.5, 6][Math.min(3, (fr - 48) >> 1)];
-    return { k: 0.9, face: 'bliss', rot: sway * DEG };
+    if (fr < 44) return biteBliss(-6 * [0.6, 1.08, 1][Math.min(2, (fr - 36) >> 1)]);
+    if (fr < 48) return biteBliss(-7.5);
+    return biteBliss([-2.4, 1.8, 6.5, 6][Math.min(3, (fr - 48) >> 1)]);
   }
 
   /** Three crumbs flying off the bite up and away from his face, on ones for 4 frames from the chomp (i 0 to 3). */
   function crumbs(ctx, L, at, headR, i) {
     const P = L.pal;
-    const sd = (...k) => L.hash(ID, 'crumb', ...k) & 0x7fffffff;
+    const sd = (...k) => L.hash(REF, 'crumb', ...k) & 0x7fffffff;
     [[-78, 50, P.bun, 17], [-42, 60, P.sesame, 13], [-12, 54, P.lettuce, 15]].forEach(([deg, v, fill, r], j) => {
       const a = deg * DEG;
       const d = 0.46 * headR + v * i;
@@ -193,12 +207,12 @@
       L.plate(ctx, `${REF}|g5-street`, (g) => g5Street(g, L));
       // 2 the tag
       g4Tag(ctx, L, '$5.69', tagSwing(L, t));
-      // 3 the hero with the burger (the face over it while the mouth is open)
-      const a = (fr < 12 ? g5HeroOpen : g5Hero)(ctx, L, heroAt(fr));
-      // 4 the chomp, at the bite between his lips and the burger: star for 2 frames, crumbs for 4, on ones
-      const bite = [a.mouth[0] + 0.3 * a.headR, a.mouth[1] - 0.12 * a.headR];
+      // 3 the hero with the burger
+      const a = g5Hero(ctx, L, heroAt(fr));
+      // 4 the bite, where his teeth meet the burger: star for 2 frames, crumbs for 4, on ones
+      const bite = bitePoint(a);
       if (fr >= 12 && fr < 16) crumbs(ctx, L, bite, a.headR, fr - 12);
-      if (fr >= 12 && fr < 14) L.impactStar(ctx, bite[0], bite[1], 0.36 * a.headR, { seed: L.hash(ID, 'star', fr) & 255 });
+      if (fr >= 12 && fr < 14) L.impactStar(ctx, bite[0], bite[1], 0.36 * a.headR, { seed: L.hash(REF, 'star', fr) & 255 });
     },
   });
 })();
