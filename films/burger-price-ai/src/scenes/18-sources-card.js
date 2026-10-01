@@ -2,7 +2,7 @@
 // Street plate (illustrated). Storyboard: docs/storyboard.md, "18 sources-card", tables G1 and G8.
 //
 // Layers, back to front:
-//   1 the modest street, painted once (lib.plate), as in 01
+//   1 the modest street under the fieldSky light field, painted once (lib.plate), as in 01
 //   2 the owner's back layer, clipped to the window
 //   3 the booth's front, painted once on a transparent plate
 //   4 the owner's front layer: his near arm on the shelf
@@ -30,7 +30,7 @@
   const G1 = { boothX: 690, ground: 1480, boothW: 580, tagTop: [680, 750], price: '$5.69' };
   let G1B = null; // the booth's anchors, captured while the street plate is painted (a pure function of G1)
 
-  // a still object of the street plate: an opaque wash with brush marks and a coloured pencil edge, no black
+  // a still object of the street plate: an opaque wash with brush marks and a colored pencil edge, no black
   function g1Paint(g, L, pts, color, id, o = {}) {
     const seed = L.hash(REF, 'g1', id) & 0x7fffffff;
     L.softWash(g, pts, Object.assign({ color, solid: true, marks: 0.6, rim: 0.12, seed }, o));
@@ -40,17 +40,18 @@
   function g1Street(g, L) {
     const P = L.pal;
     const sd = (id) => L.hash(REF, 'g1', id) & 0x7fffffff;
-    g.fillStyle = P.paper;
+    // the light field of a street scene (art bible 2.3, 4.2)
+    g.fillStyle = P.fieldSky;
     g.fillRect(0, 0, 1080, 1920);
     // two pale clouds, clear of 18's lettering zone (x 80 to 940, y 230 to 540)
-    L.softWash(g, L.blobPts(830, 158, 120, 30, sd(1), 0.25), { color: P.waterTop, alpha: 0.45, soft: 12, marks: 0.5, rim: 0.1, seed: sd(2) });
-    L.softWash(g, L.blobPts(205, 642, 140, 32, sd(3), 0.25), { color: P.waterTop, alpha: 0.45, soft: 12, marks: 0.5, rim: 0.1, seed: sd(4) });
+    L.softWash(g, L.blobPts(830, 158, 120, 30, sd(1), 0.25), { color: P.paper, alpha: 0.85, soft: 12, marks: 0.4, rim: 0.06, seed: sd(2) });
+    L.softWash(g, L.blobPts(205, 642, 140, 32, sd(3), 0.25), { color: P.paper, alpha: 0.85, soft: 12, marks: 0.4, rim: 0.06, seed: sd(4) });
     // far hills along y 1150 to 1260, and the pale meadow under them down to the pavement
     const hills = [];
     for (let x = -20; x <= 1100; x += 20) hills.push([x, 1176 - 20 * Math.sin(x / 150 + 0.4) - 8 * Math.sin(x / 47)]);
     hills.push([1100, 1262], [-20, 1262]);
     L.softWash(g, hills, { color: P.hillsFar, soft: 8, marks: 0.6, seed: sd(5) });
-    L.softWash(g, L.rectPts(-20, 1254, 1120, 236, 20), { color: L.mix(P.grass, P.paper, 0.45), solid: true, marks: 0.5, rim: 0, seed: sd(6) });
+    L.softWash(g, L.rectPts(-20, 1254, 1120, 236, 20), { color: L.mix(P.grass, P.fieldSky, 0.45), solid: true, marks: 0.5, rim: 0, seed: sd(6) });
     // the tree behind the booth's right edge: crown x 920 to 1080, y 700 to 1000
     g1Paint(g, L, L.rectPts(998, 930, 36, 560, 16), P.trunk, 7);
     L.softWash(g, L.blobPts(1008, 850, 92, 150, sd(8), 0.16), { color: P.grass, solid: true, marks: 0.8, rim: 0.14, seed: sd(9) });
@@ -85,13 +86,14 @@
     G1B = L.props.booth(g, G1.boothX, G1.ground, { w: G1.boothW, layer: 'back' });
   }
 
-  // the owner at rest: facing the street (left), elbow on the shelf, chin on his fist, bored.
-  // booth.owner stands a right-facing owner with his head on G1's (710, 1105); facing left, his head sits
-  // on the other side of his ground point, so the ground point moves by twice the head offset.
+  // the owner at rest: facing the street (left), elbow on the shelf, chin on his fist, bored, no shadow spot
+  // (a figure in the booth window has none). booth.owner stands a right-facing owner with his head on G1's
+  // (710, 1105); facing left, his head sits on the other side of his ground point, so the ground point moves
+  // by twice the head offset.
   function g1OwnerRest(b) {
     const h = b.ownerH;
     const x = b.owner[0] + (60 * h) / 400;
-    return { x, y: b.owner[1], o: { h, facing: -1, pose: 'lean', target: [x - 0.14 * h, b.shelf.y] } };
+    return { x, y: b.owner[1], o: { h, facing: -1, pose: 'lean', target: [x - 0.14 * h, b.shelf.y], shadow: false } };
   }
 
   // the tag rocks 2 degrees on twos, one swing a second, on the global clock: 0 on T 0 (and on T 32)
