@@ -5,9 +5,9 @@ Every agent that touches this project follows it.
 
 ## Goal
 
-A film of <SUBJECT — one line, e.g. "the life of a monarch butterfly">, drawn entirely by JavaScript on a canvas, with music and sound effects synthesised in JavaScript.
+A film of "One burger, two prices": how McDonald's AI pricing engine recommends a different Big Mac price for every restaurant by estimating what people nearby will pay, told as a 30-second cartoon in the manner of 1960s–70s Soviet hand-drawn animation, drawn entirely by JavaScript on a canvas, with music and sound effects synthesised in JavaScript.
 It ships as one self-contained HTML file and as a rendered MP4 for YouTube Shorts.
-The look and editing follow `docs/art-bible.md`.
+The look and editing follow `docs/art-bible.md`, whose sections 1–9 are rewritten for this film from `docs/reference-analysis.md` (the Soviet-cartoon manner), not the skill's default inked-paper house style.
 
 ## Hard rules
 
