@@ -24,7 +24,7 @@ FILM.scene({
     R.ticket(ctx, 820, 760, { w: 170, lines: ['RECOMMENDED:', '$6.89'] });
     label('ticket', 820, 1010);
     // keypad, handset and mobile on the floor
-    R.keypad(ctx, 230, 1900, { w: 220, text: '$6.8', press: 7 });
+    R.keypad(ctx, 230, 1900, { w: 220, text: '$6.8', press: 7, labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '#'] });
     const hs = R.handset(ctx, 560, 1460, { w: 130, rot: 0.4 });
     R.cord(ctx, hs.cord, [640, 1640], { loops: 9 });
     label('handset, cord', 620, 1700);

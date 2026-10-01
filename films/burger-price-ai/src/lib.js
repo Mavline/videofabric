@@ -2364,7 +2364,7 @@
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.beginPath();
-    if (P.length === 1) {
+    if (P.every((p) => p[0] === P[0][0] && p[1] === P[0][1])) {
       ctx.moveTo(P[0][0], P[0][1]);
       ctx.lineTo(P[0][0] + 0.01, P[0][1]);
     } else lib.tracePath(ctx, P, false);
@@ -2898,8 +2898,9 @@
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
     if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
-    const track = (o.tracking != null ? o.tracking : 0.04) * size;
-    const widths = chars.map((c) => ctx.measureText(c).width);
+    const kx = o.squeeze != null ? o.squeeze : 1; // every letter narrowed, its height kept
+    const track = (o.tracking != null ? o.tracking : 0.04) * size * kx;
+    const widths = chars.map((c) => ctx.measureText(c).width * kx);
     const total = widths.reduce((a, b) => a + b, 0) + track * Math.max(0, chars.length - 1);
     const align = o.align || 'left';
     let cx = align === 'center' ? -total / 2 : align === 'right' ? -total : 0;
@@ -2934,7 +2935,7 @@
       ctx.save();
       ctx.translate(px, py);
       ctx.rotate(pr);
-      ctx.scale(sc * sx, sc);
+      ctx.scale(sc * sx * kx, sc);
       ctx.lineJoin = 'round';
       if (outline) {
         ctx.lineWidth = ow * 2 + weight;
@@ -2999,7 +3000,9 @@
    *     o.pose
    *       'stand'                       standing, arms down
    *       'ride'                        pedalling: o.phase 0..1 per crank turn, or o.t with o.cadence
-   *                                     (turns per second); o.cycle 4 snaps the crank to 4 drawings a turn
+   *                                     (turns per second); o.cycle 4 snaps the crank to 4 drawings a turn;
+   *                                     o.bob (frame px, + down) sinks or lifts the body on any bicycle pose,
+   *                                     hands stay on the grips and feet on the pedals
    *       'crouch', 'dash'              squashed over the bars before the dash; stretched forward in it (ones)
    *       'straddle'                    on the bicycle at rest, near foot on the ground, hands on the grips
    *       'skid'                        the stop: bicycle tipped back 4 degrees, rider leaning back, foot down
@@ -3039,8 +3042,9 @@
    *       'crouch' | 'hop'
    *     o.scope 0 (periscope down) .. 1 (up), o.look, o.blink, o.level 0..1 (needle LOW .. HIGH),
    *     o.name ('SENSITIVITY TO PRICE'), o.source ('based on willingness to pay in your area'),
-   *     o.lines (ticket, ['RECOMMENDED:', '$6.89'])
-   *     returns { slot, ticketTip, hopper, hopperNeck, eye, dial: { x, y, r }, needleTip, top, ground, body }
+   *     o.lines (ticket, ['RECOMMENDED:', '$6.89']), o.shake (frame px, signed: the body's shudder; without it
+   *     'print' and 'think' shudder on their own from o.t), o.ticketRot (radians, the strip about the slot)
+   *     returns { slot, ticketTip, ticketTop, hopper, hopperNeck, eye, dial: { x, y, r }, needleTip, top, ground, body }
    * lib.props
    *   burger(x, y: centre)     o.w px (0.69 as tall), o.bites 0..3, o.rot. Returns { top, bottom, bite, center }
    *   bike(x, y: ground)       o.h hero height px (its scale: wheel radius 47/300 of it), o.phase, o.wheel,
@@ -3063,7 +3067,8 @@
    *   cord(a, b)               a curly cord between two points, o.loops, o.sag
    *   mobile(x, y: centre)     a smartphone: o.h px, o.lines (screen), o.ring with o.t, o.rot
    *   register(x, y: bottom centre)  o.w px, o.drawer 0..1, o.text (display)
-   *   keypad(x, y: bottom centre)    o.w px, 3 x 4 keys, o.text (screen strip), o.press key index (0..11)
+   *   keypad(x, y: bottom centre)    o.w px, 3 x 4 keys, o.text (screen strip), o.press key index (0..11),
+   *                            o.labels (12 key labels, e.g. '.' for '*'; false for none)
    *   map(x, y: top-left)      o.w, o.h px, o.n dots, o.p reveal, o.style 'city' | 'land', o.mono (all red),
    *                            o.booths (tiny booths), o.pins [{ u, v, label }]. Returns { dots, pins }
    *   receipt(x, y), coin(x, y)   centre; o.w px, o.rot; coin o.spin 0..1
@@ -3171,6 +3176,8 @@
     const ew = o.ew;
     const pts = ell(c[0], c[1], rx, ry, 0, 32);
     if (o.lid >= 0.95) {
+      // a ball that stands out of its head (the machine's lens) is covered by a lid of the head's color
+      if (o.ball) lib.cel(ctx, pts, { fill: o.skin, width: ew, seed: o.seed });
       lib.stroke(ctx, [[c[0] - rx, c[1]], [c[0], c[1] + ry * 0.28], [c[0] + rx, c[1]]], { width: ew * 1.15, seed: o.seed });
       return;
     }
@@ -3547,6 +3554,7 @@
         R.kindN = R.kindF = 'open';
         R.look = [0, 0];
         R.stalk = o.stalk || 0;
+        if (o.stalkDir != null) R.stalkDir = o.stalkDir;
         break;
       case 'turn':
         R.stage = stage3(k);
@@ -3602,6 +3610,11 @@
     if (o.look) R.look = o.look;
     if (o.tilt != null) R.tilt = o.tilt;
     if (o.turn != null) R.turn = clamp(o.turn);
+    // o.bob (frame px, + down): on the bicycle the body sinks or rises; hands stay on the grips, feet on the pedals
+    if (o.bob && R.bike) {
+      const d = [0, o.bob / K0.s];
+      for (const key of ['hip', 'neck', 'head', 'hipN', 'hipF', 'shN', 'shF']) R[key] = add2(R[key], d);
+    }
     if (o.rig) Object.assign(R, o.rig);
     if (R.sq) {
       const S2 = (p) => [p[0] * R.sq[0], p[1] * R.sq[1]];
@@ -3678,10 +3691,11 @@
     const stalk = R.stalk || 0;
     const sdir = dir2(R.stalkDir != null ? R.stalkDir : -0.55);
     const centres = eyes.map(([u]) => [u + sdir[0] * stalk * 0.85, ev + sdir[1] * stalk * 0.85]);
+    const big = 1 + stalk * 0.52;
+    const drawEyes = () => {
     if (stalk > 0) {
       eyes.forEach(([u], i) => K.tubes(ctx, [[P(u, ev), P(centres[i][0], centres[i][1])]], 0.13 * r, pal.skinKid));
     }
-    const big = 1 + stalk * 0.52;
     eyes.forEach(([u, kx, sideE], i) => {
       const [cu, cv] = centres[i];
       const rx = erx * kx * rpx * big, ry = ery * rpx * big;
@@ -3698,12 +3712,15 @@
         ew, look: [lk[0] * K.f, lk[1]], lid, iris: pal.iris, irisR: rx * (pop ? 0.44 : face === 'glare' ? 0.5 : 0.66), lashes: 3, side: sideE * K.f, skin: pal.skinKid, seed: 4501 + i * 7,
       });
     });
-    // 5 brows
+    };
+    // eyes on stalks shoot out over the cap, so they are drawn after the visor (8)
+    if (stalk <= 0) drawEyes();
+    // 5 brows (drawn over the visor, after 8, so the visor never hides the anger)
     const bv = pop ? -0.62 : -0.47;
-    eyes.forEach(([u, kx, sideE], i) => {
+    const drawBrows = () => eyes.forEach(([u, kx, sideE], i) => {
       if (stalk > 0.3) return;
       const inner = sideE < 0 ? 1 : -1;
-      const dIn = face === 'determined' ? 0.07 : face === 'glare' ? 0.11 : face === 'sad' ? -0.07 : 0;
+      const dIn = face === 'determined' ? 0.07 : face === 'glare' ? 0.11 : face === 'sad' ? -0.07 : face === 'jaw' ? -0.08 : 0;
       const a = [u - 0.14 * kx * inner, bv - 0.01], b = [u + 0.14 * kx * inner, bv + dIn];
       K.line(ctx, PP([a, [u, bv - 0.05 - (pop ? 0.03 : 0)], b]), 50 + i, { width: fw, taper: [fw * 0.5, fw * 1.6] });
     });
@@ -3757,6 +3774,8 @@
     const vis3 = [[0.4, -0.66], [0.92, -0.69], [1.36, -0.6], [1.42, -0.5], [0.96, -0.53], [0.44, -0.57]];
     const visF = [[-0.8, -0.62], [0, -0.66], [0.8, -0.62], [0.7, -0.5], [0, -0.47], [-0.7, -0.5]];
     K.cel(ctx, PP(vis3.map((q, i) => liftP(lerp2(visF[i], q, tu)))), pal.cap, 70);
+    drawBrows();
+    if (stalk > 0) drawEyes();
     return { mouth: P(mu, mv), eye: P(centres[0][0], centres[0][1]), eyeFar: P(centres[1][0], centres[1][1]), top: P(0, -1.28 - capLift) };
   }
 
@@ -3817,20 +3836,28 @@
       const nk = lerp2(R.neck, R.head, 0.32);
       K.cel(ctx, ell(nk[0] + 10, nk[1], 8, 7, 0, 14), skin, 12);
     }
-    // 3 the head
-    const hd = heroHead(ctx, K, R.head, HB.headR, R, !!o.blink);
+    // 3 the head (in a crouch or a dash the chin tucks over the near shoulder: the head goes over the arms)
+    const anchors = { hold: K.T(R.hold || lerp2(R.handN, R.handF, 0.5)) };
+    const held = () => {
+      if (typeof o.hold === 'function') o.hold(ctx, anchors);
+      else if (R.pose === 'bite' && o.burger !== false) {
+        props.burger(ctx, anchors.hold[0], anchors.hold[1], { w: R.holdW * s, bites: R.bites, rot: f * (R.stage === 2 ? 0 : -0.12), plate: o.plate, line: o.line });
+      } else if (R.pose === 'coins' && o.coins !== false) {
+        props.coin(ctx, anchors.hold[0] - 10 * s, anchors.hold[1] + 2 * s, { w: 34 * s, rot: -0.3, seed: 1, plate: o.plate, line: o.line });
+        props.coin(ctx, anchors.hold[0] + 11 * s, anchors.hold[1] - 4 * s, { w: 34 * s, rot: 0.25, seed: 2, plate: o.plate, line: o.line });
+      }
+    };
+    // at the open-mouth stage of a bite the burger is held up beside the face, so the open mouth shows (G5)
+    const heldFirst = R.pose === 'bite' && R.stage === 0 && typeof o.hold !== 'function';
+    const headLast = R.pose === 'crouch' || R.pose === 'dash';
+    if (heldFirst) held();
+    let hd = headLast ? null : heroHead(ctx, K, R.head, HB.headR, R, !!o.blink);
     if (R.bikeFront) drawBikeFront(ctx, K, 'front');
     // 4 what the hands hold, then the arms in front
-    const anchors = { hold: K.T(R.hold || lerp2(R.handN, R.handF, 0.5)) };
-    if (typeof o.hold === 'function') o.hold(ctx, anchors);
-    else if (R.pose === 'bite' && o.burger !== false) {
-      props.burger(ctx, anchors.hold[0], anchors.hold[1], { w: R.holdW * s, bites: R.bites, rot: f * (R.stage === 2 ? 0 : -0.12), plate: o.plate, line: o.line });
-    } else if (R.pose === 'coins' && o.coins !== false) {
-      props.coin(ctx, anchors.hold[0] - 10 * s, anchors.hold[1] + 2 * s, { w: 34 * s, rot: -0.3, seed: 1, plate: o.plate, line: o.line });
-      props.coin(ctx, anchors.hold[0] + 11 * s, anchors.hold[1] - 4 * s, { w: 34 * s, rot: 0.25, seed: 2, plate: o.plate, line: o.line });
-    }
+    if (!heldFirst) held();
     if (R.armsFront) arm(R.shF, R.handF, R.elbowF, R.kindF, false);
     const tip = arm(R.shN, R.handN, R.elbowN, R.kindN, true);
+    if (headLast) hd = heroHead(ctx, K, R.head, HB.headR, R, !!o.blink);
     Object.assign(anchors, {
       head: K.T(R.head), headR: HB.headR * s, eye: K.T(hd.eye), eyeFar: K.T(hd.eyeFar), mouth: K.T(hd.mouth), top: K.T(hd.top),
       hand: K.T(tip), handFar: K.T(R.handF), chest: K.T(lerp2(R.hip, R.neck, 0.6)), neck: K.T(R.neck), ground: [x, y],
@@ -4268,7 +4295,7 @@
       K.cel(ctx, lib.rrectPts(-140, top + 14, 280, 56, 8, 4), pal.screen, 2, { width: Math.max(2.5, K.lw * 0.6) });
       if (o.text) K.text(ctx, o.text, [0, top + 44], fitSize(ctx, o.text, 'note', 42, 250), { face: 'note', align: 'center', baseline: 'middle', color: pal.ink, seed: 90, jitter: 0.5 });
     }
-    const labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
+    const labels = Array.isArray(o.labels) && o.labels.length === 12 ? o.labels : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
     const press = o.press != null ? o.press : -1;
     const y0 = top + (screen ? 84 : 12);
     for (let i = 0; i < 12; i++) {
@@ -4365,7 +4392,8 @@
       sy = [0.96, 1.0, 1][st];
       sx = [1.02, 1, 1][st];
     }
-    if (pose === 'think' || (pose === 'print' && k > 0 && k < 1)) {
+    if (typeof o.shake === 'number') dx = o.shake / s; // frame px, signed: the scene's own shudder
+    else if (pose === 'think' || (pose === 'print' && k > 0 && k < 1)) {
       const fr = Math.floor((o.t || 0) * 24 + 1e-6);
       dx = (h3(fr, 3, 9) - 0.5) * 8;
     }
@@ -4374,7 +4402,15 @@
     const BB = (arr) => arr.map(B);
     // 1 the shadow spot, legs and shoes, toes turned out
     const hop = pose === 'hop';
-    if (o.shadow !== false) lib.footShadow(ctx, x, y, 280 * s, { ground: o.ground, machine: K.brush, ry: 34 * s });
+    if (o.shadow !== false) {
+      // it stands where the floor meets the wall (G3): the spot lies on the floor only
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x - 400 * s, y, 800 * s, 80 * s);
+      ctx.clip();
+      lib.footShadow(ctx, x, y, 280 * s, { ground: o.ground, machine: K.brush, ry: 34 * s });
+      ctx.restore();
+    }
     for (const side of [-1, 1]) {
       const top = B([side * 150, -180]);
       const ank = hop ? [side * 140, -26] : [side * 150, -50];
@@ -4414,10 +4450,18 @@
       ctx.rect(-1e5, slotY, 2e5, 1e5);
       ctx.clip();
       const off = (k - 1) * 245;
+      if (o.ticketRot) {
+        // the strip swings about the slot
+        const c = K.T(B([0, -250]));
+        ctx.translate(c[0], c[1]);
+        ctx.rotate(o.ticketRot);
+        ctx.translate(-c[0], -c[1]);
+      }
       machineTicket(ctx, K, B([0, -235 + off]), o.lines || ['RECOMMENDED:', '$6.89']);
       ctx.restore();
       anchors.ticketTip = K.T(B([0, -235 + k * 245]));
-    } else anchors.ticketTip = K.T(B([0, -250]));
+      anchors.ticketTop = K.T(B([0, -235 + off]));
+    } else anchors.ticketTip = anchors.ticketTop = K.T(B([0, -250]));
     // 6 thinking: thin smoke rising from the hopper
     if (pose === 'think') {
       for (let j = 0; j < 2; j++) {
@@ -4428,7 +4472,7 @@
     }
     // 7 the eye: the periscope's lens on the head's left face
     const ec = B([238, hy + 45]);
-    eyeOpen(ctx, K.T(ec), 30 * s, 30 * s, { ew: clamp(30 * s * 0.12, 2.5, K.lw), look: o.look || [-0.6, 0.2], lid: o.blink ? 1 : pose === 'think' ? 0.3 : 0, iris: null, irisR: 12 * s, lashes: 0, side: -1, skin: pal.machineDark, seed: 3171 });
+    eyeOpen(ctx, K.T(ec), 30 * s, 30 * s, { ew: clamp(30 * s * 0.12, 2.5, K.lw), look: o.look || [-0.6, 0.2], lid: o.blink ? 1 : pose === 'think' ? 0.3 : 0, iris: null, irisR: 12 * s, lashes: 0, side: -1, skin: pal.machineDark, ball: true, seed: 3171 });
     Object.assign(anchors, {
       slot: K.T(B([0, -250])), hopper: K.T(B([-20, -760])), hopperNeck: K.T(B([-20, -660])), eye: K.T(ec),
       dial: { x: K.T(pv)[0], y: K.T(pv)[1], r: 190 * s }, needleTip: tip, top: K.T(B([300, hy])), ground: [x, y],
@@ -4496,12 +4540,13 @@
   // the burger's whole outline: top bun, the lettuce and patty ends, the bottom bun
   const BURGER_OUTLINE = [[-48, -14], [-40, -28], [-24, -38], [0, -42], [24, -38], [40, -28], [48, -14], [52, -7], [55, -1], [53, 14], [50, 22], [48, 30], [42, 38], [0, 39], [-42, 38], [-48, 30], [-50, 22], [-53, 14], [-55, -1], [-52, -7]];
   props.burger = (ctx, x, y, o = {}) => {
-    const s = (o.w || 220) / 100;
-    // the design is drawn 0.85 as tall as it is listed, so the burger is 0.69 as tall as wide (G5)
+    // the outline is 110 x 81 design units: drawn o.w wide and 0.69 o.w tall (G5: 320 x 220)
+    const s = (o.w || 220) / 110;
+    const FY = 0.937;
     const K0 = kit(x, y, s, 1, o, 3500, o.rot || 0);
-    const fl = (pts) => pts.map((p) => [p[0], p[1] * 0.85]);
+    const fl = (pts) => pts.map((p) => [p[0], p[1] * FY]);
     const K = Object.assign({}, K0, {
-      T: (p) => K0.T([p[0], p[1] * 0.85]),
+      T: (p) => K0.T([p[0], p[1] * FY]),
       TT: (pts) => K0.TT(fl(pts)),
       cel: (c, pts, fill, id, extra) => K0.cel(c, fl(pts), fill, id, extra),
     });
@@ -4607,7 +4652,13 @@
         K.text(ctx, ch, [(a + b) / 2 - x, base], sz, { face: 'note', align: 'center', color: pal.ink, seed: seed + i, jitter: 0.6 });
       });
     } else if (count > 0) {
-      K.text(ctx, chars.slice(0, count).join(''), [0, base], fitSize(ctx, price, 'note', fsz, 0.92 * w), { face: 'note', align: 'center', color: pal.ink, seed, jitter: 0.6 });
+      // the glyphs keep their height (G8: 100 in the G1 box 260 wide): narrow the letters first, shrink last
+      // set tight, as a sign painter letters a price tag
+      const maxW = 0.93 * w, tracking = -0.02;
+      const w0 = lib.letters(ctx, price, 0, 0, { size: fsz, face: 'note', tracking, measure: true }).w;
+      const squeeze = clamp(maxW / w0, 0.6, 1);
+      const sz = w0 * squeeze > maxW ? (fsz * maxW) / (w0 * squeeze) : fsz;
+      K.text(ctx, chars.slice(0, count).join(''), [0, base], sz, { face: 'note', align: 'center', color: pal.ink, seed, jitter: 0.6, squeeze, tracking });
     }
     return { pivot: pivotTop ? [x, y] : [x, y - drop], center: K.T([0, oy + h / 2]), bottom: K.T([0, oy + h]), holes: [K.T([-hx, hy]), K.T([hx, hy])] };
   };

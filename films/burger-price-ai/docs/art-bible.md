@@ -312,7 +312,7 @@ Every word on screen is lettered by hand; no printed font appears in a frame (R2
 | Rounded capitals | `'round'` | Arial Rounded MT Bold | titles, title-card lines, signs on the street plate (9.1) |
 | Handwriting | `'note'` | Chalkboard SE Bold, each letter re-inked at its own weight | prices, tickets, screens, captions on the machine plate, words in the world (9.2, 9.3) |
 
-Cap height, measured on this machine: 0.74 of the size for `round` and 0.71 for `note` (digits 0.735 and 0.72), so a cap height of 90 px is `size: 122` in `round`. Letter widths vary: fit a line into its box with the box `lib.letters` returns (`measure: true` draws nothing and returns the box) and shrink the size until it fits.
+Cap height, measured on this machine: 0.74 of the size for `round` and 0.71 for `note` (digits 0.735 and 0.72), so a cap height of 90 px is `size: 122` in `round`. Letter widths vary: fit a line into its box with the box `lib.letters` returns (`measure: true` draws nothing and returns the box) and shrink the size until it fits, or keep the size and narrow the letters with `squeeze` (0..1, every letter's width).
 Every word is English with American spelling: "neighborhood", "color".
 
 ### 9.1 Street plate titles (R26)
@@ -357,7 +357,7 @@ A boy of about ten on a green bicycle: our own character, no relation to any exi
 | Pose | Use | Notes |
 |---|---|---|
 | `ride` | pedalling | `o.phase` 0..1 per crank turn, or `o.t` with `o.cadence` (turns a second, default 1.1); `o.cycle: 4` snaps the crank to a 4-drawing cycle |
-| `crouch` | anticipation before the dash | squashed over the bars, `determined` face |
+| `crouch` | anticipation before the dash | squashed over the bars, `determined` face; here and in `dash` the chin tucks over the near shoulder, so the head is drawn over the arms |
 | `dash` | sprinting on the pedals | stretched forward, always on ones, cadence 2.6 |
 | `straddle` | stopped, one foot down | standing over the frame, near foot on the ground, hands on the grips, grin (G1 stop mark) |
 | `skid` | the stop | bicycle tipped back 4 degrees about the rear tyre, rider leaning back, foot planted ahead |
@@ -365,14 +365,14 @@ A boy of about ten on a green bicycle: our own character, no relation to any exi
 | `slap` | slapping the coins down | straddling, flat hand down on `o.target` [x, y] px |
 | `snatch` | grabbing the burger | near arm shoots to `o.target`; draw on ones with a smear |
 | `sill` | at a window | front view, both hands on a ledge at `o.target[1]` (G2) |
-| `bite` | eating | `o.k`: 0 to 1/3 mouth open, burger raised (G5); 1/3 to 2/3 chomp; 2/3 to 1 chewing, one more bite gone; `o.bites` taken before |
+| `bite` | eating | `o.k`: 0 to 1/3 mouth open, burger raised beside the face and behind the head, so the open mouth shows (G5); 1/3 to 2/3 chomp, the burger in front; 2/3 to 1 chewing, one more bite gone; `o.bites` taken before |
 | `pop` | the shock | eyes popped, cap jumps off the hair, hands up; `o.stalk` 0..1.15 shoots the eyes out on stalks toward `o.stalkDir` (default up and forward), 1.6 times bigger at full stalk |
 | `turn` | turning round on foot | `o.k`: squash, front view, the other side (he ends facing `-facing`) |
 | `spin` | turning the bicycle round | `o.k`: crouch, bicycle head-on, the other side ready to dash |
 | `stand` | standing | arms down |
 
 Faces (`o.face`, each pose has its own default): `smile`, `neutral`, `grin`, `open`, `O`, `chew`, `bliss` (eyes shut as arcs, deeper blush), `gulp` (pressed mouth, full cheeks, throat bulge), `lick` (tongue at the corner), `jaw` (the jaw drops, the mouth hangs open), `glare`, `determined`, `sniff` (lids half down, sniff strokes at the nose), `pant` (opens and closes on twos with `o.t`), `pop`, `sad`.
-Also: `o.blink`, `o.look` [-1..1, -1..1] for the pupils, `o.tilt` (head nod in radians, positive forward), `o.rot` (the whole figure, for a sway), `o.shadow`, `o.ground`, `o.rig` (joint targets), `o.hold(ctx, anchors)` (draws what his hands hold between the body and the near hand; the `bite` and `coins` poses draw the burger and coins themselves).
+Also: `o.blink`, `o.look` [-1..1, -1..1] for the pupils, `o.tilt` (head nod in radians, positive forward), `o.rot` (the whole figure, for a sway), `o.bob` (frame px, positive down: on the bicycle the body sinks or rises while the hands stay on the grips and the feet on the pedals; the 4 px pedal bob), `o.stalkDir` (with `pop`), `o.shadow`, `o.ground`, `o.rig` (joint targets), `o.hold(ctx, anchors)` (draws what his hands hold between the body and the near hand; the `bite` and `coins` poses draw the burger and coins themselves).
 Anchors returned: `head`, `headR`, `eye`, `eyeFar`, `mouth`, `hand`, `handFar`, `hold`, `chest`, `neck`, `top`, `ground`, and on the bicycle `seat`, `grip`, `pedal`, `axleFront`, `axleRear`, `wheelR`.
 
 `o.rig` works in his design units: standing height 300, origin at his ground point, y up negative, x toward where he faces. Joints: `hip`, `neck`, `head` (center), `shN`/`shF` (shoulders, near and far), `handN`/`handF` (hand targets; the elbows bend toward `elbowN`/`elbowF`, direction vectors), `hipN`/`hipF`, `ankleN`/`ankleF` (knees bend toward `kneeN`/`kneeF`), `footN`/`footF` (shoe angles), `kindN`/`kindF` (`'fist'`, `'open'`, `'point'`), and `tilt`, `turn`, `face`, `look`, `hold`. Example, pointing up: `rig: { handN: [40, -260], kindN: 'point' }`.
@@ -426,8 +426,8 @@ The company's pricing engine as a creature: a box on two thin legs that eats the
 | `think` | rattles on ones, eye half-lidded, thin smoke from the hopper |
 | `crouch`, `hop` | squash and stretch, for an entrance |
 
-Options: `o.scope` 0 (periscope down) to 1 (up), `o.look` (the pupil), `o.blink`, `o.level` 0..1 (needle from LOW to HIGH), `o.name`, `o.source`, `o.lines` (ticket, default `['RECOMMENDED:', '$6.89']`), `o.shadow`, `o.ground`.
-Anchors: `slot`, `ticketTip`, `hopper` (the mouth, where the stream ends), `hopperNeck`, `eye`, `dial` {x, y, r}, `needleTip`, `top`, `ground`, `body` {x0, y0, x1, y1}.
+Options: `o.scope` 0 (periscope down) to 1 (up), `o.look` (the pupil), `o.blink` (a lid of the periscope's color closes over the lens), `o.level` 0..1 (needle from LOW to HIGH), `o.name`, `o.source`, `o.lines` (ticket, default `['RECOMMENDED:', '$6.89']`), `o.shake` (frame px, signed: the body's shudder set by the scene; without it `print` and `think` shudder on their own), `o.ticketRot` (radians: the strip swings about the slot), `o.shadow` (the spot lies on the floor only, below the ground line), `o.ground`.
+Anchors: `slot`, `ticketTip`, `ticketTop`, `hopper` (the mouth, where the stream ends), `hopperNeck`, `eye`, `dial` {x, y, r}, `needleTip`, `top`, `ground`, `body` {x0, y0, x1, y1}.
 
 The machine **recommends**; it never types, charges, takes money from a customer or sets the price on the tag (10.15).
 
@@ -445,7 +445,7 @@ Anchors: `window`, `shelf` {x0, x1, y}, `counterY`, `tagTop`, `sign`, `owner` an
 
 The price tag moves, so it is a cel: a `tag` card with rounded corners and the price in ink `note` lettering. `(x, y)` is the card's top center; `o.w`, `o.h` (G1: 280 x 150; G4: 440 x 280), `o.price`, `o.swing`.
 - `o.hang`: `'corners'` (two strings to the top corners, the G1 card; the default) or `'holes'` (two punched holes, the G4 card); `o.strings` `'up'`, `'dangle'` (held in a hand, 14) or `'none'`; `o.drop` the string length above the card; `o.pivot` `'strings'` (rock about the string tops, G1) or `'top'` (about the card's top center, G4).
-- `o.size` the glyph height px and `o.baseline` px below the card top (G1: 100 and 115, the defaults in proportion to `o.h`; G4: 160 and 230).
+- `o.size` the glyph height px and `o.baseline` px below the card top (G1: 100 and 115, the defaults in proportion to `o.h`; G4: 160 and 230). Without slots the price is set tight and its letters narrowed (`lib.letters` `squeeze`) until it fits 0.93 of the card, so the glyphs keep their height (G8: 100 tall between x 550 and 810).
 - `o.slots` [[x0, x1], ...] the frame x of each glyph on the unrotated card (G4: [[505, 585], [590, 675], [680, 710], [715, 800], [805, 890]]); `o.count` how many glyphs show, for the typing in 14; `o.popLast` the scale of the newest glyph for its 2-frame pop.
 - Returns `pivot`, `center`, `bottom` and `holes` (the two hole centers, where dangling strings start).
 
@@ -476,7 +476,7 @@ All cels with `slate` bodies, white keys and flat `screen` screens.
 - `props.handset`: the handset alone, `o.w`, `o.rot`; anchors `ear`, `mouth`, `cord`. `props.cord(ctx, a, b)` draws the curly cord between two points.
 - `props.mobile`: a smartphone with lines of text on its screen (the franchisee portal message), for a scene that needs one.
 - `props.register`: a till with keys, a display on a stalk (`o.text`) and a drawer that slides out 40 px with `o.drawer` 0..1. G2: `w: 200` from (960, 1100).
-- `props.keypad`: 3 by 4 keys of 92 px with 12 px gaps at `w: 300` (storyboard 14), a screen strip with the price typed so far (`o.text`), `o.press` sinks one key 6 px; anchor `key(i)` gives each key's center for the finger.
+- `props.keypad`: 3 by 4 keys of 92 px with 12 px gaps at `w: 300` (storyboard 14), a screen strip with the price typed so far (`o.text`), `o.press` sinks one key 6 px, `o.labels` an array of 12 key labels (a `'.'` key for the price); anchor `key(i)` gives each key's center for the finger.
 
 ### 10.11 The wall map (`lib.props.map`)
 

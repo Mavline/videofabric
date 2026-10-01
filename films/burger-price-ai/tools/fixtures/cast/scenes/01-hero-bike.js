@@ -9,7 +9,7 @@ FILM.scene({
     const ground = (y) => L.pencil(ctx, [[20, y], [1060, y + 2]], { color: L.mix(P.grass, P.ink, 0.35), width: 2, seed: y });
     L.text(ctx, 'hero · on the bicycle (street plate)', 40, 60, { size: 30, color: P.ink, weight: 400 });
     const H = 250;
-    const rows = [[440, [['ride', { pose: 'ride', phase: 0, cycle: 4 }], ['ride phase .25', { pose: 'ride', phase: 0.25, cycle: 4 }], ['ride phase .5', { pose: 'ride', phase: 0.5, cycle: 4 }]]],
+    const rows = [[440, [['ride', { pose: 'ride', phase: 0, cycle: 4 }], ['ride phase .25', { pose: 'ride', phase: 0.25, cycle: 4 }], ['ride phase .5, bob 4', { pose: 'ride', phase: 0.5, cycle: 4, bob: 4 }]]],
       [880, [['crouch', { pose: 'crouch' }], ['dash (speed lines)', { pose: 'dash', t: 0.3 }], ['straddle', { pose: 'straddle' }]]],
       [1320, [['skid (+ dust)', { pose: 'skid' }], ['coins', { pose: 'coins' }], ['slap (+ star)', { pose: 'slap' }]]],
       [1760, [['snatch (+ smear)', { pose: 'snatch', target: [0, 0] }], ['spin k .5 (front)', { pose: 'spin', k: 0.5 }], ['spin k 1', { pose: 'spin', k: 0.9 }]]]];
