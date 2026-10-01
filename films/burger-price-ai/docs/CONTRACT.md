@@ -9,6 +9,9 @@ A film of "One burger, two prices": how McDonald's AI pricing engine recommends 
 It ships as one self-contained HTML file and as a rendered MP4 for YouTube Shorts.
 The look and editing follow `docs/art-bible.md`, whose sections 1–9 are rewritten for this film from `docs/reference-analysis.md` (the Soviet-cartoon manner), not the skill's default inked-paper house style.
 
+
+> Note for this film (2026-10-01): the house-style post-processing is off. `core` applies no grain and no 12 fps boil; the manner helpers, the cast (`FILM.lib.cast`) and the props (`FILM.lib.props`) listed in `docs/art-bible.md` extend the lib surface below. Where this file and the art bible disagree on drawing rules, the art bible wins.
+
 ## Hard rules
 
 1. **No media.** The shipped HTML contains no images, video, audio files, fonts files, base64, `data:` URLs, `<img>`, `new Image`, `fetch`, `XMLHttpRequest`, or CSS `url(...)`. Every pixel and every sample is computed.
