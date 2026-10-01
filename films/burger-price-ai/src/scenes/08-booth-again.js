@@ -201,8 +201,8 @@
     if (f > 36) return null;
     if (f < 22) return [PUSH_X[0], BURGER_Y];
     if (f < 24) return [PUSH_X[0] - 14, BURGER_Y]; // drawn back before the push
-    // the push on twos over 6 frames, easing out: drawings at f 24, 26, 28, at rest from f 30
-    return [L.lerp(PUSH_X[0], PUSH_X[1], L.ease.outQuad(Math.min(1, Math.floor((f - 24) / 2) / 3))), BURGER_Y];
+    // the push on twos over 6 frames, easing out as in 02 (outCubic): drawings at f 24, 26, 28, at rest from f 30
+    return [L.lerp(PUSH_X[0], PUSH_X[1], L.ease.outCubic(Math.min(1, Math.floor((f - 24) / 2) / 3))), BURGER_Y];
   }
 
   // ---- the hero: options for cast.hero at zoom 1 (rig in his design units, x to the frame's right),
