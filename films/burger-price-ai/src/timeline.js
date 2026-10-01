@@ -114,7 +114,7 @@
         title: 'The pricing machine eats',
         // the second half of the dip to black; the first half is drawn by price-689
         transitionIn: { kind: 'flash', dur: 0.375, color: FILM.lib.pal.ink },
-        brief: `Comes up from black. Dense machine room: nightSky back wall under dense strokes, a wall map of red restaurant dots, the G3 machine below (box on legs, periscope retracted, WILLINGNESS TO PAY gauge, front slot). Seeded streams of receipts and coins arc from the dots into the slot; white captions nearly 14,000 restaurants (18.25) and millions of orders a day (18.5); the slot gobbles on 19.0 and 19.5. A picture of the analysis, not a real device.`,
+        brief: `Comes up from black. Dense machine room: nightSky back wall under dense strokes, a wall map of red restaurant dots, the G3 machine below (box on legs, hopper on top, periscope retracted, SENSITIVITY TO PRICE gauge, front slot). Seeded streams of receipts and coins leap from the dots and fall into the hopper; white captions nearly 14,000 restaurants (18.25) and millions of orders a day (18.5); the hopper gulps on 19.0 and 19.5. A picture of the analysis, not a real device.`,
       },
       {
         id: 'periscope-view',
@@ -134,7 +134,7 @@
         mode: 'schematic',
         title: 'The gauge and the ticket',
         transitionIn: cut,
-        brief: `G3 on the same pixels as 10, the periscope raised, the G7 caption still on. The gauge needle crawls from LOW in ratchet steps on 16ths and lands on MEDIUM on 21.5; four print clicks on 16ths (21.75 to 22.125) push a ticket out of the slot, readable from 22.25: RECOMMENDED: $6.89. The machine recommends; it never sets the price.`,
+        brief: `G3 on the same pixels as 10, the periscope raised, the G7 caption still on. On the SENSITIVITY TO PRICE gauge, with based on willingness to pay in your area lettered small under it, the needle crawls from LOW in ratchet steps on 16ths and lands on MEDIUM on 21.5; four print clicks on 16ths (21.75 to 22.125) push a ticket out of the front slot, readable from 22.25: RECOMMENDED: $6.89. The machine recommends; it never sets the price.`,
       },
       {
         id: 'owner-ticket',
@@ -182,9 +182,9 @@
         start: 28,
         end: 30,
         mode: 'illustrated',
-        title: 'Same burger, different neighbourhood',
+        title: 'Same burger, different neighborhood',
         transitionIn: cut,
-        brief: `G5 and G4 on the same pixels as 03 with the modest street behind; the tag reads $5.69 and frame 0 is 03's frame 0. Same burger. pops at 28.25, the chomp lands at 28.5, Different / neighbourhood. pops at 28.75, in ink on a titleSpot blob in the caption slot; then chewing, and bliss at 29.5 held to the cut.`,
+        brief: `G5 and G4 on the same pixels as 03 with the modest street behind; the tag reads $5.69 and frame 0 is 03's frame 0. Same burger. pops at 28.25, the chomp lands at 28.5, Different / neighborhood. pops at 28.75, in ink on a titleSpot blob in the caption slot; then chewing, and bliss at 29.5 held to the cut.`,
       },
       {
         id: 'sources-card',
@@ -194,7 +194,7 @@
         mode: 'illustrated',
         title: 'Sources, and the booth again',
         transitionIn: cut,
-        brief: `G1 on the same pixels as 01: the modest street, the $5.69 tag, the owner bored in the window, no hero. Hand-lettered sources on titleSpot blobs in the sky zone: Sources: Reuters / CNBC, / Engadget, Restaurant Business / Sept 29 – Oct 1, 2026, and the channel mark Ideas & Technologies drawing on from 30.5. The owner yawns at 31.0 and is back in 01's frame-0 pose by 31.5, so the last frame loops into 01.`,
+        brief: `G1 on the same pixels as 01: the modest street, the $5.69 tag, the owner bored in the window, no hero. Hand-lettered sources on titleSpot blobs in the sky zone: Sources: Reuters / CNBC, / Engadget, Restaurant Business / Sept 29 – Oct 1, 2026, a small two-line note Reuters could not confirm the Fresno gap came from the engine., and the channel mark Ideas & Technologies drawing on from 30.5. The owner yawns at 31.0 and is back in 01's frame-0 pose by 31.5, so the last frame loops into 01.`,
       },
     ],
     cues: [
@@ -240,7 +240,7 @@
       { t: 18, kind: 'cut', note: 'Bar 10, the machine in D minor: woodblock tick-tock on 8ths (900 Hz, 1.2 kHz), pizzicato ostinato D3 A3 F3 A3 on 16ths, clarinet pedal D2, hum (55 Hz saw low-passed at 300 Hz, 2 Hz wobble)' },
       { t: 18.25, kind: 'sfx', note: 'Receipt stream until 20.0: rustling paper (granular band noise 2 to 6 kHz), seeded coin clinks on 16ths panned left and right; soft wood tick for caption 1' },
       { t: 18.5, kind: 'sfx', note: 'Soft wood tick for caption 2' },
-      { t: 19, kind: 'sfx', note: 'Slot gobbles on 19.0 and 19.5: mechanical chomp, sine thunk 80 Hz plus a click' },
+      { t: 19, kind: 'sfx', note: 'Hopper gulps on 19.0 and 19.5: mechanical gulp, sine thunk 80 Hz plus a click' },
       { t: 20, kind: 'cut', note: 'Periscope view: creaky squeak (saw 300 to 900 Hz through a narrow band-pass, 0.3 s), whirr under the pan, suspended chord' },
       { t: 20.25, kind: 'sfx', note: 'Soft wood tick for the engine caption' },
       { t: 20.5, kind: 'hit', note: 'The view locks on the columns: clunk (sine 150 Hz, 40 ms, plus click) and xylophone cluster C6 D6 E6' },
@@ -269,7 +269,7 @@
       { t: 28, kind: 'cut', note: 'Bar 15, the bite again: burger motif returns warm in F major; mouth opens on the clarinet glissando C4 to C5, as at 3.5' },
       { t: 28.25, kind: 'sfx', note: 'Same burger. pops: xylophone A5' },
       { t: 28.5, kind: 'hit', note: 'Chomp, as at 4.0' },
-      { t: 28.75, kind: 'sfx', note: 'Different neighbourhood. pops: xylophone C6; chewing squelches on 8ths' },
+      { t: 28.75, kind: 'sfx', note: 'Different neighborhood. pops: xylophone C6; chewing squelches on 8ths' },
       { t: 29.5, kind: 'sfx', note: 'Bliss: xylophone glissando F5 to F6, as at 5.0' },
       { t: 30, kind: 'cut', note: 'Bar 16 sources card: closing cadence, pizzicato F2 C3 F2 on the beats, burger motif slower on xylophone, clarinet holds A4, brushed cymbal swish' },
       { t: 30.5, kind: 'sfx', note: 'Channel mark draws on: xylophone sparkle C6 E6 G6 C7 on 32nds' },

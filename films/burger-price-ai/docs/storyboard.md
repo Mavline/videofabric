@@ -4,7 +4,7 @@ The plan every agent works from. Times are global seconds `T` unless a line says
 
 ## Logline
 
-A boy on a bicycle buys a burger for $5.69, rides two miles into a richer neighbourhood and finds the same burger at $6.89; behind the gap, a pricing engine recommends an "optimal price" for each restaurant from what people nearby will pay, and a tired owner types that price in himself.
+A boy on a bicycle buys a burger for $5.69, rides two miles into a richer neighborhood and finds the same burger at $6.89; behind the gap, a pricing engine recommends an "optimal price" for each restaurant from what people nearby will pay, and a tired owner types that price in himself.
 Drawn in the manner of 1960s–70s Soviet hand-drawn cartoons: a light street plate for the story, a dense textured plate for the machine and the owner, hard cuts on a 120 bpm grid in a vertical 9:16 frame, scored by a synthesised puppet-jazz band.
 
 ## Numbers
@@ -36,7 +36,7 @@ Drawn in the manner of 1960s–70s Soviet hand-drawn cartoons: a light street pl
 | 14 | owner-types | 24.0 | 26.0 | schematic | A sigh, then he types the price |
 | 15 | turn-back | 26.0 | 27.0 | illustrated | Crouch, spin, dash |
 | 16 | ride-back | 27.0 | 28.0 | illustrated | Two miles back |
-| 17 | bite-again | 28.0 | 30.0 | illustrated | Same burger, different neighbourhood |
+| 17 | bite-again | 28.0 | 30.0 | illustrated | Same burger, different neighborhood |
 | 18 | sources-card | 30.0 | 32.0 | illustrated | Sources, and the booth again |
 
 Mode names are the pipeline's: `illustrated` is this film's light street plate (the Rusakov manner), `schematic` is this film's dense textured plate (the Savchenko manner). There is no blueprint plate in this film.
@@ -44,7 +44,7 @@ Mode names are the pipeline's: `illustrated` is this film's light street plate (
 ## Structure
 
 Act 1, bars 1 to 4 (0 to 8 s), "A burger for $5.69": the booth, the owner serves, the bite, the title.
-Act 2, bars 5 to 8 (8 to 16 s), "Two miles": three neighbourhoods, each richer than the last, the mile counter from 0 to 2, the same booth again, and a push-in on the hero's eyes that lands on the midpoint.
+Act 2, bars 5 to 8 (8 to 16 s), "Two miles": three neighborhoods, each richer than the last, the mile counter from 0 to 2, the same booth again, and a push-in on the hero's eyes that lands on the midpoint.
 Act 3, bars 9 to 13 (16 to 26 s), "Where $6.89 comes from": the tag at $6.89 on the bar 9 downbeat, a dip to black, the pricing machine (it eats, it looks, it recommends), then the owner (the ticket, the phone, the sigh, the keypad).
 Act 4, bars 14 to 16 (26 to 32 s), "Back to $5.69": crouch and dash, two miles back, the same bite, the sources over the opening booth.
 
@@ -84,12 +84,12 @@ Reading time for the must-read words, from the frame each one is readable to the
 | $6.89 and +21% | 09 | 16.0 and 16.375 to 17.625 | 1.6 and 1.25 |
 | nearly 14,000 restaurants; millions of orders a day | 10 | 18.375 and 18.625 to 20.0 | 1.6 and 1.4 |
 | The engine recommends an "optimal price" for each restaurant. | 11, 12 | 20.375 to 22.5 | 2.1 |
-| WILLINGNESS TO PAY, MEDIUM | 12 | 21.0 to 22.5 | 1.5 |
+| SENSITIVITY TO PRICE, MEDIUM; based on willingness to pay in your area | 12 | 21.0 to 22.5 | 1.5 |
 | RECOMMENDED: $6.89 | 12, 13 | 22.25 to 22.5, 23.0 to 24.0 | 1.25 |
 | McDonald's: "a tool, not a mandate" | 13 | 22.625 to 24.0 | 1.4 |
 | Ex-owner: "You don't really have much of a choice anymore." | 14 | 24.0 to 26.0 | 2.0 |
-| Same burger. Different neighbourhood. | 17 | 28.375 and 28.875 to 30.0 | 1.6 and 1.1 |
-| Sources, Ideas & Technologies | 18 | 30.0 and 31.0 to 32.0 | 2.0 and 1.0 |
+| Same burger. Different neighborhood. | 17 | 28.375 and 28.875 to 30.0 | 1.6 and 1.1 |
+| Sources and the Reuters caveat; Ideas & Technologies | 18 | 30.0 and 31.0 to 32.0 | 2.0 and 1.0 |
 
 ## Conventions
 
@@ -109,7 +109,7 @@ Reading time for the must-read words, from the frame each one is readable to the
 
 - **Hero**: a boy of about ten on a green bicycle; hairYellow hair under a cap-coloured cap, red shirt, slate shorts, shoe shoes, skinKid and blushKid, iris eyes. Poses used: riding (a four-drawing pedal cycle), skid, standing over the bike with one foot down, holding up coins, slapping coins, snatching, mouth open with the burger raised, chomp, chewing, bliss (eyes shut as arcs), gulp, sniff and grin, sprinting on the pedals, looking up, eyes popped on stalks, jaw drop, glare, crouch, spin, dash.
 - **Owner**: a tired adult in a white apron over a pink shirt, slate trousers, hairGrey fringe and moustache, skin and blush. Poses used: bored with his chin on his hand (booth window), pushing a burger, raking coins, tapping coins, pointing up, catching, reading a ticket, turning to the phone, listening with the phone pinned between ear and shoulder, sighing, typing on a keypad, holding the tag up, holding a burger out, blinking, yawning. Seen three-quarter from behind in 02, 08 and 13, and from the front in 14.
-- **Pricing machine**: a box on two thin legs with big shoes, a periscope whose lens is an eye, a front slot, the WILLINGNESS TO PAY gauge on its front. Poses used: idle, gobbling, periscope down and up, eye blink, needle at any angle, printing shudder, ticket out.
+- **Pricing machine**: a box on two thin legs with big shoes, a hopper on top that swallows the purchase stream, a periscope whose lens is an eye, a front slot that gives out the ticket, and the SENSITIVITY TO PRICE gauge on its front. Poses used: idle, hopper gulping, periscope down and up, eye blink, needle at any angle, printing shudder, ticket out.
 - **Props**: burger (whole and bitten), booth with sign, awning, window and hanging price tag ($5.69 or $6.89), bicycle, coins, modest houses with fences, a rich house with columns, fountain, gauge, ticket (RECOMMENDED: $6.89), phone, keypad, wall map of restaurant dots, purchase stream (receipts and coins).
 
 ## Shared geometry
@@ -156,16 +156,17 @@ The camera stands inside, behind the counter, looking out through the window. Al
 10 and 12 draw the machine with the same placement.
 
 - Body: x 200 to 880, y 820 to 1300, machine fill, ink outline, corner radius 40.
-- Name band: a white strip x 230 to 850, y 835 to 895, with WILLINGNESS TO PAY in ink, cap height 38, baseline y 882, centred on x 540.
+- Name band: a white strip x 230 to 850, y 835 to 895, with SENSITIVITY TO PRICE in ink, cap height 34, baseline y 880, centred on x 540 (about x 240 to 840). The wording is the franchisee screen's own.
 - Gauge: the dial face (dial) is the upper half-disc with its pivot at (540, 1150) and radius 190. Ticks every 10 degrees from 200 to 340 degrees, in canvas angles where 270 points straight up. Labels in ink, cap height 30: LOW centred on x 300, baseline 1145, on a small green patch; MEDIUM centred on x 540, baseline 955, on a titleYellow patch; HIGH centred on x 785, baseline 1145, on a red patch.
 - Needle: ink, 160 px long, tapering from 8 to 3 px, with a red pivot cap of radius 14. LOW is 200 degrees, MEDIUM 270, HIGH 340.
-- Slot, the machine's mouth: x 340 to 740, y 1215 to 1245, ink inside, a machineDark lip.
+- Source line under the gauge: a white strip x 290 to 790, y 1160 to 1205, with "based on willingness to pay in your area" lettered small in ink, cap height 22, baseline y 1192, centred on x 540 (about x 300 to 780).
+- Slot: x 340 to 740, y 1215 to 1245, ink inside, a machineDark lip. Only the ticket comes out of it; nothing goes in.
 - Legs: from (390, 1300) and (690, 1300) down to y 1430, machineDark, 26 px wide; shoes in shoe, 150 x 50, at y 1430 to 1480, toes turned out.
 - Periscope: a machineDark tube 40 px wide at x 820 to 860. Retracted (10): its head, an elbow box 120 x 90, sits at x 780 to 900, y 730 to 820. Raised (12): the tube runs from y 820 up to 430 and the head sits at x 780 to 900, y 340 to 430. The lens is the eye: a white ball of radius 30 on the head's left face with an ink pupil of radius 12.
-- Intake: the purchase stream goes into the slot. If the cast's machine also has a hopper on top, the stream may drop into the hopper instead (opening x 300 to 740 at y 720); the ticket always comes out of the slot.
+- Hopper, the intake: a machineDark funnel on the body's top, its mouth x 300 to 740 at y 720, narrowing to a neck x 470 to 570 at y 820. Receipts and coins fall into the hopper; the ticket comes out of the front slot.
 - Ticket (12): a ticket-coloured strip x 390 to 690 that grows out of the slot from y 1245 down to y 1490. RECOMMENDED: in ink, cap height 30, baseline 1300, centred on x 540; $6.89 in ink, cap height 90, baseline 1430, centred on x 540.
 - Room, dense plate: the back wall in nightSky under dense short strokes, the floor in pavement from y 1480 with strokes along the perspective.
-- Wall map (10): a ticket-coloured sheet pinned to the back wall, x 80 to 1000, y 400 to 780: a pale land shape, about 140 red dots of radius 7 for restaurants and a dozen tiny booths.
+- Wall map (10): a ticket-coloured sheet pinned to the back wall, x 80 to 1000, y 400 to 700, so the hopper's mouth at y 720 sits just below it: a pale land shape, about 140 red dots of radius 7 for restaurants and a dozen tiny booths.
 
 ### G4: the price tag, close (03, 09, 14, 17)
 
@@ -218,16 +219,18 @@ The camera stands inside, behind the counter, looking out through the window. Al
 | 10 | nearly 14,000 restaurants | white | 52 | x 80 to 800, y 248 to 315 |
 | 10 | millions of orders a day | white | 52 | x 80 to 780, y 323 to 390 |
 | 11, 12 | The engine recommends / an "optimal price" / for each restaurant. | white | 46 | x 80 to 640, y 244 to 445 |
-| 12 | WILLINGNESS TO PAY | ink on the white band | 38 | x 245 to 835, y 844 to 882 |
+| 10, 12 | SENSITIVITY TO PRICE | ink on the white band | 34 | x 240 to 840, y 846 to 880 |
+| 10, 12 | based on willingness to pay in your area | ink on a white strip | 22 | x 300 to 780, y 1170 to 1198 |
 | 12 | LOW / MEDIUM / HIGH | ink | 30 | LOW x 268 to 332, y 1115 to 1145; MEDIUM x 482 to 598, y 925 to 955; HIGH x 750 to 820, y 1115 to 1145 |
 | 12 | RECOMMENDED: | ink on ticket | 30 | x 420 to 660, y 1270 to 1300 |
 | 12 | $6.89 (ticket) | ink on ticket | 90 | x 430 to 650, y 1340 to 1430 |
 | 13 | McDonald's: / "a tool, not a mandate" | white | 56 | x 80 to 800, y 244 to 395 |
 | 13 | RECOMMENDED: $6.89 (ticket in his hand) | ink on ticket | 26 and 72 | x 300 to 540, y 610 to 790 |
 | 14 | Ex-owner: / "You don't really / have much of a choice / anymore." | white | 44 | x 80 to 590, y 1206 to 1475 |
-| 17 | Same burger. / Different / neighbourhood. | ink on titleSpot | 52, 52, 48 | x 80 to 455, y 278 to 520 |
-| 18 | Sources: Reuters / CNBC, / Engadget, Restaurant Business / Sept 29 – Oct 1, 2026 | ink on titleSpot | 40 | x 220 to 860, y 250 to 425 |
-| 18 | Ideas & Technologies | titleBlue, I and T in titleYellow, ink outline | 56 | x 220 to 860, y 454 to 525 |
+| 17 | Same burger. / Different / neighborhood. | ink on titleSpot | 52, 52, 48 | x 80 to 455, y 278 to 520 |
+| 18 | Sources: Reuters / CNBC, / Engadget, Restaurant Business / Sept 29 – Oct 1, 2026 | ink on titleSpot | 36 | x 250 to 830, y 230 to 368 |
+| 18 | Reuters could not confirm the Fresno gap / came from the engine. | ink on titleSpot | 24 | x 280 to 800, y 378 to 440 |
+| 18 | Ideas & Technologies | titleBlue, I and T in titleYellow, ink outline | 56 | x 230 to 850, y 464 to 535 |
 
 Every box sits inside x 60 to 940 and y 220 to 1540, and none is under the Shorts button column (x 950 and beyond from y 1000 down). Hand lettering varies in width: a scene fits each line inside its box rather than trusting the cap height alone.
 
@@ -494,7 +497,7 @@ Exits on a hard cut to 06. Screen direction for the whole outbound trip is left 
 ### Subject
 
 The trip is two miles because the two real stores are two miles apart.
-It starts in the modest neighbourhood.
+It starts in the modest neighborhood.
 
 ### Sound
 
@@ -542,7 +545,7 @@ Exits on a hard cut to 07.
 
 ### Subject
 
-The neighbourhood is getting richer: bigger houses, lawns, a fountain.
+The neighborhood is getting richer: bigger houses, lawns, a fountain.
 
 ### Sound
 
@@ -641,7 +644,7 @@ Exits on a hard cut on the bar 9 downbeat, from the hero's eyes to the tag he is
 
 ### Subject
 
-The same kind of booth and the same burger, two miles away, in a richer neighbourhood.
+The same kind of booth and the same burger, two miles away, in a richer neighborhood.
 
 ### Sound
 
@@ -697,7 +700,7 @@ Exits through black into 10, which comes up from black.
 ### Subject
 
 The same burger costs $6.89 at another company-run store two miles away: a 21 percent premium, from the same Reuters check in September 2026. (6.89 − 5.69) / 5.69 = 0.211.
-Reuters could not confirm that this gap comes from the engine. The next shots show how the engine works in general, not proof for these two stores, so no scene adds a claim that the machine set this particular price.
+Reuters could not confirm that this gap comes from the engine. The next shots show how the engine works in general, not proof for these two stores, so no scene adds a claim that the machine set this particular price. Shot 18 states this caveat on screen.
 
 ### Sound
 
@@ -717,14 +720,14 @@ T 18.0 to 20.0, schematic, comes up from black (`flash` in ink, 0.375 s).
 ### Composition
 
 The machine's room on the dense plate: the back wall in nightSky under dense strokes, the pavement floor from y 1480.
-The wall map (G3) across the upper middle, x 80 to 1000, y 400 to 780, dotted with red restaurants.
+The wall map (G3) across the upper middle, x 80 to 1000, y 400 to 700, dotted with red restaurants.
 The G3 machine at the bottom with its periscope retracted.
-Streams of receipts and coins arc down from the map's dots into the slot.
+Streams of receipts and coins leap from the map's dots and fall into the hopper on top of the machine.
 Captions at the top: nearly 14,000 restaurants (baseline y 300) and millions of orders a day (baseline y 375), white, cap height 52, left edge x 80.
 
 ### Forms
 
-Machine: machine body, machineDark legs and periscope, shoe shoes, dial face, white name band, ink outlines.
+Machine: machine body, machineDark legs, periscope and hopper, shoe shoes, dial face, white name band and source strip, ink outlines.
 Map: a ticket-coloured sheet, a pale land shape, red dots of radius 7, a dozen tiny booths.
 Receipts: ticket-coloured rectangles 26 x 34 with three ink lines each and an ink outline. Coins: coin discs of radius 12 with an ink outline.
 Wall and floor strokes: dense, short, darker than their base; no pure white and no saturated colour in the background.
@@ -736,10 +739,10 @@ The two white captions. No rings and no arrows: the streams themselves show the 
 ### Motion
 
 T 18.0: frame 0 fully drawn under the black: the map, the idle machine, and the streams already in flight.
-Streams: about 40 particles at any moment, each on a parabolic arc from a seeded map dot to the slot centre (540, 1230) over 0.75 s, new ones leaving on every 16th; every position is a pure function of t and a seed.
+Streams: about 40 particles at any moment, each leaping up from a seeded map dot and falling on a parabolic arc into the hopper's mouth (centre 520, 720) over 0.75 s, new ones leaving on every 16th; every position is a pure function of t and a seed.
 T 18.25: caption line 1 pops (`outBack` over 3 frames).
 T 18.5 (beat): caption line 2 pops; the map dots pulse to 1.3 times and back over 6 frames with seeded phases.
-T 19.0 and 19.5 (beats): the slot gobbles: it snaps open and shut on ones over 3 frames and the whole machine squashes 4 percent and recovers.
+T 19.0 and 19.5 (beats): the hopper gulps: its neck squeezes and swells on ones over 3 frames and the whole machine squashes 4 percent and recovers.
 T 19.5 to 20.0: the streams thin out as the last coins dive in.
 Throughout: an idle hum shake of 1 px on twos.
 
@@ -763,7 +766,7 @@ The machine is the film's picture of that analysis, not a real device. Say "near
 T 18.0: bar 10, the machine in D minor: a woodblock tick-tock on 8ths (900 Hz and 1.2 kHz), a pizzicato ostinato on 16ths (D3 A3 F3 A3), a low clarinet pedal on D2, and the machine hum (a 55 Hz saw low-passed at 300 Hz with a 2 Hz wobble).
 T 18.25: the receipt stream until 20.0: rustling paper (granular bursts of band-passed noise between 2 and 6 kHz) with seeded coin clinks on 16ths panned left and right; a soft wood tick for the first caption.
 T 18.5: a soft wood tick for the second caption.
-T 19.0: the slot gobbles at 19.0 and 19.5: a mechanical chomp, a sine thunk at 80 Hz plus a click.
+T 19.0: the hopper gulps at 19.0 and 19.5: a mechanical gulp, a sine thunk at 80 Hz plus a click.
 
 ---
 
@@ -827,7 +830,7 @@ T 21.0 to 22.5, schematic, hard cut in.
 G3 on the same pixels as 10, with the periscope raised (head at x 780 to 900, y 340 to 430) and its eye looking down at the gauge.
 The wall map behind is still there but quieter: its dots no longer pulse.
 The G7 caption at the upper left on the same pixels as 11.
-The gauge reads WILLINGNESS TO PAY with LOW, MEDIUM and HIGH; the needle starts at LOW.
+The gauge reads SENSITIVITY TO PRICE with LOW, MEDIUM and HIGH, and under it the small line "based on willingness to pay in your area"; the needle starts at LOW.
 
 ### Forms
 
@@ -858,7 +861,7 @@ Exits on a hard cut to the owner, who catches this same ticket.
 ### Subject
 
 The engine generates what the company calls "the optimal price" for each item at each location: a recommendation (CNBC/Reuters).
-The franchisee screen shows messages such as "Your restaurant is showing medium sensitivity to price", based in part on "customer willingness to pay in your area". The gauge and its MEDIUM reading stand for that message.
+The franchisee screen shows messages such as "Your restaurant is showing medium sensitivity to price", based in part on "customer willingness to pay in your area". The gauge quotes that message word for word: SENSITIVITY TO PRICE at MEDIUM, with "based on willingness to pay in your area" under it.
 The ticket says RECOMMENDED, never SET. It is per restaurant: no faces of customers, no clock, no hour-by-hour change (Restaurant Business: no dynamic pricing, no pricing for individual consumers).
 
 ### Sound
@@ -1077,7 +1080,7 @@ T 27.875: the counter at zero: a bicycle bell ring.
 
 ---
 
-## 17 bite-again: Same burger, different neighbourhood
+## 17 bite-again: Same burger, different neighborhood
 
 T 28.0 to 30.0, illustrated, hard cut in.
 
@@ -1085,12 +1088,12 @@ T 28.0 to 30.0, illustrated, hard cut in.
 
 G5 and G4 on the same pixels as 03 and 09, on the modest street.
 The tag reads $5.69.
-In the caption slot, on a titleSpot blob: Same burger. (baseline y 330), Different (baseline y 420), neighbourhood. (baseline y 505).
+In the caption slot, on a titleSpot blob: Same burger. (baseline y 330), Different (baseline y 420), neighborhood. (baseline y 505).
 
 ### Forms
 
 As 03.
-Caption: ink, hand-lettered; cap height 52 for the first two lines and 48 for neighbourhood., so the longest line stays inside x 80 to 455.
+Caption: ink, hand-lettered; cap height 52 for the first two lines and 48 for neighborhood., so the longest line stays inside x 80 to 455.
 
 ### Overlays
 
@@ -1101,7 +1104,7 @@ The caption. Drawn effects: crumb strokes and an impact star on the chomp, as in
 T 28.0 (bar 15 downbeat): frame 0 is 03's frame 0 exactly: mouth open, burger raised, eyes on the tag.
 T 28.25: Same burger. pops (3 frames).
 T 28.5 (beat): chomp on ones, as at T 4.0.
-T 28.75: Different / neighbourhood. pops (3 frames); chewing on 8ths at 28.75, 29.0 and 29.25, on twos.
+T 28.75: Different / neighborhood. pops (3 frames); chewing on 8ths at 28.75, 29.0 and 29.25, on twos.
 T 29.5 (beat): bliss, as at T 5.0, with one sway; hold to T 30.0.
 
 ### Camera
@@ -1115,7 +1118,7 @@ Exits on a hard cut to the wide booth with the sources.
 
 ### Subject
 
-The gap is between neighbourhoods, two stores two miles apart; it is not between customers in one line, and not a price that changes by the hour.
+The gap is between neighborhoods, two stores two miles apart; it is not between customers in one line, and not a price that changes by the hour.
 
 ### Sound
 
@@ -1134,12 +1137,13 @@ T 30.0 to 32.0, illustrated, hard cut in; its last frame loops into 01.
 ### Composition
 
 G1 on the same pixels as 01, on the modest street, with the $5.69 tag and the owner bored in the window, and no hero.
-In the sky's lettering zone, on titleSpot blobs, centred on x 540: Sources: Reuters / CNBC, (baseline y 290), Engadget, Restaurant Business (baseline y 350), Sept 29 – Oct 1, 2026 (baseline y 410), and the channel mark Ideas & Technologies (baseline y 510).
+In the sky's lettering zone, on titleSpot blobs, centred on x 540: Sources: Reuters / CNBC, (baseline y 266), Engadget, Restaurant Business (baseline y 312), Sept 29 – Oct 1, 2026 (baseline y 358), a small two-line note Reuters could not confirm the Fresno gap / came from the engine. (baselines y 402 and 432), and the channel mark Ideas & Technologies (baseline y 520).
 
 ### Forms
 
 As 01.
-Source lines: ink, hand-lettered, cap height 40.
+Source lines: ink, hand-lettered, cap height 36.
+Caveat note: ink, hand-lettered, cap height 24, smaller than the sources so it reads as a footnote.
 Channel mark: titleBlue letters with ink outlines, the I and the T in titleYellow, cap height 56, the baseline jumping a little from letter to letter as on the title card.
 
 ### Overlays
@@ -1148,7 +1152,7 @@ The lettering only.
 
 ### Motion
 
-T 30.0 (bar 16 downbeat): frame 0: the booth and the three source lines fully drawn.
+T 30.0 (bar 16 downbeat): frame 0: the booth, the three source lines and the caveat note fully drawn.
 T 30.5 (beat): the channel mark draws on letter by letter over 12 frames on twos, then holds.
 T 31.0 (beat): the owner yawns once on twos and is back in 01's frame-0 pose (chin on hand) by T 31.5.
 T 31.5 to 32.0: hold. The last frame equals 01's frame 0 plus the lettering and minus the hero's front wheel.
@@ -1165,6 +1169,7 @@ On the loop replay, the cut to 01's frame 0 keeps every G1 pixel: only the lette
 ### Subject
 
 Sources as captured on October 1, 2026: the Reuters report of September 29, 2026 as carried by CNBC; Engadget, September 29 to 30; Restaurant Business, October 1.
+The small note repeats Reuters' own caveat: it could not confirm that the Fresno gap came from the engine. It covers both the machine's $6.89 ticket and the franchise owner, while both Fresno stores are in fact company-run.
 
 ### Sound
 
