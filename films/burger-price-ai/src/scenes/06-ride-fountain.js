@@ -12,7 +12,7 @@
 //   2 the fountain's three jets: on each beat (T 10.0, 10.5, 11.0) they leap to full height on ones, then
 //     sag on twos (background: washes and pencil, no ink)
 //   3 three speed lines behind the hero (05's speedTrail)
-//   4 the hero riding, wheel radius 107 as in every ride shot: front wheel centre x = 40 + 700 t on twos, wheels
+//   4 the hero riding, wheel radius 107 as in every ride shot: front wheel centre x = 40 + 760 t on twos, wheels
 //     on y 1480, four pedal drawings a turn on twos, the body bobbing 4 px a stroke; at T 10.5 a double take
 //     toward the fountain, then his eyes, and at last his head, follow it as he rides past
 //   5 the G6 mile counter: 1 (T 10.0), 1.25 (T 10.5), 1.5 (T 11.0), each popping as it changes
@@ -248,7 +248,7 @@
   function speedTrail(ctx, L, x, y, h, u, k) {
     const at = (p, dx) => [x + (p[0] + dx) * h, y + p[1] * h];
     [at(u.chest, -0.65 * u.headR), at(u.seat, -0.4 * u.wheelR), at(u.rear, -u.wheelR)].forEach((p, i) =>
-      L.speedLines(ctx, p[0], p[1], 0, { n: 1, spread: 0, len: [60, 90], gap: 12, width: 3.5, alpha: 0.5, seed: 21 + i * 3 + (k % 3) }));
+      L.speedLines(ctx, p[0], p[1], 0, { n: 1, spread: 0, len: [60, 90], gap: 12, width: 4, alpha: 0.5, seed: 21 + i * 3 + (k % 3) }));
   }
 
   FILM.scene({
@@ -270,7 +270,7 @@
       // 3 and 4 the hero, wheel radius 107 as in every ride shot; the ground point sits behind the front wheel centre
       const u = heroUnit(L);
       const h = 107 / u.wheelR;
-      const x = 40 + 700 * tw - u.front * h;
+      const x = 40 + 760 * tw - u.front * h; // 760 px/s in every ride shot (the lead's decision)
       speedTrail(ctx, L, x, GROUND, h, u, k);
       // the fountain's crown as he sees it: ahead and up, then above, then behind him
       const dx = FX - (x + u.head[0] * h), dy = BOWL_Y - 0.85 * JET_C - (GROUND + u.head[1] * h);
