@@ -122,14 +122,16 @@
   // end of the G1 block
   // ===========================================================================
 
-  // The hero at G1's stop mark, the call from art bible section 8: h 510.6 puts his wheels at x 150 and 430
-  // (radius 80) with his ground point (under the bottom bracket) at x 290.
-  const HERO_H = 510.6;
+  // The hero at G1's stop mark: wheels of radius 80 on the ground line y 1480, centred at x 150 and 430, his
+  // ground point (under the bottom bracket) halfway between them at x 290.
+  const WHEEL_R = 80;
   const STOP = 290;
   const COINS = [560, 1262]; // where the slapped coins land on the shelf (G1)
 
-  // His joints, measured once from the anchors of his own poses (drawn through an empty clip), so the scene
-  // follows the library when it refines his proportions. A pure function of the library; built on first use.
+  // His measures come from the cast's own anchors, so the library may refine his proportions (as heroUnit in
+  // 06): one probe per pose at height 300 with the ground point at the origin, drawn through an empty clip, so
+  // the probe's pixels are his design units. His standing height is the one that gives the wheels radius 80.
+  // A pure function of the library, built on first use.
   let BASE = null;
   function heroBase(ctx, L) {
     if (BASE) return BASE;
@@ -138,25 +140,25 @@
       ctx.beginPath();
       ctx.rect(0, 0, 0, 0);
       ctx.clip();
-      const a = L.cast.hero(ctx, STOP, G1.ground, Object.assign({ h: HERO_H }, o));
+      const a = L.cast.hero(ctx, 0, 0, Object.assign({ h: 300, shadow: false }, o));
       ctx.restore();
       return a;
     };
     const st = m({ pose: 'straddle' }), co = m({ pose: 'coins' }), ri = m({ pose: 'ride', phase: 0 });
-    const s = HERO_H / 300; // his design units: standing height 300 (art bible 10.1)
-    const D = (p) => [(p[0] - STOP) / s, (p[1] - G1.ground) / s];
-    const neck = D(st.neck), chest = D(st.chest);
+    const h = (WHEEL_R * 300) / st.wheelR; // his standing height px
+    const s = h / 300; // px per design unit
+    const px = (u) => [STOP + u[0] * s, G1.ground + u[1] * s];
     BASE = {
-      s,
+      h,
       // the straddle's hip, from its chest anchor (60 percent of the way from the hip to the neck)
-      hip: [(chest[0] - 0.6 * neck[0]) / 0.4, (chest[1] - 0.6 * neck[1]) / 0.4],
-      neck,
-      head: D(st.head),
-      px: (u) => [STOP + u[0] * s, G1.ground + u[1] * s],
-      frontDx: st.axleFront[0] - STOP, // bottom bracket to the front axle
-      rearX: st.axleRear[0], // the rear tyre's contact with the pavement
-      coinsHand: co.hand, // the raised fist of coins
-      rideBack: ri.chest[0] - STOP - 0.14 * HERO_H, // the back of his shirt while he pedals
+      hip: [(st.chest[0] - 0.6 * st.neck[0]) / 0.4, (st.chest[1] - 0.6 * st.neck[1]) / 0.4],
+      neck: st.neck,
+      head: st.head,
+      px,
+      frontDx: st.axleFront[0] * s, // bottom bracket to the front axle
+      rearX: STOP + st.axleRear[0] * s, // the rear tyre's contact with the pavement
+      coinsHand: px(co.hand), // the raised fist of coins
+      rideBack: (ri.chest[0] - 42) * s, // the back of his shirt while he pedals (42 = 0.14 of his height)
     };
     return BASE;
   }
@@ -275,7 +277,7 @@
       if (f === 36 || f === 37) L.impactStar(ctx, COINS[0] - 10, COINS[1] - 14, f === 36 ? 70 : 78, { rot: f === 36 ? 0 : 0.18, seed: sd('star') });
 
       // 8 the hero
-      C.hero(ctx, x, G1.ground, Object.assign({ h: HERO_H, facing: 1 }, ho));
+      C.hero(ctx, x, G1.ground, Object.assign({ h: B.h, facing: 1 }, ho));
     },
   });
 })();
