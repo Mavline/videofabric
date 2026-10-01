@@ -12,7 +12,8 @@
 //   2 the skid dust at the window's bottom edge (first 4 frames, on ones)
 //   3 the hero outside, front view, the street line, clipped to the window opening; the burger in flight
 //     through the window and its smear (f 37, f 38)
-//   4 the inside: 02's dense plate, 02's code and seeds (the wall is the same painting in 02, 08 and 13)
+//   4 the inside: 02's dense plate, 02's code and seeds (the wall, the counter and the floor are the same
+//     painting in 02, 08 and 13)
 //   5 on the counter: the burger, the coins, the telephone, the register (cels)
 //   6 the owner from behind (cel); the whip smear and the tap marks (drawn effects)
 //
@@ -50,7 +51,8 @@
   // ---- G2 at its pixels (02's numbers) ----
   const WIN = { x0: 240, y0: 560, x1: 840, y1: 1100 }; // window opening
   const FRAME = 30; // the frame around it
-  const TOP = { y0: 1100, y1: 1170 }; // counter top across the whole width; its inner side runs to the bottom edge
+  const TOP = { y0: 1100, y1: 1170 }; // counter top across the whole width; its inner side runs down to the floor
+  const FLOOR_Y = 1570; // the booth's floor, from here to the bottom edge: the owner's shoes stand on it
   const OWN = { x: 92.5, y: 1636, h: 1167 }; // art bible 8: head at (180, 650), head height 210
   const HERO = { x: 560, y: 1483, h: 838 }; // art bible 8: hands on the sill at 465 and 655, y 1100
   const HS = HERO.h / 300; // one of the hero's design units in px
@@ -149,7 +151,7 @@
 
   // ---- layer 4: the inside, a dense plate with the window cut out (02's inside(), 02's seeds) ----
   function inside(ctx, L, P) {
-    L.plate(ctx, `${ID}|inside|02`, (g) => {
+    L.plate(ctx, `${ID}|inside|02-2`, (g) => {
       const fx0 = WIN.x0 - FRAME, fy0 = WIN.y0 - FRAME, fx1 = WIN.x1 + FRAME;
       L.dense(g, [rect(0, 0, 1080, TOP.y0), rect(fx0, fy0, fx1, TOP.y0)], { bounds: [0, 0, 1080, TOP.y0], base: P.wallWarm, dir: 'vertical', seed: sdIn(10) });
       L.dense(g, null, { bounds: [fx0, fy0, fx1 - fx0, FRAME], base: P.shadowWarm, dir: 'horizontal', seed: sdIn(11) });
@@ -161,6 +163,8 @@
       L.dense(g, null, { bounds: [0, TOP.y1, 1080, 1920 - TOP.y1], base: INNER, dir: 'vertical', seed: sdIn(17) });
       L.ragged(g, [[0, TOP.y0], [1080, TOP.y0 - 1]], { base: P.fence, width: 4, seed: sdIn(18) });
       L.ragged(g, [[0, TOP.y1], [1080, TOP.y1 + 1]], { base: P.fence, width: 5, seed: sdIn(19) });
+      L.dense(g, null, { bounds: [0, FLOOR_Y, 1080, 1920 - FLOOR_Y], base: P.pavement, dir: 'perspective', vp: [540, 900], seed: sdIn(20) });
+      L.ragged(g, [[0, FLOOR_Y], [1080, FLOOR_Y + 1]], { base: INNER, width: 5, seed: sdIn(21) });
       g.save();
       g.globalCompositeOperation = 'destination-out';
       g.fillRect(WIN.x0, WIN.y0, WIN.x1 - WIN.x0, WIN.y1 - WIN.y0);
@@ -392,7 +396,7 @@
       // 6 the owner from behind, drawn while his right edge (x 390 at zoom 1) is still in the frame
       if (S([390, 0])[0] > 0) {
         const os = ownerState(f, L, G);
-        const oo = { h: OWN.h * z, view: 'back', pose: os.pose, line: lw, ground: INNER };
+        const oo = { h: OWN.h * z, view: 'back', pose: os.pose, line: lw, ground: P.pavement }; // his shadow lies on the floor, as in 02
         if (os.target) oo.target = S(os.target);
         if (os.k != null) oo.k = os.k;
         if (os.tilt != null) oo.tilt = os.tilt;
