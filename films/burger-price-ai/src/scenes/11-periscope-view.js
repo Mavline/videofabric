@@ -34,24 +34,25 @@
   const FX = 380, RIM_Y = GROUND + 16, RIM_RX = 150, RIM_RY = 22, WALL = 26;
   const BOWL_Y = GROUND - 44, BOWL_R = 44, JET_C = 250, JET_S = 100;
 
-  // G7, the engine caption, as storyboard G7 and G8 give it: three white lines in the note face, cap
-  // height 46 (all three shrunk together if the longest overflows x 80 to 640), left edge x 80,
-  // baselines 290, 360 and 430. Shot 11 owns it; shot 12 copies this function verbatim so the caption
-  // keeps its pixels across the cut. k: the pop scale about the block's left edge (1 at rest).
-  // An ink pass goes under the white: invisible on 11's ink field, it keeps the third line readable
-  // over 12's pale wall map (G7's baseline 430 falls on G3's map, y 400 to 700).
+  // G7, the engine caption: three white lines in the note face from x 80, one size for all three (cap
+  // height 46 shrunk together until the longest fits x 80 to 760, so about 40). The lead widened G8's
+  // box from x 640 and raised the baselines from G7's 290, 360, 430 to 272, 328, 384, so the third
+  // line ends above y 392, clear of 12's wall map (y 400 to 700). Shot 11 owns it; shot 12 copies this
+  // function verbatim so the caption keeps its pixels across the cut. k: the pop scale about (80, 222),
+  // above the block, so the pop never lifts the first line past the safe top (y 220); 1 at rest.
+  // An ink pass goes under the white: invisible on 11's ink field, it rings the letters on 12's plate.
   function drawEngineCaption(ctx, L, k = 1) {
     const P = L.pal;
     const lines = ['The engine recommends', 'an "optimal price"', 'for each restaurant.'];
     let size = 46 / 0.71;
-    const w = Math.max(...lines.map((s, i) => L.letters(ctx, s, 80, 290, { size, face: 'note', seed: 1100 + i, measure: true }).w));
-    if (w > 560) size *= 560 / w;
+    const w = Math.max(...lines.map((s, i) => L.letters(ctx, s, 80, 272, { size, face: 'note', seed: 1100 + i, measure: true }).w));
+    if (w > 680) size *= 680 / w;
     ctx.save();
-    ctx.translate(80, 345);
+    ctx.translate(80, 222);
     ctx.scale(k, k);
-    ctx.translate(-80, -345);
+    ctx.translate(-80, -222);
     for (const pass of [{ color: P.ink, outline: P.ink, outlineWidth: 5.5 }, { color: P.white }]) {
-      lines.forEach((s, i) => L.letters(ctx, s, 80, 290 + 70 * i, Object.assign({ size, face: 'note', seed: 1100 + i }, pass)));
+      lines.forEach((s, i) => L.letters(ctx, s, 80, 272 + 56 * i, Object.assign({ size, face: 'note', seed: 1100 + i }, pass)));
     }
     ctx.restore();
   }

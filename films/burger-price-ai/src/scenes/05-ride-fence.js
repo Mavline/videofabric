@@ -22,7 +22,8 @@
   function drawMileCounter(ctx, L, value, popAge) {
     const P = L.pal;
     L.spot(ctx, 265, 300, 195, 70, { seed: 6 });
-    const o = { face: 'note', color: P.ink, seed: 6, size: 70 / 0.72 }; // digits stand 0.72 of the size
+    // letter seed 52: no 'i' of any value 0..2 drops below the line (seed 6 turned '1.25 mi' into 'mj')
+    const o = { face: 'note', color: P.ink, seed: 52, size: 70 / 0.72 }; // digits stand 0.72 of the size
     const widest = Math.max(...['0.25', '0.75', '1.25', '1.75'].map((v) => L.letters(ctx, v + ' mi', 0, 0, Object.assign({}, o, { measure: true })).w));
     o.size = Math.min(o.size, (o.size * 340) / widest);
     const str = value + ' mi';
@@ -38,7 +39,7 @@
     ctx.restore();
   }
 
-  const HERO_H = 428.6; // as in 01 (G1): wheel radius 80, the wheel centres 140 px either side of the ground point
+  const HERO_H = 510.6; // as in 01 (G1): wheel radius 80, the wheel centres 140 px either side of the ground point
   const GROUND = 1480; // G1 ground line, the pavement's top edge
   const YARD = 1145; // the houses stand back from the street on this line, so their roofs top out near y 880
   const COUNTER = [[0, 0], [0.5, 0.25], [1.0, 0.5], [1.5, 0.75]]; // shot-local t, miles; 0 is already up at the cut
@@ -111,15 +112,16 @@
     });
   }
 
-  // the 'ride' body of lib.cast.hero (hip [-42, -136], torso 84 leaning 24 degrees, head 46 out at half the
+  // the 'ride' body of lib.cast.hero (hip [-38, -128], torso 84 leaning 22 degrees, head 46 out at half the
   // lean), lowered by dy design units: the hands stay on the grips and the feet on the pedals, so the
   // body bobs while the bicycle rolls level.
-  // ponytail: copies the ride pose's numbers from lib.js; a bob option on the hero would replace it
+  // ponytail: copies the ride pose's numbers from lib.js (ride(22, HB.torso, [-38, -128], ..., 0.5, HB.neck));
+  // a bob option on the hero would replace it
   function rideBody(dy) {
     const D = Math.PI / 180;
-    const hip = [-42, -136 + dy];
-    const neck = [hip[0] + 84 * Math.sin(24 * D), hip[1] - 84 * Math.cos(24 * D)];
-    const head = [neck[0] + 46 * Math.sin(12 * D), neck[1] - 46 * Math.cos(12 * D)];
+    const hip = [-38, -128 + dy];
+    const neck = [hip[0] + 84 * Math.sin(22 * D), hip[1] - 84 * Math.cos(22 * D)];
+    const head = [neck[0] + 46 * Math.sin(11 * D), neck[1] - 46 * Math.cos(11 * D)];
     const bx = (-12 / 84) * (neck[0] - hip[0]), by = (-12 / 84) * (neck[1] - hip[1]);
     return { hip, neck, head, hipN: [hip[0] + 2, hip[1] + 2], hipF: [hip[0] - 3, hip[1]], shN: [neck[0] + bx + 3, neck[1] + by], shF: [neck[0] + bx - 4, neck[1] + by - 1] };
   }
