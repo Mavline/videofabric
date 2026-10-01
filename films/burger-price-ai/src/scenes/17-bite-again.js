@@ -2,18 +2,19 @@
 // street plate (illustrated). Hard cut in from 16, hard cut out to 18.
 //
 // G5 and G4 on 03's pixels: the modest street, the $5.69 tag, the hero in the bite pose. Frame 0 is 03's
-// frame 0. g5Street, g4Tag, tagSwing, g5Hero, HERO_OPEN, the wind-up, chomp and chew drawings, the crumbs
-// and the impact star are copied verbatim from src/scenes/03-first-bite.js and seeded from REF
-// 'first-bite', so the same drawings come back; if 03 changes them, copy them again. What differs from 03:
-// the chewing starts at f 18 (03: f 24), the bliss has one sway, the caption. The street plate is cached
-// under this shot's own key, so the two shots never share a cache entry.
+// frame 0. g5Street, g4Tag, tagSwing, g5Hero, g5HeroOpen (with faceLayer), holdAt, HERO_OPEN, the wind-up,
+// chomp and chew drawings, the crumbs and the impact star are copied verbatim from src/scenes/03-first-bite.js
+// (as committed in 1ce8dcf) and seeded from REF 'first-bite', so the same drawings come back; if 03 changes
+// them, copy them again. What differs from 03: the chewing starts at f 18 (03: f 24), the bliss has one sway,
+// the caption. The street plate is cached under this shot's own key, so the two shots never share a cache entry.
 //
 // Layers, back to front:
 //   1 the still street plate (03's g5Street)
 //   2 the caption in the G5 caption slot (G8 box x 80 to 455, y 278 to 520): ink 'note' lettering on two
 //     titleSpot blots, painted on the sky, so the tag hangs in front of the blots' right tips
 //   3 the $5.69 tag (G4), rocking plus or minus 2 degrees about (700, 300) on twos
-//   4 the hero: lib.cast.hero pose 'bite' from (304, 2024) at h 1289; the pose draws the burger
+//   4 the hero: lib.cast.hero pose 'bite' from (304, 2024) at h 1289; the pose draws the burger, and while
+//     the mouth is open (f 0 to 11) his face is laid over the burger so the open mouth shows, as in 03
 //   5 drawn effects on the chomp: an impact star for 2 frames, three crumbs for 4 frames, on ones
 //
 // Beats (global T, shot t, shot frame):
@@ -38,11 +39,45 @@
   const HIP = [0, -106]; // his lunge and his sways turn about the hip (design units)
   // frame 0: mouth wide open, the burger raised, eyes on the burger
   const HERO_OPEN = { k: 0, look: [0.9, 0.35] };
+  /** Rig targets that move the burger, and both hands with it as the pose places them, to h (design units). */
+  const holdAt = (h) => ({ hold: h, handN: [h[0] - 12, h[1] + 14], handF: [h[0] + 16, h[1] + 10] });
 
   /** The hero at the G5 placement: o is added to pose 'bite'. Cut off by the frame, so no foot shadow. */
   function g5Hero(ctx, L, o) {
     const rig = Object.assign({ pivot: HIP }, o.rig);
     return L.cast.hero(ctx, HERO.x, HERO.y, Object.assign({ h: HERO.h, pose: 'bite', shadow: false }, o, { rig }));
+  }
+
+  /**
+   * The open-mouth stage (k below 1/3): at G5's burger point the burger covers the mouth, so the face is
+   * laid over it. The same drawing without the burger (burger: false) is painted on a scratch layer and
+   * laid on the frame clipped to the head down to just under the chin: the open mouth shows, the burger
+   * tucks behind the cheek and keeps its G5 point, the near hand stays in front of it. The layer is
+   * cleared on every use, so nothing carries between frames (as lib.wallShadow does).
+   */
+  let faceLayer = null;
+  function g5HeroOpen(ctx, L, o) {
+    const a = g5Hero(ctx, L, o);
+    const cv = ctx.canvas;
+    if (!faceLayer || faceLayer.width !== cv.width || faceLayer.height !== cv.height) faceLayer = FILM.makeCanvas(cv.width, cv.height);
+    const g = faceLayer.getContext('2d');
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.globalAlpha = 1;
+    g.globalCompositeOperation = 'source-over';
+    g.clearRect(0, 0, cv.width, cv.height);
+    g.setTransform(ctx.getTransform());
+    g5Hero(g, L, Object.assign({}, o, { burger: false }));
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 0, 1080, a.head[1] + 0.92 * a.headR);
+    ctx.clip();
+    ctx.beginPath();
+    ctx.arc(a.head[0], a.head[1], 1.09 * a.headR, 0, 2 * Math.PI);
+    ctx.clip();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(faceLayer, 0, 0);
+    ctx.restore();
+    return a;
   }
 
   /** The G5 street behind him, painted once: the modest street (03 and 17). */
@@ -159,7 +194,7 @@
       return Object.assign({}, HERO_OPEN, { rot: -2.05 * DEG * d, tilt: -0.1 - 0.07 * d });
     }
     if (fr < 14) return { k: 0.5, rot: 2.05 * DEG }; // the chomp, on ones: the head 20 px forward
-    if (fr < 15) return { k: 0.9, rot: 1 * DEG }; // the burger comes away, on ones
+    if (fr < 15) return { k: 0.9, rot: 1 * DEG, rig: holdAt([44, -182]) }; // the burger comes away, on ones
     if (fr < 36) {
       // chewing on the 8ths (f 18, 24, 30), on twos: jaw down, half, back; then he leans in before the sway
       const lean = fr >= 32 ? [1, 2][(fr - 32) >> 1] * DEG : 0;
@@ -198,8 +233,8 @@
       caption(ctx, L, captionSizes(ctx, L), fr);
       // 3 the tag
       g4Tag(ctx, L, '$5.69', tagSwing(L, t));
-      // 4 the hero with the burger
-      const a = g5Hero(ctx, L, heroAt(fr));
+      // 4 the hero with the burger (the face over it while the mouth is open)
+      const a = (fr < 12 ? g5HeroOpen : g5Hero)(ctx, L, heroAt(fr));
       // 5 the chomp, at the bite between his lips and the burger: star for 2 frames, crumbs for 4, on ones
       const bite = [a.mouth[0] + 0.3 * a.headR, a.mouth[1] - 0.12 * a.headR];
       if (fr >= 12 && fr < 16) crumbs(ctx, L, bite, a.headR, fr - 12);
