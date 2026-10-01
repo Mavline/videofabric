@@ -4,7 +4,7 @@
  * Load order everywhere: core.js, lib.js, timeline.js, scenes (sorted), music.js, player.js.
  *
  * Defines window.FILM: the scene registry, the timeline reader, renderFrame(T),
- * transitions between shots and the global post-processing (boiling grain).
+ * transitions between shots and the global post-processing (still grain, off unless a shot asks for it).
  *
  * Rules for scene code (see docs/CONTRACT.md):
  *   - Draw only from (t, info). No state carried between frames.
@@ -304,11 +304,14 @@
   }
 
   // ---------------------------------------------------------------------------
-  // Global post: boiling grain
+  // Global post: still grain, off by default
   // ---------------------------------------------------------------------------
+  // docs/art-bible.md section 4 (rule 30 of docs/reference-analysis.md): no grain or noise that
+  // changes from frame to frame, and fills on the cel layer stay flat. So the post is off unless a
+  // shot asks for it (post: true, an amount, or { grain }), and then the grain does not move: one
+  // tile at a fixed offset, the same on every frame.
 
   const TILE = 512;
-  const VARIANTS = 4;
   const grainCache = {};
 
   function grainTile(mode, v) {
@@ -364,15 +367,14 @@
     if (FILM.post === false) return; // tools measure a bare frame; never set in the shipped player
     let cfg = def && def.post !== undefined ? def.post : shot.post;
     if (cfg === false) return;
-    let amount = 1;
-    if (typeof cfg === 'number') amount = cfg;
+    let amount = 0;
+    if (cfg === true) amount = 1;
+    else if (typeof cfg === 'number') amount = cfg;
     else if (cfg && typeof cfg === 'object' && cfg.grain != null) amount = Number(cfg.grain);
     if (!(amount > 0)) return;
-    const b = Math.floor(T * FILM.BOIL_FPS + EPS);
-    const v = Math.floor(ihash(b, 17, 3) * VARIANTS);
-    const tile = grainTile(mode, v);
-    const ox = Math.floor(ihash(b, 29, 5) * TILE);
-    const oy = Math.floor(ihash(b, 31, 7) * TILE);
+    const tile = grainTile(mode, 0);
+    const ox = 0;
+    const oy = 0;
     const c = ctx.canvas;
     // the tile is authored in logical pixels: scale it with the render so previews keep the grain size
     const S = c.width / FILM.W;
