@@ -2,17 +2,18 @@
 // Hard cut in on the bar 9 downbeat, the film's midpoint; the shot fades itself to black at its end and
 // 10 comes up from black.
 //
-// G5 and G4 on the same pixels as 03 (art bible 8): g5Hero, g5HeroOpen, holdAt, HERO_OPEN, g4Tag and
-// G4_SLOTS are copied verbatim from 03-first-bite.js, and so are the shared pieces of 03's street (its
-// horizon, pavement and the booth's window frame, with 03's seeds), so only the neighborhood and the
-// price change at the cut.
+// G5 and G4 on the same pixels as 03 (art bible 8): g5Hero, holdAt, HERO_OPEN, g4Tag and G4_SLOTS are
+// copied verbatim from 03-first-bite.js, and so are the shared pieces of 03's street (its horizon,
+// pavement and the booth's window frame, with 03's seeds), so only the neighborhood and the price
+// change at the cut.
 //
 // Layers, back to front:
 //   1 the still street plate, painted once (lib.plate): the fieldSky light field, 03's far hills, a stone
 //     column carrying a fountain bowl and its spray, a clipped hedge where 03 has its picket fence, 03's
 //     pavement and the booth's window frame at the right edge. Washes and colored pencil, no ink.
 //   2 the $6.89 tag (G4), settling from 4 degrees to 0 about (700, 300) on twos
-//   3 the hero (G5): 03's opening bite pose, eyes on the tag; the take, the dropped jaw, the trembling grip
+//   3 the hero (G5): 03's opening bite pose, eyes on the tag, frozen mid-bite (at the open-mouth stage lib
+//     draws the burger behind his face); the take, the dropped jaw, the trembling grip
 //   4 tremble strokes around the burger (drawn effect, on ones)
 //   5 the red hand-scrawled +21% and its underline (G8 caption slot)
 //   6 the dip to black (art bible 7.5: never solid on the checked frames, 0.92 there)
@@ -23,7 +24,7 @@
 //   T 16.125  t 0.125  f 3   the take on ones: the eyes shoot out on stalks toward the tag (0.6, 1.24, 1.15, 1.15)
 //   T 16.25   t 0.25   f 6   the tag hangs still; +21% scrawls on over 3 frames on ones: "+2", "+21%", the underline
 //   T 16.292  t 0.292  f 7   the eyes snap back (one in-between), home on f 8
-//   T 16.5    t 0.5    f 12  the jaw drops and the grip sinks on ones (f 12, 13), so the hanging mouth shows; held
+//   T 16.5    t 0.5    f 12  the jaw drops, the mouth hangs open over the burger; held
 //   T 16.75   t 0.75   f 18  a blink, eyes shut for exactly 2 frames (life on the hold)
 //   T 17.0    t 1.0    f 24  the burger trembles on ones for 6 frames, with tremble strokes, then holds
 //   T 17.625  t 1.625  f 39  the dip to black over 6 frames, then 0.92 black to the cut (f 45 to 47)
@@ -50,38 +51,6 @@
     return L.cast.hero(ctx, HERO.x, HERO.y, Object.assign({ h: HERO.h, pose: 'bite', shadow: false }, o, { rig }));
   }
 
-  /**
-   * The open-mouth stage (k below 1/3): at G5's burger point the burger covers the mouth, so the face is
-   * laid over it. The same drawing without the burger (burger: false) is painted on a scratch layer and
-   * laid on the frame clipped to the head down to just under the chin: the open mouth shows, the burger
-   * tucks behind the cheek and keeps its G5 point, the near hand stays in front of it. The layer is
-   * cleared on every use, so nothing carries between frames (as lib.wallShadow does).
-   */
-  let faceLayer = null;
-  function g5HeroOpen(ctx, L, o) {
-    const a = g5Hero(ctx, L, o);
-    const cv = ctx.canvas;
-    if (!faceLayer || faceLayer.width !== cv.width || faceLayer.height !== cv.height) faceLayer = FILM.makeCanvas(cv.width, cv.height);
-    const g = faceLayer.getContext('2d');
-    g.setTransform(1, 0, 0, 1, 0, 0);
-    g.globalAlpha = 1;
-    g.globalCompositeOperation = 'source-over';
-    g.clearRect(0, 0, cv.width, cv.height);
-    g.setTransform(ctx.getTransform());
-    g5Hero(g, L, Object.assign({}, o, { burger: false }));
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, 0, 1080, a.head[1] + 0.92 * a.headR);
-    ctx.clip();
-    ctx.beginPath();
-    ctx.arc(a.head[0], a.head[1], 1.09 * a.headR, 0, 2 * Math.PI);
-    ctx.clip();
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.drawImage(faceLayer, 0, 0);
-    ctx.restore();
-    return a;
-  }
-
   // ---------------------------------------------------------------------------
   // G4: the tag (verbatim from 03-first-bite.js)
   // ---------------------------------------------------------------------------
@@ -102,15 +71,11 @@
   // bigger; 1.24 is the 8 percent overshoot), then one in-between on the way home
   const TAKE = [0.6, 1.24, 1.15, 1.15, 0.4];
   // the stalks rise toward the tag, and the full stalk carries the eyes clear above the cap's visor,
-  // which lib draws over the eyes (head frame, radians; the head is tilted back 0.1 in this pose).
+  // which lib draws over the eyes (head frame, radians; the head is tilted back 0.04 in this pose).
   // No cap jump: a lifted visor would land on the eyes.
   const STALK_DIR = -1.0;
-  // At the jaw drop the shock drops his grip: G5 holds the burger against his mouth (centre (560, 1170),
-  // 320 x 220, over the mouth at (450, 1110)), so it sinks forward and down to DROOP and the hanging
-  // jaw shows; on ones, 45 percent, then an 8 percent overshoot, then held.
+  // G5's burger point (centre of the burger in his hands), the base of the tremble
   const G5_BURGER = [560, 1170];
-  const DROOP = [660, 1296];
-  const DROOP_STEPS = [0.45, 1.08];
   // the tremble from f 24 on ones, px: the grip shakes, the face holds still
   const TREMBLE = [[3, -1], [-3, 1], [3, 1], [-3, -1], [2, 0], [-2, 0]];
   // G8: +21%, red, cap height 120 (digits are 0.72 of the size in 'note'), box x 90 to 420, baseline 520
@@ -212,12 +177,8 @@
   function heroAt(fr) {
     const o = { k: HERO_OPEN.k, look: LOOK_TAG };
     if (fr >= 3 && fr < 8) o.rig = { stalk: TAKE[fr - 3], stalkDir: STALK_DIR };
-    if (fr >= 12) {
-      o.face = 'jaw';
-      const d = fr < 14 ? DROOP_STEPS[fr - 12] : 1;
-      const sh = fr >= 24 && fr < 30 ? TREMBLE[fr - 24] : [0, 0];
-      o.rig = grip([G5_BURGER[0] + (DROOP[0] - G5_BURGER[0]) * d + sh[0], G5_BURGER[1] + (DROOP[1] - G5_BURGER[1]) * d + sh[1]]);
-    }
+    if (fr >= 12) o.face = 'jaw';
+    if (fr >= 24 && fr < 30) o.rig = grip([G5_BURGER[0] + TREMBLE[fr - 24][0], G5_BURGER[1] + TREMBLE[fr - 24][1]]);
     if (fr === 18 || fr === 19) o.blink = true;
     return o;
   }
@@ -263,9 +224,8 @@
       L.plate(ctx, `${ID}|g5-street-rich`, (g) => g9Street(g, L));
       // 2 the tag
       g4Tag(ctx, L, '$6.89', tagSwingAt(fr));
-      // 3 the hero with the burger: the face over it while it is at his mouth (03's g5HeroOpen), then,
-      // with the grip sunk from f 12, the plain drawing
-      const a = (fr < 12 ? g5HeroOpen : g5Hero)(ctx, L, heroAt(fr));
+      // 3 the hero with the burger (at the open-mouth stage lib draws the burger behind his face)
+      const a = g5Hero(ctx, L, heroAt(fr));
       // 4 the tremble
       if (fr >= 24 && fr < 30) trembleStrokes(ctx, L, fr, a.hold);
       // 5 +21%
