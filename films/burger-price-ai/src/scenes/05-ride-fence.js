@@ -1,13 +1,14 @@
 // Shot 05 ride-fence, "Mile 0: picket fences". T 8.0 to 10.0 (t = T - 8), illustrated: the street plate.
 // The camera stands; the hero crosses left to right past three modest houses, finishing the burger.
 // Layers, back to front:
-//   1 the plate, drawn once and cached: the fieldSky light field, far hills, lawn, a tree, three modest houses, the
-//     laundry posts and line, the street picket fence on y 1330..1480, the pavement from the G1 ground
-//     line y 1480 with its kerb at y 1600
+//   1 the plate, drawn once and cached: the fieldSky light field, two pale clouds, far hills with a row of
+//     small trees, lawn, a tree, three modest houses, the laundry posts and line, the street picket fence on
+//     y 1330..1480, the pavement from the G1 ground line y 1480 with its kerb at y 1600
 //   2 the laundry, flapping on twos (background: washes and pencil, no ink)
-//   3 three speed lines behind the hero
-//   4 the hero riding: front wheel centre x = 40 + 700 t on twos, wheels on y 1480, four pedal drawings
-//     a turn on twos; chewing to T 9.0, the gulp (3 frames), the lick
+//   3 three speed lines behind the back, the saddle and the rear tyre, on twos
+//   4 the hero riding, wheel radius 107: front wheel centre x = 40 + 700 t on twos, wheels on y 1480, four
+//     pedal drawings a turn on twos, the body bobbing 4 px a stroke; chewing with the jaw to T 9.0, the gulp
+//     (a lump down the throat, 3 frames on ones), the lick
 //   5 the G6 mile counter: 0, then 0.25 (T 8.5), 0.5 (T 9.0), 0.75 (T 9.5)
 (function () {
   'use strict';
@@ -18,12 +19,12 @@
   // for no pop. A change pops on ones over 3 frames with an 8 percent overshoot. A titleSpot blob
   // centred (265, 300), 390 x 140; on it the value and "mi" in ink 'note' letters, baseline y 330, left
   // edge x 100. Cap height 70 as far as the G8 box x 100..440 allows: the widest value sets one size for
-  // every value, so the line never changes size ('note' is wide: the cap height lands near 64).
+  // every value, so the line never changes size ('note' is wide: the cap height lands near 64). Letter seed 52
+  // with jitter 0.35: every 'i' stands on the line and no digit rides up like an exponent.
   function drawMileCounter(ctx, L, value, popAge) {
     const P = L.pal;
     L.spot(ctx, 265, 300, 195, 70, { seed: 6 });
-    // letter seed 52: no 'i' of any value 0..2 drops below the line (seed 6 turned '1.25 mi' into 'mj')
-    const o = { face: 'note', color: P.ink, seed: 52, size: 70 / 0.72 }; // digits stand 0.72 of the size
+    const o = { face: 'note', color: P.ink, seed: 52, jitter: 0.35, size: 70 / 0.72 }; // digits stand 0.72 of the size
     const widest = Math.max(...['0.25', '0.75', '1.25', '1.75'].map((v) => L.letters(ctx, v + ' mi', 0, 0, Object.assign({}, o, { measure: true })).w));
     o.size = Math.min(o.size, (o.size * 340) / widest);
     const str = value + ' mi';
@@ -63,9 +64,24 @@
     };
     g.fillStyle = P.fieldSky; // the scene's light field (art bible 2.3, 4.2)
     g.fillRect(0, 0, 1080, 1920);
-    // far hills, pale and cool, seen between the houses
+    // two pale clouds
+    [[800, 520, 140, 40], [420, 700, 110, 32]].forEach(([cx, cy, rx, ry], i) =>
+      L.softWash(g, L.blobPts(cx, cy, rx, ry, sd('cloud', i), 0.2), { color: P.paper, alpha: 0.85, soft: 16, marks: 0.3, seed: sd('cloud', i, 2) }));
+    // far hills, pale and cool, seen between the houses, with a row of small trees on their slopes, paler and
+    // cooler than the near grass (art bible 2.3, depth) and below the roofs
     const hills = [[-20, 1060], [120, 1012], [300, 1060], [470, 1002], [650, 1052], [820, 996], [1000, 1046], [1100, 1020]];
     L.softWash(g, L.densify(hills.concat([[1100, 1200], [-20, 1200]]), 12), { color: P.hillsFar, soft: 10, seed: sd('hills') });
+    const hillY = (x) => {
+      let i = 1;
+      while (i < hills.length - 1 && x > hills[i][0]) i++;
+      const [x0, y0] = hills[i - 1], [x1, y1] = hills[i];
+      return y0 + ((y1 - y0) * (x - x0)) / (x1 - x0);
+    };
+    const far = L.mix(P.grass, P.hillsFar, 0.5);
+    for (let i = 0, x = 14; x < 1080; x += 30 + ((i * 37) % 23), i++) {
+      const r = 10 + ((i * 7) % 6), base = hillY(x) + 24;
+      L.softWash(g, L.blobPts(x, base - r, r * 0.9, r * 1.2, sd('far', i), 0.18, 20), { color: far, soft: 3, marks: 0, rim: 0.15, seed: sd('far', i, 2) });
+    }
     // the lawn of the front yards, from the houses' line down behind the fence
     const lawn = [[-20, YARD - 6], [260, YARD - 12], [560, YARD - 4], [820, YARD - 14], [1100, YARD - 6]];
     L.softWash(g, L.densify(lawn.concat([[1100, GROUND + 6], [-20, GROUND + 6]]), 12), { color: P.grass, alpha: 0.7, soft: 12, seed: sd('lawn') });
@@ -111,14 +127,24 @@
     });
   }
 
-  // the hero's riding proportions per unit of height, read from his anchors once (copied verbatim from 06):
-  // the library may refine the body and the bicycle, so no part of him is hard-coded here
+  // The ride shots' hero (05, 06, 07, 16; canonical here, those shots copy heroUnit and speedTrail verbatim).
+  // heroUnit: his riding proportions per unit of height, read once from his anchors, so no part of him is
+  // hard-coded and the library may refine the body and the bicycle. Points are relative to his ground point.
   const heroUnit = (L) => L.cached(ID + '|hero-unit', () => {
     const c = FILM.makeCanvas ? FILM.makeCanvas(1, 1) : document.createElement('canvas');
     c.width = c.height = 1;
     const a = L.cast.hero(c.getContext('2d'), 0, 0, { h: 300, pose: 'ride', phase: 0, shadow: false });
-    return { wheelR: a.wheelR / 300, front: a.axleFront[0] / 300, head: [a.head[0] / 300, a.head[1] / 300] };
+    const u = (p) => [p[0] / 300, p[1] / 300];
+    return { wheelR: a.wheelR / 300, front: a.axleFront[0] / 300, head: u(a.head), headR: a.headR / 300, rear: u(a.axleRear), seat: u(a.seat), chest: u(a.chest) };
   });
+  // speedTrail: three speed lines on twos, thin tapering strokes 60 to 90 px long in pavement grey at half
+  // opacity, 12 to 24 px behind the rider's back (two thirds of a head behind the chest), the saddle and the
+  // rear tyre, at their heights. (x, y) the hero's ground point, h his height, k the drawing on twos.
+  function speedTrail(ctx, L, x, y, h, u, k) {
+    const at = (p, dx) => [x + (p[0] + dx) * h, y + p[1] * h];
+    [at(u.chest, -0.65 * u.headR), at(u.seat, -0.4 * u.wheelR), at(u.rear, -u.wheelR)].forEach((p, i) =>
+      L.speedLines(ctx, p[0], p[1], 0, { n: 1, spread: 0, len: [60, 90], gap: 12, width: 4, alpha: 0.5, seed: 21 + i * 3 + (k % 3) }));
+  }
 
   FILM.scene({
     id: ID,
@@ -129,20 +155,23 @@
       const k = Math.round(tw * 12); // the drawing on twos
 
       // 1 the plate
-      L.plate(ctx, ID + '|plate|2', (g) => plate(g, L));
+      L.plate(ctx, ID + '|plate|3', (g) => plate(g, L));
       // 2 the laundry
       laundry(ctx, L, k);
 
-      // 3 and 4 the hero at the G1 size (wheel radius 80); the ground point sits behind the front wheel centre
+      // 3 and 4 the hero, wheel radius 107 in every ride shot (about 0.36 of the frame); the ground point sits
+      // behind the front wheel centre
       const u = heroUnit(L);
-      const h = 80 / u.wheelR;
+      const h = 107 / u.wheelR;
       const x = 40 + 700 * tw - u.front * h;
-      L.speedLines(ctx, x - 100, 1250, 0, { n: 3, spread: 120, len: [70, 140], gap: 14, width: 5, seed: 5 + (k % 2) });
-      const gulp = t + 1e-6 >= 1 && t + 1e-6 < 1 + 3 / 24; // T 9.0, three frames on ones
-      const face = t + 1e-6 < 1 ? 'chew' : gulp ? 'gulp' : 'lick';
-      const tilt = face === 'chew' ? [0.07, 0.035, 0][k % 3] : gulp ? -0.07 : 0; // chewing on 8ths; the chin lifts to swallow
-      // ponytail: the storyboard's 4 px body bob per stroke waits for a bob option on the ride pose (asked of the library)
-      L.cast.hero(ctx, x, GROUND, { h, pose: 'ride', t, cadence: 3, cycle: 4, face, tilt });
+      speedTrail(ctx, L, x, GROUND, h, u, k);
+      const gf = Math.floor((t - 1) * 24 + 1e-6); // frames since T 9.0: the gulp is frames 0..2, on ones
+      const face = gf < 0 ? 'chew' : gf < 3 ? 'gulp' : 'lick';
+      const chewPhase = face === 'chew' ? [1, 0.5, 0][k % 3] : undefined; // one chew an 8th: jaw down, half, shut on twos
+      const gulp = face === 'gulp' ? gf / 2 : undefined; // the lump travels down the throat
+      const tilt = face === 'gulp' ? -0.07 : 0; // the chin lifts to swallow
+      const bob = k % 2 ? 0 : 4; // px, down on the push of each stroke
+      L.cast.hero(ctx, x, GROUND, { h, pose: 'ride', t, cadence: 3, cycle: 4, face, chewPhase, gulp, tilt, bob });
 
       // 5 the mile counter
       let i = 0;
