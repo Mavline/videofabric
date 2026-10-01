@@ -60,10 +60,10 @@ Match cuts and rhymes, all on the same pixels (see Shared geometry):
 - G6, the mile counter: 05, 06, 07 and 16.
 - G7, the engine caption: 11 cuts to 12 under a caption that does not move.
 
-Camera: locked everywhere except two moves, about 4 percent of the film, which matches the reference (camera moves 3 to 4 percent of the time):
+Camera: locked everywhere except two moves, about 3 percent of the film, which matches the reference (camera moves 3 to 4 percent of the time):
 
-- 08: one snap push-in to the hero's eyes, zoom 1 to 6 over 0.75 s (T 15.25 to 16.0), a new drawing on every frame. This is the manner's one accent push-in.
-- 11: the street inside the periscope matte pans 600 px over 0.5 s.
+- 08: one snap push-in to the hero's eyes, zoom 1 to 6 over 0.583 s (T 15.417 to 16.0, 14 frames), a new drawing on every frame. This is the manner's one accent push-in.
+- 11: the street inside the periscope matte pans 450 px over 0.5 s.
 
 The ride shots keep the camera still and let the hero cross the frame, as the reference does.
 
@@ -82,6 +82,7 @@ Reading time for the must-read words, from the frame each one is readable to the
 | Reuters, Sept 29, 2026 | 04 | 6.75 to 8.0 | 1.25 |
 | 0 to 2 mi | 05 to 07 | 8.0 to 13.0 | 5.0 |
 | $6.89 and +21% | 09 | 16.0 and 16.375 to 17.625 | 1.6 and 1.25 |
+| Reuters, Sept 29, 2026 (source note) | 09 | 16.375 to 17.625 | 1.25 |
 | nearly 14,000 restaurants; millions of orders a day | 10 | 18.375 and 18.625 to 20.0 | 1.6 and 1.4 |
 | The engine recommends an "optimal price" for each restaurant. | 11, 12 | 20.375 to 22.5 | 2.1 |
 | SENSITIVITY TO PRICE, MEDIUM; based on willingness to pay in your area | 12 | 21.0 to 22.5 | 1.5 |
@@ -140,7 +141,8 @@ The camera stands inside, behind the counter, looking out through the window. Al
 
 - Window opening: x 240 to 840, y 560 to 1100, with a 30 px frame around it.
 - Inside wall around the window: wallWarm with dense short strokes; shadowWarm for the frame and the deepest strokes.
-- Counter top: y 1100 to 1170 across the whole width; the counter's inner side runs below it to the bottom edge.
+- Counter top: y 1100 to 1170 across the whole width; the counter's inner side runs below it down to a floor line at y 1570.
+- Floor (02, 08, 13): below the floor line at y 1570, pavement under dense strokes.
 - Owner: left foreground, three-quarter from behind, head centre (180, 650), head height 210, shoulders across x 0 to 400 at y 800, apron strings crossing his back; his right hand works on the counter.
 - Hero, outside (02, 08): head centre (560, 820), head height 260, eyes at (525, 790) and (600, 790), hands on the outer sill at y 1100 between x 470 and 650.
 - Burger path (02, 08): it slides along the counter from (330, 1080) to (500, 1080).
@@ -159,19 +161,19 @@ The camera stands inside, behind the counter, looking out through the window. Al
 - Name band: a white strip x 230 to 850, y 835 to 895, with SENSITIVITY TO PRICE in ink, cap height 34, baseline y 880, centred on x 540 (about x 240 to 840). The wording is the franchisee screen's own.
 - Gauge: the dial face (dial) is the upper half-disc with its pivot at (540, 1150) and radius 190. Ticks every 10 degrees from 200 to 340 degrees, in canvas angles where 270 points straight up. Labels in ink, cap height 30: LOW centred on x 300, baseline 1145, on a small green patch; MEDIUM centred on x 540, baseline 955, on a titleYellow patch; HIGH centred on x 785, baseline 1145, on a red patch.
 - Needle: ink, 160 px long, tapering from 8 to 3 px, with a red pivot cap of radius 14. LOW is 200 degrees, MEDIUM 270, HIGH 340.
-- Source line under the gauge: a white strip x 290 to 790, y 1160 to 1205, with "based on willingness to pay in your area" lettered small in ink, cap height 22, baseline y 1192, centred on x 540 (about x 300 to 780).
+- Source line under the gauge: a white strip x 215 to 865, y 1160 to 1205, with "based on willingness to pay in your area" lettered small in ink, cap height 22, baseline y 1192, centred on x 540 (the text spans about x 230 to 850).
 - Slot: x 340 to 740, y 1215 to 1245, ink inside, a machineDark lip. Only the ticket comes out of it; nothing goes in.
 - Legs: from (390, 1300) and (690, 1300) down to y 1430, machineDark, 26 px wide; shoes in shoe, 150 x 50, at y 1430 to 1480, toes turned out.
 - Periscope: a machineDark tube 40 px wide at x 820 to 860. Retracted (10): its head, an elbow box 120 x 90, sits at x 780 to 900, y 730 to 820. Raised (12): the tube runs from y 820 up to 430 and the head sits at x 780 to 900, y 340 to 430. The lens is the eye: a white ball of radius 30 on the head's left face with an ink pupil of radius 12.
 - Hopper, the intake: a machineDark funnel on the body's top, its mouth x 300 to 740 at y 720, narrowing to a neck x 470 to 570 at y 820. Receipts and coins fall into the hopper; the ticket comes out of the front slot.
-- Ticket (12): a ticket-coloured strip x 390 to 690 that grows out of the slot from y 1245 down to y 1490. RECOMMENDED: in ink, cap height 30, baseline 1300, centred on x 540; $6.89 in ink, cap height 90, baseline 1430, centred on x 540.
+- Ticket (12): a ticket-coloured strip x 390 to 690 that slides out of the slot from y 1245 down to y 1490, bottom end first, so the price shows first and RECOMMENDED: last. RECOMMENDED: in ink, cap height 30, baseline 1300, centred on x 540; $6.89 in ink, about 70 px tall as drawn, baseline 1430, centred on x 540.
 - Room, dense plate: the back wall in nightSky under dense short strokes, the floor in pavement from y 1480 with strokes along the perspective.
 - Wall map (10): a ticket-coloured sheet pinned to the back wall, x 80 to 1000, y 400 to 700, so the hopper's mouth at y 720 sits just below it: a pale land shape, about 140 red dots of radius 7 for restaurants and a dozen tiny booths.
 
 ### G4: the price tag, close (03, 09, 14, 17)
 
 - Card: x 480 to 920, y 300 to 580, tag fill, ink outline, corner radius 18. Two punched holes at (520, 330) and (880, 330); in 03, 09 and 17 strings rise from them out of the top of the frame, in 14 they dangle.
-- Price: ink, hand-lettered, glyph height 160, baseline y 530. Glyph slots: $ x 505 to 585, first digit 590 to 675, point 680 to 710, second digit 715 to 800, third digit 805 to 890.
+- Price: ink, hand-lettered, baseline y 530, digits about 112 px tall as drawn: the props take a font size, and the hand-lettered capitals and digits come out at about 0.72 of it. Glyph slots: $ x 505 to 585, first digit 590 to 675, point 680 to 710, second digit 715 to 800, third digit 805 to 890.
 - In 03, 09 and 17 the card may rock plus or minus 2 degrees about (700, 300) on twos.
 
 ### G5: the hero close-up at the counter (03, 09, 17)
@@ -198,7 +200,7 @@ The camera stands inside, behind the counter, looking out through the window. Al
 
 ### G7: the engine caption (11, 12)
 
-- Three lines, white, hand-lettered, cap height 46, left edge x 80, baselines y 290, 360 and 430: "The engine recommends" / "an "optimal price"" / "for each restaurant."
+- Three lines, white, hand-lettered, cap height 46 (shrunk if needed so the widest line fits), left edge x 80, baselines y 272, 328 and 384 (a 56 px step), inside x 80 to 757: "The engine recommends" / "an "optimal price"" / "for each restaurant." The block ends above y 392, so in 12 its third line stays clear of the wall map, which starts at y 400.
 - It pops on at T 20.25 in 11 and stays on the same pixels until 12 ends at T 22.5.
 
 ### G8: every must-read word
@@ -208,22 +210,23 @@ The camera stands inside, behind the counter, looking out through the window. Al
 | 01, 15, 18 | BURGERS (sign) | art bible background lettering | 90 | x 450 to 910, y 585 to 675 |
 | 01, 18 | $5.69 (tag) | ink on tag | 100 | x 550 to 810, y 765 to 865 |
 | 15 | $6.89 (tag) | ink on tag | 100 | x 550 to 810, y 765 to 865 |
-| 03, 17 | $5.69 (tag) | ink on tag | 160 | x 505 to 890, y 370 to 530 |
-| 09, 14 | $6.89 (tag) | ink on tag | 160 | x 505 to 890, y 370 to 530 |
+| 03, 17 | $5.69 (tag) | ink on tag | about 112 | x 505 to 890, y 418 to 530 |
+| 09, 14 | $6.89 (tag) | ink on tag | about 112 | x 505 to 890, y 418 to 530 |
 | 04 | ONE | titleBlue, first letter titleYellow, ink outline | 150 | x 370 to 710, y 398 to 572 |
 | 04 | BURGER, | as above | 150 | x 160 to 920, y 598 to 772 |
 | 04 | TWO PRICES | as above | 120 | x 150 to 930, y 828 to 972 |
-| 04 | Reuters, Sept 29, 2026 | ink | 40 | x 330 to 750, y 1040 to 1095 |
+| 04 | REUTERS, SEPT 29, 2026 | ink, round capitals | 40 | x 186 to 893, y 1040 to 1095 |
 | 05, 06, 07, 16 | 0 to 2 mi | ink on titleSpot | 70 | x 100 to 440, y 260 to 345 |
-| 09 | +21% | red | 120 | x 90 to 420, y 400 to 520 |
+| 09 | Reuters, Sept 29, 2026 (source note) | ink, note face | 24 | x 90 to 450, y 381 to 412 |
+| 09 | +21% | red | about 100 | x 90 to 420, y 435 to 550 |
 | 10 | nearly 14,000 restaurants | white | 52 | x 80 to 800, y 248 to 315 |
 | 10 | millions of orders a day | white | 52 | x 80 to 780, y 323 to 390 |
-| 11, 12 | The engine recommends / an "optimal price" / for each restaurant. | white | 46 | x 80 to 640, y 244 to 445 |
+| 11, 12 | The engine recommends / an "optimal price" / for each restaurant. | white | 46 | x 80 to 757, y 226 to 392 |
 | 10, 12 | SENSITIVITY TO PRICE | ink on the white band | 34 | x 240 to 840, y 846 to 880 |
-| 10, 12 | based on willingness to pay in your area | ink on a white strip | 22 | x 300 to 780, y 1170 to 1198 |
+| 10, 12 | based on willingness to pay in your area | ink on a white strip | 22 | x 230 to 850, y 1170 to 1198 |
 | 12 | LOW / MEDIUM / HIGH | ink | 30 | LOW x 268 to 332, y 1115 to 1145; MEDIUM x 482 to 598, y 925 to 955; HIGH x 750 to 820, y 1115 to 1145 |
 | 12 | RECOMMENDED: | ink on ticket | 30 | x 420 to 660, y 1270 to 1300 |
-| 12 | $6.89 (ticket) | ink on ticket | 90 | x 430 to 650, y 1340 to 1430 |
+| 12 | $6.89 (ticket) | ink on ticket | about 70 | x 430 to 650, y 1360 to 1430 |
 | 13 | McDonald's: / "a tool, / not a mandate" | white | 56 | x 80 to 520, y 244 to 460 |
 | 13 | RECOMMENDED: $6.89 (ticket in his hand) | ink on ticket | 26 and 72 | x 300 to 640, y 588 to 812 |
 | 14 | Ex-owner: / "You don't really / have much of a / choice anymore." | white | 44 | x 80 to 500, y 1206 to 1475 |
@@ -414,7 +417,7 @@ A whole burger centred at (540, 1300), 360 px wide.
 ### Forms
 
 Title letters: bold, rounded, puffy capitals in titleBlue with an ink outline; the first letter of each word in titleYellow; the baseline jumps up and down by about 12 px from letter to letter, as a static drawing. Cap height 150 for ONE and BURGER, and 120 for TWO PRICES, so TWO PRICES fits x 150 to 930.
-Byline: ink, hand-lettered, cap height 40.
+Byline: ink, hand-lettered in round capitals as REUTERS, SEPT 29, 2026, cap height 40, about x 186 to 893.
 Burger: bun with sesame, lettuce, cheese, patty, ink outline.
 
 ### Overlays
@@ -469,7 +472,7 @@ The hero crosses the frame from left to right.
 ### Forms
 
 Background painted without ink lines: wallYellow, roof, fence, trunk, grass, hillsFar, paper.
-Hero and bicycle on the cel layer as in 01.
+Hero and bicycle on the cel layer as in 01, drawn larger in every ride shot (05, 06, 07, 16): wheel radius 107 px and the hero about 680 px tall, 0.36 of the frame height, wheels on the ground line.
 Laundry: two or three flat white and pink shapes on a thin trunk-coloured line (background, no ink).
 
 ### Overlays
@@ -514,14 +517,14 @@ T 10.0 to 11.5, illustrated, hard cut in.
 ### Composition
 
 The same ground line at y 1480.
-Background: bigger two-storey houses in cityPastel and wallYellow, wide lawns, round clipped bushes, a low wrought-iron fence drawn in slate pencil, and a stone fountain on the lawn: a basin 360 px wide centred (700, 1330) with three waterTop jets. Roofs reach about y 700, so the skyline rises.
+Background: bigger, plain two-storey houses in cityPastel and wallYellow, with no portico and no columns (the columns belong to 07), wide lawns, round clipped bushes, a low wrought-iron fence drawn in slate pencil, and a stone fountain on the lawn: a basin 360 px wide centred (700, 1330) with three waterTop jets. Roofs reach about y 700, so the skyline rises.
 The G6 counter.
 The hero crosses left to right.
 
 ### Forms
 
 Background painted without ink lines: cityPastel, wallYellow, roof, grass, stone, waterTop, waterDeep for the basin's depth, hillsFar, paper.
-Hero and bicycle as before.
+Hero and bicycle at the ride scale of 05: wheel radius 107 px, the hero about 680 px tall.
 
 ### Overlays
 
@@ -567,7 +570,7 @@ The hero crosses left to right.
 ### Forms
 
 Background painted without ink lines: stone, cityPastel, grass, hillsFar, paper; the gate in slate pencil.
-Hero and bicycle as before.
+Hero and bicycle at the ride scale of 05: wheel radius 107 px, the hero about 680 px tall.
 
 ### Overlays
 
@@ -577,7 +580,7 @@ The G6 counter. Speed lines, doubled during the sprint.
 
 T 11.5: frame 0: front wheel centre at x 40; the counter pops 1.75.
 T 12.0 (bar 7 downbeat): the counter pops 2 with a bell. He sniffs (head lifts), his eyes slide right toward something ahead, and he grins.
-T 12.5 (beat): he stands on the pedals and sprints: the pedal cycle goes on ones and the speed rises to 1100 px/s; he is out at the right edge before the cut.
+T 12.5 (beat): he stands on the pedals and sprints: the pedal cycle goes on ones and he accelerates from about 1220 to 2230 px/s; he is out at the right edge before the cut.
 T 12.5 to 13.0: the empty mansion holds for the last frames.
 
 ### Camera
@@ -629,12 +632,12 @@ T 14.0 (bar 8 downbeat): the owner pushes a burger across the counter, exactly a
 T 14.5 (beat): the hero snatches it on ones over 3 frames and drops his coins on the sill at (620, 1092).
 T 15.0 (beat): the owner taps the coins twice, at 15.0 and 15.125.
 T 15.25: the owner points straight up, toward the tag outside; the hero's eyes roll up to follow his finger.
-T 15.25 to 16.0: the snap push-in to the hero's eyes (see Camera). His pupils shrink toward dots as the eyes fill the frame.
+T 15.417 to 16.0 (shot-local 2.417, 14 frames): the snap push-in to the hero's eyes (see Camera). His pupils shrink toward dots as the eyes fill the frame.
 The last frame is the eyes full frame; the cut at T 16.0 does not wait.
 
 ### Camera
 
-Locked until T 15.25. Then, on ones, the camera moves its world centre from (540, 960) to the eye midpoint (562, 790) while zoom rises from 1 to 6, both with `outExpo`, so the last frame (T 15.958) is at zoom 6 or within a hair of it.
+Locked until T 15.417 (shot-local 2.417). Then, on ones over 14 frames, the camera moves its world centre from (540, 960) to the eye midpoint (562, 790) while zoom rises from 1 to 6, both with `outExpo`, so the last frame (T 15.958) is at zoom 6 or within a hair of it.
 
 ### Enter and exit
 
@@ -666,23 +669,25 @@ T 16.0 to 18.0, illustrated, hard cut in on the midpoint downbeat; fades to blac
 G5 and G4 on the same pixels as 03, in the rich street: a stone column and the fountain's spray behind the upper left.
 The tag reads $6.89.
 The hero is in 03's opening pose (mouth open, burger raised) but his eyes are on the tag.
-+21% sits in the caption slot (G8), red, beside the tag.
++21% sits in the caption slot (G8), red, beside the tag, with the small source note Reuters, Sept 29, 2026 above it.
 
 ### Forms
 
 Hero, burger and tag as in 03; tag lettering $6.89 in ink.
-+21%: red, hand-scrawled, glyph height 120, baseline y 520, about x 90 to 420, with one underline stroke.
++21%: red, hand-scrawled, about 100 px tall as drawn, baseline about y 535, about x 90 to 420, with one underline stroke.
+Source note: Reuters, Sept 29, 2026 in ink, in the note lettering face, cap height 24, left edge x 90, baseline y 405, at most 360 px wide.
 Background: stone, cityPastel, waterTop, grass, paper, painted without ink lines.
 
 ### Overlays
 
-The red +21% scrawl. Drawn effects: short tremble strokes around the burger at T 17.0.
+The red +21% scrawl and the small source note. Drawn effects: short tremble strokes around the burger at T 17.0.
 
 ### Motion
 
 T 16.0 (bar 9 downbeat): frame 0 fully drawn: the $6.89 tag settling from 4 degrees to 0 by T 16.25 on twos; the hero frozen mid-bite, eyes up on the tag.
 T 16.125: the eyes pop: they bulge to 1.6 times their size and shoot 40 px toward the tag on stalks, on ones over 3 frames with an overshoot, then hold.
 T 16.25: +21% scrawls on over 3 frames on ones, in stroke order +, 2, 1, %, then the underline.
+T 16.375: the source note Reuters, Sept 29, 2026 appears and holds.
 T 16.5 (beat): the jaw drops 30 px and the mouth hangs open; hold.
 T 17.0 (beat): the burger trembles plus or minus 3 px on ones for 6 frames, then holds.
 T 17.625 to 17.875: the fade to black, drawn by this scene: an ink veil over the whole frame rising from alpha 0 to 1 over 6 frames.
@@ -701,6 +706,7 @@ Exits through black into 10, which comes up from black.
 
 The same burger costs $6.89 at another company-run store two miles away: a 21 percent premium, from the same Reuters check in September 2026. (6.89 − 5.69) / 5.69 = 0.211.
 Reuters could not confirm that this gap comes from the engine. The next shots show how the engine works in general, not proof for these two stores, so no scene adds a claim that the machine set this particular price. Shot 18 states this caveat on screen.
+The numbers carry their source on screen: Reuters, Sept 29, 2026.
 
 ### Sound
 
@@ -777,13 +783,13 @@ T 20.0 to 21.0, illustrated, hard cut in.
 ### Composition
 
 A full ink field with a round hole: the periscope's view, centre (540, 900), radius 400 (x 140 to 940, y 500 to 1300), edged by a 10 px slate rim.
-Inside the circle, on the light plate: the rich street, the stone portico with its columns, the fountain on the lawn, clipped bushes.
+Inside the circle, on the light plate: the rich street under a fieldSky sky, the stone portico with its columns, the fountain on the lawn, clipped bushes.
 G7 caption above the circle in white.
 
 ### Forms
 
 Matte: ink, with the slate rim.
-Street: stone, cityPastel, grass, waterTop, hillsFar, paper, painted without ink lines.
+Street: stone, cityPastel, grass, waterTop, hillsFar, the sky in fieldSky, painted without ink lines.
 Caption: G7.
 
 ### Overlays
@@ -793,7 +799,7 @@ The G7 caption. No crosshair and no rings: the round matte is the machine's eye,
 ### Motion
 
 T 20.0: frame 0: the view shows the fountain on the left half of the circle.
-T 20.0 to 20.5: the street layer inside the circle slides 600 px to the left with `inOutSine` at 24 fps, so the view turns right until the columns are centred.
+T 20.0 to 20.5: the street layer inside the circle slides 450 px to the left with `inOutSine` at 24 fps, so the view turns right until the columns are centred.
 T 20.25: the G7 caption pops on (`outBack` over 3 frames).
 T 20.5 (beat): the view stops with a 6 px overshoot over 2 frames.
 T 20.875: the eyelid blinks: an ink lid closes over the circle from its top and opens again over 3 frames on ones.
@@ -845,7 +851,7 @@ The G7 caption. Drawn effects: three short shudder strokes at the machine's side
 T 21.0: frame 0: the needle at LOW (200 degrees).
 T 21.125, 21.25, 21.375: the needle crawls toward MEDIUM in ratchet steps of 17.5 degrees, each with a 2 degree wobble.
 T 21.5 (beat): the needle lands on MEDIUM (270 degrees), quivers plus or minus 3 degrees for 4 frames, and holds.
-T 21.75, 21.875, 22.0, 22.125 (16ths): printing: the machine shudders 3 px on each click and the ticket slides out of the slot by about 61 px per step, revealing its text from the top.
+T 21.75, 21.875, 22.0, 22.125 (16ths): printing: the machine shudders 3 px on each click and the ticket slides out of the slot by about 61 px per step, bottom end first: $6.89 shows first and RECOMMENDED: last.
 T 22.25: the ticket hangs fully out to y 1490, readable: RECOMMENDED: $6.89. It flutters plus or minus 2 degrees on twos.
 T 22.25 to 22.5: hold.
 
@@ -1045,7 +1051,7 @@ A cascade of four static cards, 6 frames each, all with the ground line at y 148
 ### Forms
 
 Each card is a simplified copy of the matching ride background: the same house positions and colours, fewer details.
-Hero and bicycle on the cel layer.
+Hero and bicycle on the cel layer at the ride scale of 05: wheel radius 107 px, the hero about 680 px tall.
 
 ### Overlays
 

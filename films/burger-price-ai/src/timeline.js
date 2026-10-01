@@ -73,7 +73,7 @@
         mode: 'illustrated',
         title: 'Mile 1: a fountain',
         transitionIn: cut,
-        brief: `Static street: bigger pastel houses, lawns, clipped bushes and a stone fountain whose jets leap on each beat; the skyline rises. The hero crosses left to right and turns his head to the fountain at 10.5. The G6 counter, copied verbatim from 05, pops 1, 1.25 and 1.5 mi.`,
+        brief: `Static street: bigger, plain two-storey pastel houses with no portico, lawns, clipped bushes and a stone fountain whose jets leap on each beat; the skyline rises. The hero crosses left to right and turns his head to the fountain at 10.5. The G6 counter, copied verbatim from 05, pops 1, 1.25 and 1.5 mi.`,
       },
       {
         id: 'ride-columns',
@@ -93,7 +93,7 @@
         mode: 'schematic',
         title: 'Inside booth two: the same burger',
         transitionIn: cut,
-        brief: `G2 on the same pixels as 02, but the window shows the rich street (stone columns, fountain spray). The hero arrives panting (13.0) and holds up the same coins (13.5); the owner pushes a burger across exactly as in 02 (14.0); the hero snatches it and drops the coins (14.5); the owner taps them twice (15.0, 15.125) and points up at the tag outside (15.25). From 15.25 to 16.0 a snap push-in on ones, outExpo, from zoom 1 to 6 onto the eye midpoint (562, 790). The tag is never in this frame.`,
+        brief: `G2 on the same pixels as 02, but the window shows the rich street (stone columns, fountain spray). The hero arrives panting (13.0) and holds up the same coins (13.5); the owner pushes a burger across exactly as in 02 (14.0); the hero snatches it and drops the coins (14.5); the owner taps them twice (15.0, 15.125) and points up at the tag outside (15.25). From 15.417 (shot-local 2.417) to 16.0 a snap push-in on ones over 14 frames, outExpo, from zoom 1 to 6 onto the eye midpoint (562, 790). The tag is never in this frame.`,
       },
       {
         id: 'price-689',
@@ -103,7 +103,7 @@
         mode: 'illustrated',
         title: '$6.89',
         transitionIn: cut,
-        brief: `Midpoint downbeat: G5 and G4 on the same pixels as 03 with the rich street behind; the tag reads $6.89 and settles, the hero frozen mid-bite looking at it. The eyes pop on stalks at 16.125, a red hand-scrawled +21% appears in the caption slot at 16.25, the jaw drops at 16.5 and the burger trembles at 17.0. The scene fades itself to ink black over 17.625 to 17.875 and holds black to the end. Reuters could not confirm the gap came from the engine: add no claim that the machine set this price.`,
+        brief: `Midpoint downbeat: G5 and G4 on the same pixels as 03 with the rich street behind; the tag reads $6.89 and settles, the hero frozen mid-bite looking at it. The eyes pop on stalks at 16.125, a red hand-scrawled +21% appears in the caption slot at 16.25 and the small source note Reuters, Sept 29, 2026 above it at 16.375, the jaw drops at 16.5 and the burger trembles at 17.0. The scene fades itself to ink black over 17.625 to 17.875 and holds black to the end. Reuters could not confirm the gap came from the engine: add no claim that the machine set this price.`,
       },
       {
         id: 'machine-feed',
@@ -124,7 +124,7 @@
         mode: 'illustrated',
         title: 'The periscope looks at the street',
         transitionIn: cut,
-        brief: `The machine's point of view: a full ink field with a round view (centre 540, 900, radius 400) showing the rich street on the light plate, the stone portico and the fountain. The view pans 600 px from the fountain to the columns over 20.0 to 20.5 and locks with a jolt; the eyelid blinks at 20.875. The G7 caption The engine recommends / an "optimal price" / for each restaurant. pops at 20.25 and stays on the same pixels into 12.`,
+        brief: `The machine's point of view: a full ink field with a round view (centre 540, 900, radius 400) showing the rich street on the light plate, the stone portico and the fountain. The view pans 450 px from the fountain to the columns over 20.0 to 20.5 and locks with a jolt; the eyelid blinks at 20.875. The G7 caption The engine recommends / an "optimal price" / for each restaurant. pops at 20.25 and stays on the same pixels into 12.`,
       },
       {
         id: 'machine-ticket',
