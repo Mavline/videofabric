@@ -7,7 +7,7 @@
 //   2 the laundry, flapping on twos (background: washes and pencil, no ink)
 //   3 three speed lines behind the hero
 //   4 the hero riding: front wheel centre x = 40 + 700 t on twos, wheels on y 1480, four pedal drawings
-//     a turn on twos, the body bobbing 4 px a stroke; chewing to T 9.0, the gulp (3 frames), the lick
+//     a turn on twos; chewing to T 9.0, the gulp (3 frames), the lick
 //   5 the G6 mile counter: 0, then 0.25 (T 8.5), 0.5 (T 9.0), 0.75 (T 9.5)
 (function () {
   'use strict';
@@ -39,7 +39,6 @@
     ctx.restore();
   }
 
-  const HERO_H = 510.6; // as in 01 (G1): wheel radius 80, the wheel centres 140 px either side of the ground point
   const GROUND = 1480; // G1 ground line, the pavement's top edge
   const YARD = 1145; // the houses stand back from the street on this line, so their roofs top out near y 880
   const COUNTER = [[0, 0], [0.5, 0.25], [1.0, 0.5], [1.5, 0.75]]; // shot-local t, miles; 0 is already up at the cut
@@ -112,19 +111,14 @@
     });
   }
 
-  // the 'ride' body of lib.cast.hero (hip [-38, -128], torso 84 leaning 22 degrees, head 46 out at half the
-  // lean), lowered by dy design units: the hands stay on the grips and the feet on the pedals, so the
-  // body bobs while the bicycle rolls level.
-  // ponytail: copies the ride pose's numbers from lib.js (ride(22, HB.torso, [-38, -128], ..., 0.5, HB.neck));
-  // a bob option on the hero would replace it
-  function rideBody(dy) {
-    const D = Math.PI / 180;
-    const hip = [-38, -128 + dy];
-    const neck = [hip[0] + 84 * Math.sin(22 * D), hip[1] - 84 * Math.cos(22 * D)];
-    const head = [neck[0] + 46 * Math.sin(11 * D), neck[1] - 46 * Math.cos(11 * D)];
-    const bx = (-12 / 84) * (neck[0] - hip[0]), by = (-12 / 84) * (neck[1] - hip[1]);
-    return { hip, neck, head, hipN: [hip[0] + 2, hip[1] + 2], hipF: [hip[0] - 3, hip[1]], shN: [neck[0] + bx + 3, neck[1] + by], shF: [neck[0] + bx - 4, neck[1] + by - 1] };
-  }
+  // the hero's riding proportions per unit of height, read from his anchors once (copied verbatim from 06):
+  // the library may refine the body and the bicycle, so no part of him is hard-coded here
+  const heroUnit = (L) => L.cached(ID + '|hero-unit', () => {
+    const c = FILM.makeCanvas ? FILM.makeCanvas(1, 1) : document.createElement('canvas');
+    c.width = c.height = 1;
+    const a = L.cast.hero(c.getContext('2d'), 0, 0, { h: 300, pose: 'ride', phase: 0, shadow: false });
+    return { wheelR: a.wheelR / 300, front: a.axleFront[0] / 300, head: [a.head[0] / 300, a.head[1] / 300] };
+  });
 
   FILM.scene({
     id: ID,
@@ -139,14 +133,16 @@
       // 2 the laundry
       laundry(ctx, L, k);
 
-      // 3 and 4 the hero: the ground point sits 140 px behind the front wheel centre
-      const x = 40 + 700 * tw - 140;
+      // 3 and 4 the hero at the G1 size (wheel radius 80); the ground point sits behind the front wheel centre
+      const u = heroUnit(L);
+      const h = 80 / u.wheelR;
+      const x = 40 + 700 * tw - u.front * h;
       L.speedLines(ctx, x - 100, 1250, 0, { n: 3, spread: 120, len: [70, 140], gap: 14, width: 5, seed: 5 + (k % 2) });
       const gulp = t + 1e-6 >= 1 && t + 1e-6 < 1 + 3 / 24; // T 9.0, three frames on ones
       const face = t + 1e-6 < 1 ? 'chew' : gulp ? 'gulp' : 'lick';
       const tilt = face === 'chew' ? [0.07, 0.035, 0][k % 3] : gulp ? -0.07 : 0; // chewing on 8ths; the chin lifts to swallow
-      const bob = k % 2 ? 0 : 4; // px, down on the push of each stroke
-      L.cast.hero(ctx, x, GROUND, { h: HERO_H, pose: 'ride', t, cadence: 3, cycle: 4, face, tilt, rig: rideBody(bob / (HERO_H / 300)) });
+      // ponytail: the storyboard's 4 px body bob per stroke waits for a bob option on the ride pose (asked of the library)
+      L.cast.hero(ctx, x, GROUND, { h, pose: 'ride', t, cadence: 3, cycle: 4, face, tilt });
 
       // 5 the mile counter
       let i = 0;
