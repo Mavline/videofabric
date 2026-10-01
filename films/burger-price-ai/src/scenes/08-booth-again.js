@@ -23,7 +23,7 @@
 //                             overshoot, and grins; a blink at f 18
 //   t 0.917  (f 22)           the owner draws the burger back a little (anticipation)
 //   t 1.0    (T 14.0,   f 24) he pushes it from (330, 1080) to (500, 1080) on twos over 6 frames, his
-//                             flat hand following it as in 02
+//                             flat hand on the bun as in 02; it drops onto the counter when the bun is gone
 //   t 1.417  (f 34)           the hero's hand draws back and opens (anticipation)
 //   t 1.5    (T 14.5,   f 36) the snatch on ones over 3 frames: he grabs the burger, pulls it out through
 //                             the window with a smear, and it is gone below the sill, as in 02; the coins
@@ -289,11 +289,13 @@
   // ---- the owner: pose, wrist target (frame px at zoom 1), lean, head tilt ----
   function ownerState(f, L, G) {
     if (f < 46) {
-      // the push: his flat hand follows the burger, as in 02; then it rests where the push ended
+      // the push as in 02: his flat hand on the bun's upper left, moving with it (wrist at the burger's x
+      // minus 70, y 1040); it holds there while the boy grabs, and drops onto the counter once the burger
+      // is pulled from under it (f 38)
       const b = burgerOnCounter(f, L) || [PUSH_X[1], BURGER_Y];
       // on the holds his head sinks, drawing by drawing; it lifts for the push
       const tilt = f < 8 ? 0.12 : f < 12 ? 0.15 : f < 16 ? 0.18 : f < 22 ? 0.21 : f < 40 ? 0.1 : 0.14;
-      return { pose: 'push', target: [b[0] - 196, 1078], lean: 0, tilt, tap: -1 };
+      return { pose: 'push', target: [b[0] - 70, f < 38 ? 1040 : 1076], lean: 0, tilt, tap: -1 };
     }
     if (f < 53) {
       // he leans to the coins (twos), then taps down on f 48 and f 51 (15.0 and 15.125, on ones)
