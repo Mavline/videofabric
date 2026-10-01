@@ -6,7 +6,7 @@
 // on T 23.75 his head rolls back and turns to it. The ticket is advice: the next shot shows who types.
 // Layers, back to front:
 //   1 the rich street through the window: a cached light plate (fieldSky, washes, colored pencil)
-//   2 the inside: a cached dense plate, the warm wall with the window cut out, its frame, the counter
+//   2 the inside: a cached dense plate, the warm wall with the window cut out, its frame, the counter, the floor
 //     (02's code with 02's seeds, so the wall is the same painting)
 //   3 on the counter: the register, the phone
 //   4 the ticket: props.ticket's slip with the words lettered at G8's sizes
@@ -29,6 +29,7 @@
   const REG = [960, 1100]; // register x 860 to 1060 at w 200
   const PHONE = [770, 1100]; // phone x 700 to 840 at w 140
   const INNER = FILM.lib.mix(FILM.lib.pal.fence, FILM.lib.pal.trunk, 0.45); // the counter's inner side (02)
+  const FLOOR_Y = 1570; // the booth's floor, from here to the bottom edge: the owner's shoes stand on it (02)
   const D = (p) => [(p[0] - OWN.x) / OS, (p[1] - OWN.y) / OS]; // a frame point in the owner's design units
 
   // ---- timing, shot-local frames: frame n is T 22.5 + n / 24 ----
@@ -117,7 +118,7 @@
 
   // ---- layer 2: the inside, a dense plate with the window cut out (02's inside(), 02's seeds) ----
   function inside(ctx, L, P) {
-    L.plate(ctx, `${ID}|inside|1`, (g) => {
+    L.plate(ctx, `${ID}|inside|2`, (g) => {
       const fx0 = WIN.x0 - FRAME, fy0 = WIN.y0 - FRAME, fx1 = WIN.x1 + FRAME;
       L.dense(g, [rect(0, 0, 1080, TOP.y0), rect(fx0, fy0, fx1, TOP.y0)], { bounds: [0, 0, 1080, TOP.y0], base: P.wallWarm, dir: 'vertical', seed: sdRef(10) });
       L.dense(g, null, { bounds: [fx0, fy0, fx1 - fx0, FRAME], base: P.shadowWarm, dir: 'horizontal', seed: sdRef(11) });
@@ -129,6 +130,8 @@
       L.dense(g, null, { bounds: [0, TOP.y1, 1080, 1920 - TOP.y1], base: INNER, dir: 'vertical', seed: sdRef(17) });
       L.ragged(g, [[0, TOP.y0], [1080, TOP.y0 - 1]], { base: P.fence, width: 4, seed: sdRef(18) });
       L.ragged(g, [[0, TOP.y1], [1080, TOP.y1 + 1]], { base: P.fence, width: 5, seed: sdRef(19) });
+      L.dense(g, null, { bounds: [0, FLOOR_Y, 1080, 1920 - FLOOR_Y], base: P.pavement, dir: 'perspective', vp: [540, 900], seed: sdRef(20) });
+      L.ragged(g, [[0, FLOOR_Y], [1080, FLOOR_Y + 1]], { base: INNER, width: 5, seed: sdRef(21) });
       g.save();
       g.globalCompositeOperation = 'destination-out';
       g.fillRect(WIN.x0, WIN.y0, WIN.x1 - WIN.x0, WIN.y1 - WIN.y0);
@@ -254,7 +257,7 @@
       // 6 the owner from behind: his right hand catches and holds; the left hangs
       const rig = Object.assign(ownerRig(L, key.lean, key.sag, key.tilt), { handN: D(key.wrist) });
       if (key.pose === 'read') Object.assign(rig, { handF: [-6, -170], elbowF: [-0.4, 0.3] });
-      C.owner(ctx, OWN.x, OWN.y, { h: OWN.h, view: 'back', pose: key.pose, k: key.k, ground: INNER, rig });
+      C.owner(ctx, OWN.x, OWN.y, { h: OWN.h, view: 'back', pose: key.pose, k: key.k, ground: P.pavement, rig });
 
       // 7 the caption
       caption(ctx, L, f);
