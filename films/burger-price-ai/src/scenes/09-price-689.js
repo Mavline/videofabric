@@ -22,8 +22,9 @@
 // stalks for 4 frames on ones, the return, then the hold on the dropped jaw.
 //   T 16.0    t 0      f 0   frame 0: frozen mid-bite, eyes up on the tag; the tag swings 4, -2, 1 degrees on twos
 //   T 16.125  t 0.125  f 3   the take on ones: the eyes shoot out on stalks toward the tag (0.6, 1.24, 1.15, 1.15)
+//                             and the cap jumps off his hair (0.16, 0.38, 0.32, 0.32), both landing with the return
 //   T 16.25   t 0.25   f 6   the tag hangs still; +21% scrawls on over 3 frames on ones: "+2", "+21%", the underline
-//   T 16.292  t 0.292  f 7   the eyes snap back (one in-between), home on f 8
+//   T 16.292  t 0.292  f 7   the eyes snap back and the cap drops (one in-between), home on f 8
 //   T 16.5    t 0.5    f 12  the jaw drops, the mouth hangs open over the burger; held
 //   T 16.75   t 0.75   f 18  a blink, eyes shut for exactly 2 frames (life on the hold)
 //   T 17.0    t 1.0    f 24  the burger trembles on ones for 6 frames, with tremble strokes, then holds
@@ -70,9 +71,11 @@
   // the take on ones from f 3: stalk length per frame (lib: 1.15 is the full stalk, eyes 1.6 times
   // bigger; 1.24 is the 8 percent overshoot), then one in-between on the way home
   const TAKE = [0.6, 1.24, 1.15, 1.15, 0.4];
-  // the stalks rise toward the tag, and the full stalk carries the eyes clear above the cap's visor,
-  // which lib draws over the eyes (head frame, radians; the head is tilted back 0.04 in this pose).
-  // No cap jump: a lifted visor would land on the eyes.
+  // the cap's jump per frame of the take (lib's pop pose lifts it 0.32 of the head radius), with the
+  // 8 percent overshoot, and one in-between on the way down
+  const TAKE_CAP = [0.16, 0.38, 0.32, 0.32, 0.12];
+  // the stalks rise toward the tag (head frame, radians; the head is tilted back 0.04 in this pose);
+  // lib draws eyes on stalks over the visor, so the jumping cap never hides them
   const STALK_DIR = -1.0;
   // G5's burger point (centre of the burger in his hands), the base of the tremble
   const G5_BURGER = [560, 1170];
@@ -176,7 +179,7 @@
 
   function heroAt(fr) {
     const o = { k: HERO_OPEN.k, look: LOOK_TAG };
-    if (fr >= 3 && fr < 8) o.rig = { stalk: TAKE[fr - 3], stalkDir: STALK_DIR };
+    if (fr >= 3 && fr < 8) o.rig = { stalk: TAKE[fr - 3], stalkDir: STALK_DIR, capLift: TAKE_CAP[fr - 3] };
     if (fr >= 12) o.face = 'jaw';
     if (fr >= 24 && fr < 30) o.rig = grip([G5_BURGER[0] + TREMBLE[fr - 24][0], G5_BURGER[1] + TREMBLE[fr - 24][1]]);
     if (fr === 18 || fr === 19) o.blink = true;
