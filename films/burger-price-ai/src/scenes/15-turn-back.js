@@ -20,7 +20,8 @@
 // Beats (global T, shot frame f; t = f / 24):
 //   T 26.0    f 0   frame 0: at the stop mark facing the booth, the coins clutched in his fist, glaring at
 //                   the tag; held (the tag rocks)
-//   T 26.25   f 6   the crouch on twos: a first squash (f 6), the full coil (f 8), held to the beat
+//   T 26.25   f 6   the crouch on twos: a first squash (f 6), the full coil (f 8), held to the beat; the coins
+//                   stay in his fist on the grip through the crouch and the yank
 //   T 26.5    f 12  the spin on ones, three drawings: the yank (front wheel up), head-on behind the swirl of
 //                   the smear, the other side facing left with the smear's tail
 //   T 26.625  f 15  the dash: one stretched drawing at x 100 with five speed lines; the dust cloud bursts at
@@ -209,7 +210,7 @@
   // the hands kept on the grips
   const squash = (B, sx, sy) => ({ sq: [sx, sy], handN: [B.grip[0] / sx, B.grip[1] / sy], handF: [(B.grip[0] - 3) / sx, (B.grip[1] - 1) / sy] });
 
-  function heroAt(t, f, B, hx, hy) {
+  function heroAt(t, f, B, hx, hy, coins) {
     if (f < BEAT.crouch) {
       // the glare, held: the coins clutched at his chest, eyes on the tag
       return { x: STOP, o: { pose: 'coins', face: 'glare', look: [0.55, -0.85], target: [hx(40), hy(-128)] } };
@@ -217,11 +218,11 @@
     if (f < BEAT.spin) {
       // the crouch on twos: a first squash, then the full coil held to the beat
       const sy = f < BEAT.coil ? 0.94 : 0.88;
-      return { x: STOP, o: { pose: 'crouch', look: [0.7, -0.6], rig: squash(B, 1.03, sy) } };
+      return { x: STOP, o: { pose: 'crouch', look: [0.7, -0.6], rig: squash(B, 1.03, sy), hold: coins } };
     }
     if (f === BEAT.spin) {
       // the yank: the bars pulled up, the front wheel off the ground about the rear tyre
-      return { x: STOP, o: { pose: 'spin', k: 0, ones: true, rot: -0.12, rig: Object.assign({ pivot: [B.axleRear[0], 0] }, squash(B, 1.03, 0.9)) } };
+      return { x: STOP, o: { pose: 'spin', k: 0, ones: true, rot: -0.12, rig: Object.assign({ pivot: [B.axleRear[0], 0] }, squash(B, 1.03, 0.9)), hold: coins } };
     }
     if (f === BEAT.spin + 1) return { x: STOP, o: { pose: 'spin', k: 0.5, ones: true } }; // head-on
     if (f === BEAT.spin + 2) return { x: STOP, o: { pose: 'spin', k: 1, ones: true, face: 'determined' } }; // facing left
@@ -286,10 +287,16 @@
         L.dust(ctx, 340, 1468, { r: 60, p, dir: 0.05, n: 3, seed: sd('dust', 2) });
       }
       if (f === BEAT.dash) L.speedLines(ctx, 320, 1345, Math.PI, { n: 5, spread: 190, len: [110, 220], gap: 14, width: 6, seed: sd('speed', 0) });
-      else if (f === BEAT.gone) L.speedLines(ctx, -40, 1290, Math.PI, { n: 5, spread: 280, len: [220, 380], gap: 10, width: 5, alpha: 0.7, seed: sd('speed', 1) });
+      else if (f === BEAT.gone) L.speedLines(ctx, -40, 1290, Math.PI, { n: 5, spread: 280, len: [90, 160], gap: 10, width: 6, seed: sd('speed', 1) });
 
       // 8 the hero
-      const hero = heroAt(t, f, B, hx, hy);
+      // the coins stay in his fist on the grip through the crouch and the yank, drawn as the coins pose draws
+      // them: two coins 34 units wide about the hold anchor, under the near hand
+      const coins = (c, a) => {
+        L.props.coin(c, a.hold[0] - 10 * HS, a.hold[1] + 2 * HS, { w: 34 * HS, rot: -0.3, seed: 1 });
+        L.props.coin(c, a.hold[0] + 11 * HS, a.hold[1] - 4 * HS, { w: 34 * HS, rot: 0.25, seed: 2 });
+      };
+      const hero = heroAt(t, f, B, hx, hy, coins);
       if (hero) L.cast.hero(ctx, hero.x, G1.ground, Object.assign({ h, facing: 1 }, hero.o));
     },
   });

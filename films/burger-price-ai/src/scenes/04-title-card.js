@@ -4,8 +4,8 @@
  *   1. plate (cached): the white paper field and three pale blots, one under each title line
  *   2. the title: ONE from frame 0; BURGER, at T 6.125, TWO at 6.25, PRICES at 6.375, each a whole
  *      word popping in 3 drawings on ones with an 8 percent overshoot
- *   3. the byline REUTERS, SEPT 29, 2026 in ink round capitals (art bible 9.1), left to right a word
- *      group per 16th: REUTERS, at 6.5, SEPT 29, at 6.625, 2026 at 6.75 (no letter-by-letter typing)
+ *   3. the byline REUTERS, SEPT 29, 2026 in ink round capitals (art bible 9.1), drawn on left to right
+ *      on ones over frames 12 to 17 (T 6.5 to 6.708): a clip whose right edge steps from x 303 to x 895
  *   4. the whole burger at (540, 1300): squash from 6.917, the pluck at 7.0 throws it up, it lands
  *      and settles by 7.5, all on twos; then the card holds
  * Title lines are fitted into their storyboard G8 boxes (narrower than the face at the planned cap
@@ -17,7 +17,6 @@
   const ID = 'title-card';
   const CAP = 0.74; // cap height per letter size of the round face (art bible 9)
   const BYLINE = 'REUTERS, SEPT 29, 2026';
-  const BYLINE_SHOWN = [[18, 22], [15, 17], [12, 8]]; // [from frame, letters shown]: a word group per 16th
   // lib.letters seeds picked so each word's baseline jumps up and down by about 12 px, no letter shrunk
   const SEED = { ONE: 5560, BURGER: 19865, TWO: 3094, PRICES: 10767, BYLINE: 120206 };
   const POP = [0.75, 1.08, 1]; // a word's 3 drawings, on ones from its beat frame
@@ -76,11 +75,15 @@
       word('PRICES', x3 + m('TWO PRICES') - m('PRICES') / 2, 960, s3, 9, SEED.PRICES); // T 6.375
 
       // 3. byline, cap 40, baseline 1080, kept inside the title's column x 150-930
-      const shown = BYLINE_SHOWN.find(([from]) => fr >= from);
-      if (shown) {
-        L.letters(ctx, BYLINE, 540, 1080, {
-          size: fit(ctx, L, BYLINE, 40, 780, false), align: 'center', color: P.ink, seed: SEED.BYLINE, p: shown[1] / BYLINE.length,
-        });
+      if (fr >= 12) {
+        ctx.save();
+        if (fr < 18) {
+          ctx.beginPath();
+          ctx.rect(0, 0, 303 + (592 * (fr - 12)) / 5, 1920); // the pen's right edge, 118.4 px a frame
+          ctx.clip();
+        }
+        L.letters(ctx, BYLINE, 540, 1080, { size: fit(ctx, L, BYLINE, 40, 780, false), align: 'center', color: P.ink, seed: SEED.BYLINE });
+        ctx.restore();
       }
 
       // 4. burger
