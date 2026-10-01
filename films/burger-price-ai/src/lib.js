@@ -3009,13 +3009,18 @@
    *       'coins', 'slap'               straddling, a fist of coins held up; the hand slapped down on o.target
    *       'snatch'                      the near arm shoots to o.target [x, y] px (draw it on ones, add a smear)
    *       'sill'                        front view, both hands on a ledge at o.target[1]
-   *       'bite'                        o.k: open 0-1/3 (burger up), chomp 1/3-2/3, chew 2/3-1; o.bites before
+   *       'bite'                        o.k: open 0-1/3 (burger up), chomp 1/3-2/3, chew 2/3-1; o.bites before;
+   *                                     o.biteSide, o.biteSize go to its burger
    *       'pop'                         eyes popped, cap jumps, hands up; o.stalk 0..1.15 shoots the eyes out
    *                                     on stalks toward o.stalkDir (radians, default up and forward)
    *       'turn'                        on foot, o.k: squash, front view, the other side (ends facing -facing)
    *       'spin'                        on the bicycle, o.k: crouch, front view, the other side
    *     o.face   'smile' | 'neutral' | 'grin' | 'open' | 'O' | 'chew' | 'bliss' | 'gulp' | 'lick' | 'jaw' |
    *              'glare' | 'determined' | 'sniff' | 'pant' | 'pop' | 'sad'
+   *     o.chewPhase 0..1 with 'chew' (the scene sets it, e.g. 1 / 0.5 / 0 on twos): the jaw drops up to a
+   *              tenth of the head's lower half and the mouth opens; without it 'chew' is the shut wavy mouth
+   *     o.iris (scales the irises, default 1), o.gulp 0..1 with 'gulp' (the lump shows under the chin and
+   *     travels down; without it the lump stays hidden),
    *     o.blink, o.look [-1..1, -1..1] (pupils), o.tilt (head nod, radians, + forward), o.turn 0..1 (head
    *     front .. three-quarter), o.hold(ctx, anchors) draws what the hands hold between body and near hand
    *     returns { head, headR, eye, eyeFar, mouth, hand, handFar, hold, chest, neck, top, ground,
@@ -3032,9 +3037,10 @@
    *       'sigh' (o.k 0..1: the shoulders drop, lids half close; puff from anchors.mouth), 'type' (both
    *       hands tap at o.hold's keypad), 'holdup' (a fist raised to face height: hang the tag from it),
    *       'shrug'
-   *     o.face 'tired' | 'bored' | 'surprised' | 'talk' | 'read' | 'yawn'; o.blink; o.tilt
+   *     o.face 'tired' | 'bored' | 'surprised' | 'talk' | 'read' | 'yawn' | 'resigned'; o.blink; o.tilt;
+   *     o.headTurn 0..1 with view 'back' (the near eye and its brow come round past the cheek)
    *     o.layer 'all' | 'back' | 'front' (front = the arms that reach a counter, and what they hold)
-   *     returns { head, headR, mouth, ear, eye, hand, handFar, hold, keys, chest, top, ground }
+   *     returns { head, headR, mouth, ear, eye, hand, handFar, hold, keys, chest, top, shoulder, shoulderFar, ground }
    *   machine(ctx, x, y, o)  the pricing machine, seen from the front. (x, y): ground between its shoes.
    *     o.h ground to the top of the box px (660 draws storyboard G3 at its own pixels from (540, 1480))
    *     o.pose 'idle' | 'gulp' (o.k: the hopper neck squeezes and swells, the body squashes 4 percent) |
@@ -3046,9 +3052,11 @@
    *     'print' and 'think' shudder on their own from o.t), o.ticketRot (radians, the strip about the slot)
    *     returns { slot, ticketTip, ticketTop, hopper, hopperNeck, eye, dial: { x, y, r }, needleTip, top, ground, body }
    * lib.props
-   *   burger(x, y: centre)     o.w px (0.69 as tall), o.bites 0..3, o.rot. Returns { top, bottom, bite, center }
+   *   burger(x, y: centre)     o.w px (0.69 as tall), o.bites 0..3, o.biteSide 'right' (default) | 'left', o.biteSize
+   *                            (first bite's diameter as a share of the width, default 0.36), o.rot.
+   *                            Returns { top, bottom, bite, center }
    *   bike(x, y: ground)       o.h hero height px (its scale: wheel radius 47/300 of it), o.phase, o.wheel,
-   *                            o.layer 'all'|'far'|'mid'|'near'
+   *                            o.layer 'all'|'far'|'mid'|'near', o.measure (the anchors only, nothing drawn)
    *   priceTag(x, y: card top centre)  o.w, o.h px, o.price, o.swing radians, o.pivot 'strings' | 'top',
    *                            o.hang 'corners' (G1, default) | 'holes' (G4), o.strings 'up' | 'dangle' | 'none',
    *                            o.drop px, o.size (glyph height px, default 2/3 of h), o.baseline (px below the card
@@ -3070,7 +3078,8 @@
    *   keypad(x, y: bottom centre)    o.w px, 3 x 4 keys, o.text (screen strip), o.press key index (0..11),
    *                            o.labels (12 key labels, e.g. '.' for '*'; false for none)
    *   map(x, y: top-left)      o.w, o.h px, o.n dots, o.p reveal, o.style 'city' | 'land', o.mono (all red),
-   *                            o.booths (tiny booths), o.pins [{ u, v, label }]. Returns { dots, pins }
+   *                            o.booths (tiny booths), o.pins [{ u, v, label }], o.pulse { idx: [dot indexes],
+   *                            k: 0..1 } (those dots swell and settle). Returns { dots, pins }
    *   receipt(x, y), coin(x, y)   centre; o.w px, o.rot; coin o.spin 0..1
    *   flow(pts)                a stream of receipts and coins from pts[0] to the last point; o.t, o.n,
    *                            o.rate (trips per second), o.size, o.kind 'mix' | 'receipt' | 'coin', o.spread
@@ -3413,7 +3422,8 @@
     const pose = o.pose || 'stand';
     const k = clamp(o.k != null ? o.k : 0);
     const R = {
-      pose, stage: 0, tilt: 0, face: 'smile', capLift: 0, flip: false, sq: null, bike: null, bikeFront: false,
+      pose, stage: 0, tilt: 0, face: 'smile', capLift: 0, flip: false, sq: null, bike: null, bikeFront: false, chewPhase: o.chewPhase,
+      iris: o.iris != null ? o.iris : 1, gulp: o.gulp,
       kindN: 'fist', kindF: 'fist', hold: null, holdW: 75, look: null, rot: 0, pivot: null, armsFront: false, stalk: 0,
     };
     const side = () => Object.assign(R, {
@@ -3634,7 +3644,9 @@
     const rpx = r * K.s;
     const fw = clamp(rpx * 0.05, 2.6, K.lw);
     const ew = clamp(rpx * 0.035, 2.5, K.lw);
-    const jaw = face === 'jaw' ? 0.32 : 0;
+    // chewing with o.chewPhase: the jaw drops (the lower half of the head stretches) and the mouth opens
+    const chewK = face === 'chew' && R.chewPhase != null ? clamp(R.chewPhase) : null;
+    const jaw = face === 'jaw' ? 0.32 : chewK != null ? 0.1 * chewK : 0;
     const full = face === 'chew' || face === 'chomp' || face === 'gulp' ? 0.17 : 0;
     // 1 the head: round, full cheeks (the jaw drops for 'jaw')
     const head = [];
@@ -3709,7 +3721,7 @@
         return;
       }
       eyeOpen(ctx, K.T(P(cu, cv)), rx, ry, {
-        ew, look: [lk[0] * K.f, lk[1]], lid, iris: pal.iris, irisR: rx * (pop ? 0.44 : face === 'glare' ? 0.5 : 0.66), lashes: 3, side: sideE * K.f, skin: pal.skinKid, seed: 4501 + i * 7,
+        ew, look: [lk[0] * K.f, lk[1]], lid, iris: pal.iris, irisR: rx * (pop ? 0.44 : face === 'glare' ? 0.5 : 0.66) * R.iris, lashes: 3, side: sideE * K.f, skin: pal.skinKid, seed: 4501 + i * 7,
       });
     });
     };
@@ -3731,7 +3743,7 @@
       for (let i = 0; i < 2; i++) K.line(ctx, PP([[nu + 0.16, nv - 0.06 + i * 0.1], [nu + 0.3, nv - 0.1 + i * 0.12]]), 56 + i, { width: Math.max(2.5, fw * 0.6), taper: [1, 2] });
     }
     // 7 mouth
-    const mu = 0.56 * tu, mv = 0.48;
+    const mu = 0.56 * tu, mv = 0.48 + (chewK != null ? 0.48 * jaw : 0);
     const mw = 0.21 * (1 - 0.2 * tu);
     const serif = (q, dx) => K.line(ctx, PP([[q[0] - dx * 0.03, q[1] - 0.05], [q[0] + dx * 0.01, q[1] + 0.03]]), 63 + (dx > 0 ? 1 : 0), { width: fw * 0.8, taper: [1, 1] });
     const cavity = (deep, wide) => {
@@ -3764,6 +3776,8 @@
     } else if (face === 'O' || face === 'pop') {
       const b = face === 'pop' ? 1.35 : 1;
       K.cel(ctx, PP(ell(mu, mv + 0.05, 0.08 * b, 0.11 * b, 0, 18)), pal.mouth, 61);
+    } else if (chewK != null && chewK > 0.25) {
+      cavity(0.04 + 0.16 * chewK, 0.75);
     } else if (face === 'chew' || face === 'chomp' || face === 'gulp') {
       if (face === 'chew') K.line(ctx, PP([[mu - mw, mv], [mu - mw * 0.4, mv - 0.035], [mu, mv + 0.02], [mu + mw * 0.5, mv - 0.03], [mu + mw, mv + 0.01]]), 60, { width: fw });
       if (face === 'gulp') K.line(ctx, PP([[mu - mw * 0.6, mv + 0.01], [mu + mw * 0.6, mv - 0.01]]), 60, { width: fw, taper: [2, 2] });
@@ -3832,7 +3846,12 @@
     leg(R.hipN, R.ankleN, R.footN || 0, R.kneeN, 92);
     // 2 shorts over the thighs, the shirt over the shorts, the throat bulge of a gulp
     torso();
-    if (R.face === 'gulp') {
+    if (R.face === 'gulp' && R.gulp != null) {
+      // o.gulp 0..1: the lump bulges under the chin and travels down the throat (the head covers its top)
+      const g = clamp(R.gulp), r0 = HB.headR;
+      const c = add2(R.head, rot2([0.22 * clamp(R.turn != null ? R.turn : 1) * r0, (0.92 + 0.2 * g) * r0], R.tilt));
+      K.cel(ctx, ell(c[0], c[1], 11, 10, 0, 14), skin, 12);
+    } else if (R.face === 'gulp') {
       const nk = lerp2(R.neck, R.head, 0.32);
       K.cel(ctx, ell(nk[0] + 10, nk[1], 8, 7, 0, 14), skin, 12);
     }
@@ -3841,7 +3860,7 @@
     const held = () => {
       if (typeof o.hold === 'function') o.hold(ctx, anchors);
       else if (R.pose === 'bite' && o.burger !== false) {
-        props.burger(ctx, anchors.hold[0], anchors.hold[1], { w: R.holdW * s, bites: R.bites, rot: f * (R.stage === 2 ? 0 : -0.12), plate: o.plate, line: o.line });
+        props.burger(ctx, anchors.hold[0], anchors.hold[1], { w: R.holdW * s, bites: R.bites, rot: f * (R.stage === 2 ? 0 : -0.12), biteSide: o.biteSide, biteSize: o.biteSize, plate: o.plate, line: o.line });
       } else if (R.pose === 'coins' && o.coins !== false) {
         props.coin(ctx, anchors.hold[0] - 10 * s, anchors.hold[1] + 2 * s, { w: 34 * s, rot: -0.3, seed: 1, plate: o.plate, line: o.line });
         props.coin(ctx, anchors.hold[0] + 11 * s, anchors.hold[1] - 4 * s, { w: 34 * s, rot: 0.25, seed: 2, plate: o.plate, line: o.line });
@@ -3849,7 +3868,8 @@
     };
     // at the open-mouth stage of a bite the burger is held up beside the face, so the open mouth shows (G5)
     const heldFirst = R.pose === 'bite' && R.stage === 0 && typeof o.hold !== 'function';
-    const headLast = R.pose === 'crouch' || R.pose === 'dash';
+    // the chewing jaw drops over the near shoulder too, so with o.chewPhase the head goes over the arms
+    const headLast = R.pose === 'crouch' || R.pose === 'dash' || (R.face === 'chew' && R.chewPhase != null);
     if (heldFirst) held();
     let hd = headLast ? null : heroHead(ctx, K, R.head, HB.headR, R, !!o.blink);
     if (R.bikeFront) drawBikeFront(ctx, K, 'front');
@@ -3876,7 +3896,8 @@
     const tq = o.ones ? o.t || 0 : lib.onTwos(o.t || 0);
     const phase = o.phase != null ? o.phase : tq * (o.cadence || 0);
     const K = kit(x, y, s, f, o, 1300);
-    const bp = drawBike(ctx, K, phase, o.wheel != null ? o.wheel : phase * TAU * 2.2, o.layer || 'all');
+    // o.measure: the anchors only, nothing drawn
+    const bp = o.measure ? bikePoints(phase) : drawBike(ctx, K, phase, o.wheel != null ? o.wheel : phase * TAU * 2.2, o.layer || 'all');
     return { seat: K.T(BIKE.saddle), grip: K.T(BIKE.grip), pedal: K.T(bp.pedalN), pedalFar: K.T(bp.pedalF), bb: K.T(BIKE.bb), axleFront: K.T(BIKE.front), axleRear: K.T(BIKE.rear), wheelR: BIKE.R * s };
   };
 
@@ -4016,7 +4037,7 @@
     return R;
   }
 
-  function ownerHead(ctx, K, hc, r, tilt, face, tq, blink, back) {
+  function ownerHead(ctx, K, hc, r, tilt, face, tq, blink, back, turn = 0) {
     const P = (u, v) => {
       const q = rot2([u * r, v * r], tilt);
       return [hc[0] + q[0], hc[1] + q[1]];
@@ -4041,9 +4062,16 @@
       K.line(ctx, PP([[-0.24, -0.1], [-0.18, 0.3]]), 32, { width: fw * 0.7 });
       K.cel(ctx, PP(ell(0.36, 0.04, 0.15, 0.24, 0, 20)), pal.skin, 20);
       K.line(ctx, PP([[0.31, -0.09], [0.41, 0.04], [0.32, 0.15]]), 21, { width: fw * 0.7 });
+      if (turn > 0) {
+        // o.headTurn: he turns his head toward us; the near eye and its brow come round past the cheek
+        const tk = clamp(turn), eu = 0.66 - 0.08 * tk, ev = -0.2;
+        K.line(ctx, PP([[eu - 0.05 * tk, ev + 0.01], [eu + 0.05, ev + 0.01]]), 40, { width: fw * 1.15, taper: [1, 1] });
+        K.line(ctx, PP([[eu - 0.08 * tk, ev - 0.07], [eu + 0.06, ev - 0.06]]), 42, { width: fw * 0.8 });
+        K.cel(ctx, PP([[eu - 0.1 * tk, -0.41], [eu, -0.45], [eu + 0.08, -0.38], [eu + 0.08, -0.34], [eu, -0.4], [eu - 0.1 * tk, -0.37]]), pal.hairGrey, 46);
+      }
       K.cel(ctx, PP(cap), pal.white, 60);
       K.line(ctx, PP([[-0.7, -0.74], [0, -0.86], [0.66, -0.78]]), 61, { width: fw * 0.75 });
-      return { mouth: P(0.7, 0.5), ear: P(0.36, 0.04), top: P(0, -1.14), eye: P(0.6, -0.2) };
+      return { mouth: P(0.7, 0.5), ear: P(0.36, 0.04), top: P(0, -1.14), eye: P(turn > 0 ? 0.66 - 0.08 * clamp(turn) : 0.6, -0.2) };
     }
     // 1 long face, jaw a little narrower, chin forward
     K.cel(ctx, PP(head), pal.skin, 1);
@@ -4056,7 +4084,7 @@
     const eyes = [[0.12, 1, -1], [0.4, 0.8, 1]];
     const ev = face === 'read' ? -0.19 : -0.22;
     const shut = blink || face === 'yawn';
-    const heavy = face === 'bored' || face === 'sigh' ? 0.05 : 0;
+    const heavy = face === 'bored' || face === 'sigh' || face === 'resigned' ? 0.05 : 0;
     eyes.forEach(([u, kx, side], i) => {
       if (face === 'surprised') {
         K.cel(ctx, PP(ell(u, ev, 0.055 * kx, 0.075, 0, 12)), pal.ink, 40 + i, { width: 0 });
@@ -4076,7 +4104,7 @@
       const up = face === 'surprised' ? -0.12 : face === 'talk' ? -0.04 : face === 'yawn' ? -0.06 : 0;
       const bv = -0.4 + up;
       const outEnd = [u + 0.17 * kx * side, bv + (face === 'surprised' ? -0.02 : 0.07)];
-      const inEnd = [u - 0.13 * kx * side, bv - 0.01];
+      const inEnd = [u - 0.13 * kx * side, bv - (face === 'resigned' ? 0.1 : 0.01)];
       K.cel(ctx, PP([inEnd, [u, bv - 0.05], outEnd, [outEnd[0], outEnd[1] + 0.04], [u, bv], [inEnd[0], inEnd[1] + 0.045]]), pal.hairGrey, 46 + i);
     });
     // 5 the big nose, 6 the moustache
@@ -4090,7 +4118,8 @@
     } else if ((face === 'talk' && Math.floor(tq * 6) % 2 === 0) || face === 'surprised' || face === 'sigh') {
       K.cel(ctx, PP(ell(mu, mv, 0.09, face === 'surprised' ? 0.1 : 0.065, 0, 16)), pal.mouth, 55);
     } else {
-      K.line(ctx, PP([[mu - 0.12, mv + 0.03], [mu, mv - 0.005], [mu + 0.12, mv + 0.03]]), 55, { width: fw * 0.9, taper: [2, 2] });
+      const dn = face === 'resigned' ? 0.075 : 0.03; // the corners of the mouth sink
+      K.line(ctx, PP([[mu - 0.12, mv + dn], [mu, mv - 0.005], [mu + 0.12, mv + dn]]), 55, { width: fw * 0.9, taper: [2, 2] });
     }
     K.cel(ctx, PP([[mx - 0.36, my + 0.15], [mx - 0.26, my - 0.02], [mx - 0.08, my - 0.06], [mx, my - 0.02], [mx + 0.1, my - 0.07], [mx + 0.26, my - 0.03], [mx + 0.34, my + 0.13], [mx + 0.25, my + 0.17], [mx + 0.1, my + 0.1], [mx, my + 0.13], [mx - 0.13, my + 0.11], [mx - 0.28, my + 0.21]]), pal.hairGrey, 52);
     // 8 white paper cap, set a little back
@@ -4159,7 +4188,7 @@
         K.cel(ctx, ell(...map(U0 - 9, L * 0.18), 10, 7, 0.5, 14), pal.white, 15);
         K.cel(ctx, ell(...map(U0 + 9, L * 0.18), 10, 7, -0.5, 14), pal.white, 16);
         K.tubes(ctx, [[map(U0, L * 0.16), map(U0 - 5, L * 0.02)], [map(U0, L * 0.16), map(U0 + 6, L * 0.0)]], 5, pal.white);
-        const hd = ownerHead(ctx, K, R.head, OB.headR, R.tilt, R.face, tq, !!o.blink, true);
+        const hd = ownerHead(ctx, K, R.head, OB.headR, R.tilt, R.face, tq, !!o.blink, true, o.headTurn || 0);
         Object.assign(anchors, { mouth: K.T(hd.mouth), ear: K.T(hd.ear), top: K.T(hd.top), eye: K.T(hd.eye) });
         arm(R.shF, R.handF, R.elbowF, R.kindF, 80, true);
       } else {
@@ -4189,7 +4218,7 @@
       else if (R.holdKind === 'burger' && o.burger !== false) props.burger(ctx, anchors.hold[0], anchors.hold[1], { w: 64 * s, plate: o.plate, line: o.line });
       tip = arm(R.shN, R.handN, R.elbowN, R.kindN, 85, true);
     }
-    Object.assign(anchors, { head: K.T(R.head), headR: OB.headR * s, hand: K.T(tip), handFar: K.T(R.handF), chest: K.T(lerp2(R.hip, R.neck, 0.7)), ground: [x, y] });
+    Object.assign(anchors, { head: K.T(R.head), headR: OB.headR * s, hand: K.T(tip), handFar: K.T(R.handF), chest: K.T(lerp2(R.hip, R.neck, 0.7)), shoulder: K.T(R.shN), shoulderFar: K.T(R.shF), ground: [x, y] });
     return anchors;
   }
   cast.owner = owner;
@@ -4551,18 +4580,24 @@
       cel: (c, pts, fill, id, extra) => K0.cel(c, fl(pts), fill, id, extra),
     });
     const bites = Math.max(0, Math.min(3, Math.round(o.bites || 0)));
-    const B = [[54, -14, 20], [56, 14, 19], [36, -40, 18]].slice(0, bites);
+    // o.biteSide 'right' (default) | 'left': the edge the mouth eats from; o.biteSize: the first bite's
+    // diameter as a share of the width (default 40/110, about 0.36), the later bites in proportion
+    const bs = o.biteSide === 'left' ? -1 : 1;
+    const bk = o.biteSize != null ? (o.biteSize * 110) / 40 : 1;
+    const B = [[54, -14, 20], [56, 14, 19], [36, -40, 18]].slice(0, bites).map(([bx, by, br]) => [bx * bs, by, br * bk]);
+    // one clip per bite: where two bites overlap, an even-odd clip of all of them would paint the overlap back
+    const clipOut = ([bx, by, br]) => {
+      const c = K.T([bx, by]);
+      ctx.beginPath();
+      ctx.rect(-1e5, -1e5, 2e5, 2e5);
+      ctx.moveTo(c[0] + br * s, c[1]);
+      ctx.arc(c[0], c[1], br * s, 0, TAU);
+      ctx.clip('evenodd');
+    };
     const cut = (fn) => {
       if (!B.length) return fn();
       ctx.save();
-      ctx.beginPath();
-      ctx.rect(-1e5, -1e5, 2e5, 2e5);
-      for (const [bx, by, br] of B) {
-        const c = K.T([bx, by]);
-        ctx.moveTo(c[0] + br * s, c[1]);
-        ctx.arc(c[0], c[1], br * s, 0, TAU);
-      }
-      ctx.clip('evenodd');
+      B.forEach(clipOut);
       fn();
       ctx.restore();
     };
@@ -4590,22 +4625,12 @@
       ctx.beginPath();
       lib.tracePath(ctx, K.TT(BURGER_OUTLINE), true);
       ctx.clip();
-      if (B.length > 1) {
-        ctx.beginPath();
-        ctx.rect(-1e5, -1e5, 2e5, 2e5);
-        B.forEach(([cx, cy, cr], j) => {
-          if (j === i) return;
-          const c = K.T([cx, cy]);
-          ctx.moveTo(c[0] + cr * s, c[1]);
-          ctx.arc(c[0], c[1], cr * s, 0, TAU);
-        });
-        ctx.clip('evenodd');
-      }
+      B.forEach((b, j) => j !== i && clipOut(b));
       K.cel(ctx, ell(bx, by, br, br, 0, 30), null, 30 + i);
       ctx.restore();
     });
     const next = [[48, -10], [50, 12], [32, -32], [40, 0]][bites];
-    return { top: K.T([0, -42]), bottom: K.T([0, 39]), bite: K.T(next), center: [x, y] };
+    return { top: K.T([0, -42]), bottom: K.T([0, 39]), bite: K.T([next[0] * bs, next[1]]), center: [x, y] };
   };
 
 
@@ -4914,12 +4939,15 @@
       dots.push({ x: x + dx, y: y + dy, level: v < 0.4 ? 0 : v < 0.62 ? 1 : 2 });
     }
     const p = o.p != null ? clamp(o.p) : 1;
+    // o.pulse { idx: [dot indexes], k: 0..1 }: those dots swell and settle once over k
+    const pulse = o.pulse && Array.isArray(o.pulse.idx) ? new Set(o.pulse.idx) : null;
+    const pk = pulse ? 1 + 0.45 * Math.sin(Math.PI * clamp(o.pulse.k || 0)) : 1;
     const cols = [pal.green, pal.titleYellow, pal.red];
     const nb = o.booths || 0;
     dots.forEach((d, i) => {
       const local = p * dots.length - i;
       if (local <= 0) return;
-      const sc = local < 0.34 ? 0.72 : local < 0.67 ? 1.08 : 1;
+      const sc = (local < 0.34 ? 0.72 : local < 0.67 ? 1.08 : 1) * (pulse && pulse.has(i) ? pk : 1);
       if (i < nb) {
         // a tiny booth: white box, red roof
         const bs = dr * 2.2 * sc;

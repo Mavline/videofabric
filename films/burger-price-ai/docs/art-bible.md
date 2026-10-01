@@ -13,11 +13,11 @@ Where this file and `docs/storyboard.md` disagree on a position or a time, the s
 Everything below is implemented in `src/lib.js`: the manner helpers (`lib.cel`, `lib.softWash`, `lib.dense`, `lib.letters` and the rest), the cast (`lib.cast`) and the props (`lib.props`). The cast sheet in `tools/fixtures/cast/` shows every character in every pose and every prop on both plates, one page per shot:
 
 ```bash
-node tools/snap.cjs --fixtures=tools/fixtures/cast --samples 10 --sheet   # one frame per page
+node tools/snap.cjs --fixtures=tools/fixtures/cast --out .frames/cast   # the middle of every page, and the sheet
 node tools/check.cjs --fixtures=tools/fixtures/cast
 ```
 
-Its pages 4, 6, 8 and 9 draw the storyboard's tables G1 (the booth), G3 (the machine), G2 (inside the booth) and G5 (the close-up, with the G4 tag above it) at their own pixels, with pink crosses on the storyboard's target points.
+Its pages 4, 6, 8 and 9 draw the storyboard's tables G1 (the booth), G3 (the machine), G2 (inside the booth) and G5 (the close-up, with the G4 tag above it) at their own pixels, with pink crosses on the storyboard's target points. Page 11 shows the options added after the scenes were drawn: the bite's side and size, chewing with the jaw, iris size, the gulp lump, the owner's resigned face and his head turned from behind, pulsing map dots, and the bicycle's anchors measured without drawing.
 
 ## 1. Frame
 
@@ -371,7 +371,8 @@ A boy of about ten on a green bicycle: our own character, no relation to any exi
 | `spin` | turning the bicycle round | `o.k`: crouch, bicycle head-on, the other side ready to dash |
 | `stand` | standing | arms down |
 
-Faces (`o.face`, each pose has its own default): `smile`, `neutral`, `grin`, `open`, `O`, `chew`, `bliss` (eyes shut as arcs, deeper blush), `gulp` (pressed mouth, full cheeks, throat bulge), `lick` (tongue at the corner), `jaw` (the jaw drops, the mouth hangs open), `glare`, `determined`, `sniff` (lids half down, sniff strokes at the nose), `pant` (opens and closes on twos with `o.t`), `pop`, `sad`.
+Faces (`o.face`, each pose has its own default): `smile`, `neutral`, `grin`, `open`, `O`, `chew`, `bliss` (eyes shut as arcs, deeper blush), `gulp` (pressed mouth, full cheeks; with `o.gulp` 0..1 a lump shows under the chin and travels down), `lick` (tongue at the corner), `jaw` (the jaw drops, the mouth hangs open), `glare`, `determined`, `sniff` (lids half down, sniff strokes at the nose), `pant` (opens and closes on twos with `o.t`), `pop`, `sad`.
+Chewing with the jaw: with `face: 'chew'` the scene sets `o.chewPhase` 0..1 on each drawing (1 jaw down and mouth open, 0.5 half, 0 shut, e.g. 1, 0.5, 0 on twos for one chew); the lower half of the head drops a tenth and the head is drawn over the arms. Without it `chew` is the shut wavy mouth. `o.iris` scales the irises (default 1). In `bite`, `o.biteSide` and `o.biteSize` go to the burger (the mouth eats from the burger's left edge when he faces right: `biteSide: 'left'`).
 Also: `o.blink`, `o.look` [-1..1, -1..1] for the pupils, `o.tilt` (head nod in radians, positive forward), `o.rot` (the whole figure, for a sway), `o.bob` (frame px, positive down: on the bicycle the body sinks or rises while the hands stay on the grips and the feet on the pedals; the 4 px pedal bob), `o.stalkDir` (with `pop`), `o.shadow`, `o.ground`, `o.rig` (joint targets), `o.hold(ctx, anchors)` (draws what his hands hold between the body and the near hand; the `bite` and `coins` poses draw the burger and coins themselves).
 Anchors returned: `head`, `headR`, `eye`, `eyeFar`, `mouth`, `hand`, `handFar`, `hold`, `chest`, `neck`, `top`, `ground`, and on the bicycle `seat`, `grip`, `pedal`, `axleFront`, `axleRear`, `wheelR`.
 
@@ -406,8 +407,8 @@ The tired adult who runs a booth and types the price in himself. Our own charact
 | `holdup` | holding the tag up | a fist raised forward at face height; hang the tag from `hold` with `strings: 'dangle'` |
 | `shrug` | what can I do | palms up |
 
-Faces: `tired` (default), `bored`, `surprised`, `talk`, `read`, `sigh`, `yawn`; `o.blink`, `o.tilt`, `o.shadow`, `o.ground`, `o.rig`, `o.hold` as for the hero.
-Anchors: `head`, `headR`, `mouth`, `ear`, `eye`, `hand`, `handFar`, `hold`, `keys`, `chest`, `top`, `ground`.
+Faces: `tired` (default), `bored`, `surprised`, `talk`, `read`, `sigh`, `yawn`, `resigned` (inner ends of the brows up, heavy lids, the corners of the mouth down); `o.blink`, `o.tilt`, `o.shadow`, `o.ground`, `o.rig`, `o.hold` as for the hero. From behind, `o.headTurn` 0..1 turns his head toward us: the near eye and its brow come round past the cheek.
+Anchors: `head`, `headR`, `mouth`, `ear`, `eye`, `hand`, `handFar`, `hold`, `keys`, `chest`, `top`, `shoulder` and `shoulderFar` (near and far shoulder), `ground`.
 His design units for `o.rig`: standing height 400, same conventions and joint names as the hero (one `knee` direction for both legs), plus `elbowAt` (a fixed elbow point for the near arm). His hands rest on a counter at y -214.
 
 ### 10.3 The pricing machine (`lib.cast.machine`)
@@ -434,7 +435,7 @@ The machine **recommends**; it never types, charges, takes money from a customer
 ### 10.4 The burger (`lib.props.burger`)
 
 A generic burger, no logo and no brand: bottom bun, patty with a bumpy edge, cheese slice with two drips, wavy lettuce, domed top bun with seven sesame seeds; about 0.69 as tall as wide (G5's 320 x 220).
-`o.w` is its width; in the hero's hands 75 of his units (0.25 of his height); in the close-up G5, 320 px. `o.bites` 0 to 3 cuts round bites from the right edge, each with its own contour. Anchors `top`, `bottom`, `bite` (where the next bite goes), `center`.
+`o.w` is its width; in the hero's hands 75 of his units (0.25 of his height); in the close-up G5, 320 px. `o.bites` 0 to 3 cuts round bites from the right edge (`o.biteSide: 'left'` from the left one), each with its own contour; `o.biteSize` is the first bite's diameter as a share of the width (default 0.36, about 0.45 to 0.5 for a bite that reads in close-up), the later bites in proportion. Anchors `top`, `bottom`, `bite` (where the next bite goes), `center`.
 
 ### 10.5 The booth and the price tag (`lib.props.booth`, `lib.props.priceTag`)
 
@@ -451,7 +452,7 @@ The price tag moves, so it is a cel: a `tag` card with rounded corners and the p
 
 ### 10.6 The bicycle (`lib.props.bike`)
 
-A child's bicycle in `green`, small for him with the saddle raised: wheel radius 47/300 of the hero's height (G1: 80 px), black tyres, eight spokes that turn with the pedals, white bars and cranks, a white chainring with the chain on the near side, a `shoe` saddle. The hero's riding poses draw it themselves; `props.bike` draws it alone (parked) with `o.h` the hero's height for scale, `o.phase`, `o.wheel` and `o.layer` 'far' | 'mid' | 'near'.
+A child's bicycle in `green`, small for him with the saddle raised: wheel radius 47/300 of the hero's height (G1: 80 px), black tyres, eight spokes that turn with the pedals, white bars and cranks, a white chainring with the chain on the near side, a `shoe` saddle. The hero's riding poses draw it themselves; `props.bike` draws it alone (parked) with `o.h` the hero's height for scale, `o.phase`, `o.wheel` and `o.layer` 'far' | 'mid' | 'near'; `measure: true` returns its anchors without drawing.
 
 ### 10.7 The two districts (`lib.props.house`)
 
@@ -480,7 +481,7 @@ All cels with `slate` bodies, white keys and flat `screen` screens.
 
 ### 10.11 The wall map (`lib.props.map`)
 
-A `ticket` sheet with a pale land (`style: 'land'`) or a town of streets and a river (`style: 'city'`), restaurants as dots with an ink contour. `o.n` dots (G3: 140 of radius 7), `o.mono` all `red`, `o.booths` tiny white booths with red roofs, `o.pinned` two push pins, `o.p` reveals the dots in order with a 3-drawing pop, `o.pins` [{ u, v, label }] for the two stores with price labels. Returns the dots, so the purchase stream can start at them.
+A `ticket` sheet with a pale land (`style: 'land'`) or a town of streets and a river (`style: 'city'`), restaurants as dots with an ink contour. `o.n` dots (G3: 140 of radius 7), `o.mono` all `red`, `o.booths` tiny white booths with red roofs, `o.pinned` two push pins, `o.p` reveals the dots in order with a 3-drawing pop, `o.pins` [{ u, v, label }] for the two stores with price labels, `o.pulse` { idx: [dot indexes], k: 0..1 } swells those dots and settles them once over `k`. Returns the dots, so the purchase stream can start at them.
 Fact: the engine reads data from millions of daily transactions across nearly 14,000 restaurants (CNBC/Reuters).
 
 ### 10.12 The purchase stream (`lib.props.flow`)
