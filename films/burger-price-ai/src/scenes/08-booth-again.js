@@ -290,12 +290,13 @@
   function ownerState(f, L, G) {
     if (f < 46) {
       // the push as in 02: his flat hand on the bun's upper left, moving with it (wrist at the burger's x
-      // minus 70, y 1040); it holds there while the boy grabs, and drops onto the counter once the burger
+      // minus 70, y 1040); it holds there while the boy grabs, and drops onto the counter top (the band
+      // y 1100 to 1170, so it lies on the counter and does not hang in front of the boy) once the burger
       // is pulled from under it (f 38)
       const b = burgerOnCounter(f, L) || [PUSH_X[1], BURGER_Y];
       // on the holds his head sinks, drawing by drawing; it lifts for the push
       const tilt = f < 8 ? 0.12 : f < 12 ? 0.15 : f < 16 ? 0.18 : f < 22 ? 0.21 : f < 40 ? 0.1 : 0.14;
-      return { pose: 'push', target: [b[0] - 70, f < 38 ? 1040 : 1076], lean: 0, tilt, tap: -1 };
+      return { pose: 'push', target: [b[0] - 70, f < 38 ? 1040 : 1112], lean: 0, tilt, tap: -1 };
     }
     if (f < 53) {
       // he leans to the coins (twos), then taps down on f 48 and f 51 (15.0 and 15.125, on ones)
