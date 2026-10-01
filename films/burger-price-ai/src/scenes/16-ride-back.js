@@ -2,8 +2,8 @@
 // A cascade of four still cards, 6 frames each, cut on the 8ths inside the shot; the camera is locked on each.
 // Screen direction right to left: the hero rides home. Every card keeps 05's street frame: the fieldSky
 // light field, the far hills (tops near y 1000 to 1060), the lawn from the yard line y 1145, the G1 ground
-// line y 1480, the cityPastel pavement and its kerb at y 1600. The hero is drawn at the G1 size (wheel
-// radius 80) read from his anchors, facing left.
+// line y 1480, the cityPastel pavement and its kerb at y 1600. The hero is drawn at the ride plans' size
+// (wheel radius 107) read from his anchors, facing left.
 //   T 27.0    card 1, the columns (07's street, simplified)
 //   T 27.25   card 2, the fountain (06's street, simplified)
 //   T 27.5    card 3, the fences (05's street, simplified)
@@ -27,12 +27,12 @@
   // for no pop. A change pops on ones over 3 frames with an 8 percent overshoot. A titleSpot blob
   // centred (265, 300), 390 x 140; on it the value and "mi" in ink 'note' letters, baseline y 330, left
   // edge x 100. Cap height 70 as far as the G8 box x 100..440 allows: the widest value sets one size for
-  // every value, so the line never changes size ('note' is wide: the cap height lands near 64).
+  // every value, so the line never changes size ('note' is wide: the cap height lands near 64). Letter seed 52
+  // with jitter 0.35: every 'i' stands on the line and no digit rides up like an exponent.
   function drawMileCounter(ctx, L, value, popAge) {
     const P = L.pal;
     L.spot(ctx, 265, 300, 195, 70, { seed: 6 });
-    // letter seed 52: no 'i' of any value 0..2 drops below the line (seed 6 turned '1.25 mi' into 'mj')
-    const o = { face: 'note', color: P.ink, seed: 52, size: 70 / 0.72 }; // digits stand 0.72 of the size
+    const o = { face: 'note', color: P.ink, seed: 52, jitter: 0.35, size: 70 / 0.72 }; // digits stand 0.72 of the size
     const widest = Math.max(...['0.25', '0.75', '1.25', '1.75'].map((v) => L.letters(ctx, v + ' mi', 0, 0, Object.assign({}, o, { measure: true })).w));
     o.size = Math.min(o.size, (o.size * 340) / widest);
     const str = value + ' mi';
@@ -54,14 +54,16 @@
 
   const GROUND = 1480; // G1 ground line, the pavement's top edge
   const YARD = 1145; // 05: the houses stand back from the street on this line
+  const WHEEL_R = 107; // the ride plans' hero: the size that gives his bicycle this wheel radius (lead, after the critique)
 
-  // the hero's riding proportions per unit of height, read from his anchors once (copied verbatim from 06):
-  // the library may refine the body and the bicycle, so no part of him is hard-coded here
+  // heroUnit, copied verbatim from 05 (the ride shots' canonical): his riding proportions per unit of
+  // height, read once from his anchors, so no part of him is hard-coded here
   const heroUnit = (L) => L.cached(ID + '|hero-unit', () => {
     const c = FILM.makeCanvas ? FILM.makeCanvas(1, 1) : document.createElement('canvas');
     c.width = c.height = 1;
     const a = L.cast.hero(c.getContext('2d'), 0, 0, { h: 300, pose: 'ride', phase: 0, shadow: false });
-    return { wheelR: a.wheelR / 300, front: a.axleFront[0] / 300, head: [a.head[0] / 300, a.head[1] / 300] };
+    const u = (p) => [p[0] / 300, p[1] / 300];
+    return { wheelR: a.wheelR / 300, front: a.axleFront[0] / 300, head: u(a.head), headR: a.headR / 300, rear: u(a.axleRear), seat: u(a.seat), chest: u(a.chest) };
   });
   // the dash drawing at height h, facing right: its anchors relative to his ground point give the smear its
   // bands and the speed lines their height
@@ -157,8 +159,8 @@
     pavement(g, L, d);
   }
 
-  // card 2: 06's street, fewer details: the rich house on the left, the yellow two-storey house on the
-  // right, clipped bushes, the fountain (a basin 360 wide centred (700, 1330)) with its jets standing
+  // card 2: 06's street, fewer details: the cityPastel house with a balcony on the left, the yellow
+  // two-storey house on the right, clipped bushes, the fountain (a basin 360 wide centred (700, 1330)) with its jets standing
   // still, the low wrought-iron fence in slate pencil
   function cardFountain(g, L) {
     const P = L.pal;
@@ -169,7 +171,20 @@
     d.poly([[850, 853], [1015, 700], [1180, 853]], P.roof);
     for (const [x, y] of [[893, 880], [1000, 880], [1000, 1012]]) d.rect(x, y, x + 54, y + 84, P.waterTop);
     d.rect(893, 1032, 949, 1145, P.trunk);
-    L.props.house(g, 210, YARD, { h: 440, kind: 'rich', fountain: false, gate: false });
+    // the house on the left (06's): two storeys of cityPastel under a hip roof, eight windows, a door with a
+    // balcony over it, its iron railing in slate pencil
+    d.rect(372, 676, 406, 786, P.stone);
+    d.rect(-40, 853, 470, YARD, P.cityPastel);
+    d.poly([[-70, 857], [70, 700], [330, 700], [500, 857]], P.hillsFar);
+    d.rect(-46, 853, 476, 863, P.stone);
+    d.rect(-40, 992, 470, 1002, P.stone);
+    for (const x of [0, 90, 330, 410]) for (const y of [885, 1028]) d.rect(x, y, x + 54, y + 80, P.waterTop);
+    d.rect(188, 880, 242, 986, P.waterTop);
+    d.rect(150, 978, 280, 990, P.stone);
+    for (let x = 156; x <= 274; x += 13) d.line([[x, 978], [x, 940]], P.slate, 2.2);
+    d.line([[152, 940], [278, 940]], P.slate, 2.6);
+    d.rect(188, 1035, 242, YARD, P.trunk);
+    d.rect(176, YARD - 4, 254, YARD + 5, P.stone);
     for (const [x, y, rx, ry] of [[-10, 1128, 66, 50], [458, 1134, 50, 40], [848, 1136, 40, 34], [1066, 1138, 44, 36], [462, 1318, 46, 38], [940, 1322, 44, 36]]) {
       const pts = L.blobPts(x, y, rx, ry, d.sd('bush', x), 0.07);
       L.softWash(g, pts, { color: P.grass, alpha: 0.96, soft: 4, marks: 0.8, angle: -0.6, seed: d.sd('bushw', x) });
@@ -337,14 +352,15 @@
       const card = Math.min(3, Math.floor(f / CARD_F));
       const cf = f - card * CARD_F; // frame of the card
       const sd = (...k) => L.hash(ID, ...k) & 0x7fffffff;
-      // the hero at the G1 size (wheel radius 80), from his anchors
+      // the hero at the ride plans' size, from his anchors
       const u = heroUnit(L);
-      const h = 80 / u.wheelR;
+      const h = WHEEL_R / u.wheelR;
+      const R = WHEEL_R;
       const a = dashShape(L, h);
       const midY = GROUND + a.top[1] / 2, spread = -0.7 * a.top[1]; // where the speed lines run
 
       // 1 the street of this card
-      L.plate(ctx, `${ID}|card${card}|2`, (g) => CARDS[card](g, L));
+      L.plate(ctx, `${ID}|card${card}|3`, (g) => CARDS[card](g, L));
 
       if (card < 3) {
         // 2 and 3: the pass, on ones: smear, smear, the stretched drawing, smear, smear, gone
@@ -363,12 +379,12 @@
         if (cf === 0) heroSmear(ctx, L, a, x + 340, 300, sd('smear', 3));
         if (cf < 2) L.speedLines(ctx, rear + a.wheelR + 40, midY, Math.PI, { n: 4, spread, len: [100, 220], gap: 16, width: 5, seed: sd('speed', 3, cf) });
         // the tyre's streak on the pavement behind the rear wheel's contact, and the dust kicked up there
-        const streak = [50, 90, 130, 140][Math.min(3, cf)];
+        const streak = R * [0.62, 1.12, 1.62, 1.75][Math.min(3, cf)];
         L.speedLines(ctx, rear - 2, GROUND + 4, Math.PI, { n: 2, spread: 7, gap: 0, width: 6, len: [streak * 0.8, streak], seed: sd('skid') });
         const age = cf < 3 ? cf : 3 + ((cf - 3) >> 1); // on ones in the skid, on twos as it thins
         const p = [0.08, 0.24, 0.4, 0.56, 0.76][age];
-        L.dust(ctx, rear + 50, GROUND - 24, { r: 92, p, dir: -0.25, n: 4, seed: sd('dust') });
-        L.dust(ctx, rear, GROUND - 8, { r: 56, p, dir: 0.15, n: 3, seed: sd('dust', 2) });
+        L.dust(ctx, rear + 0.62 * R, GROUND - 0.3 * R, { r: 1.15 * R, p, dir: -0.25, n: 4, seed: sd('dust') });
+        L.dust(ctx, rear, GROUND - 0.1 * R, { r: 0.7 * R, p, dir: 0.15, n: 3, seed: sd('dust', 2) });
         const o = cf < 3 ? { pose: 'skid', face: 'determined', look: [0.8, -0.1] } : { pose: 'straddle', face: 'grin', look: [0.9, -0.3] };
         L.cast.hero(ctx, x, GROUND, Object.assign({ h, facing: -1 }, o));
       }

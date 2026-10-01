@@ -3,11 +3,11 @@
 // ear and shoulder, the G4 tag held up in his far hand, his near hand typing on the keypad.
 //
 // Layers, back to front:
-//   1 the warm wall above the counter (lib.dense, one cached plate)
+//   1 the warm wall above the counter (lib.dense, its texture cached)
 //   2 the G4 tag: the $ from frame 0, each digit pops into its place with its key; the strings dangle
 //   3 the owner, back layer: the far arm raised to the tag's lower left corner, body, apron, head
 //   4 the telephone cord from the handset, looping down behind the counter
-//   5 the counter top (lib.dense, one cached plate) and the keypad lying on it
+//   5 the counter top (lib.dense, its texture cached; two torn lines on its far edge) and the keypad on it
 //   6 the owner, front layer: the near arm typing; then the handset (lib.props.handset), its earpiece on his ear
 //     anchor, laid over the arm because it rests on that shoulder
 //   7 drawn effects: zigzags at the earpiece while the voice talks (twos), the sigh puff, a key flash per press
@@ -15,7 +15,8 @@
 //
 // Beats (global T, shot t, shot frame f):
 //   T 24.0    t 0      f 0   frame 0: listening, the handset at his ear, the tag shows only $, the caption on;
-//                             zigzags flicker at the earpiece on twos while the voice talks (f 0 to 11)
+//                             zigzags flicker at the earpiece on twos while the voice talks (they change on f 1, 3,
+//                             5, 7, 9, 11, with the nods)
 //   T 24.125  t 0.125  f 3   a nod (2 frames)
 //   T 24.375  t 0.375  f 9   a nod; on f 11 the head comes up past rest and the shoulders rise: the in-breath
 //   T 24.5    t 0.5    f 12  the sigh: the shoulders drop 20 px on twos (22 on f 16, the overshoot), the lids
@@ -24,7 +25,7 @@
 //   T 25.0    t 1.0    f 24  four presses on 16ths, on ones (f 24, 27, 30, 33): 6, the point, 8, 9; the finger is
 //                             down for 1 frame, the key sinks with a 1-frame flash, the glyph pops for 2 frames
 //   T 25.5    t 1.5    f 36  the tag reads $6.89: a 4 px dip (f 34), then he lifts it 20 px (24 on f 36, 20 from
-//                             f 38) and shows it, resigned; a blink on f 42 and 43; held to the cut
+//                             f 38) and shows it with the resigned face; a blink on f 42 and 43; held to the cut
 (() => {
   'use strict';
   const ID = 'owner-types';
@@ -39,13 +40,16 @@
   const TAG = { x: 700, y: 300, w: 440, h: 280 }; // G4: card x 480 to 920, y 300 to 580
   const GRIP = [474, 590]; // his fist on the card's lower left corner, clear of the $
   const PRICE = '$6.89';
-  // keypad bottom centre: top at y 1180, keys of 83 px from x 635 to 905, no screen strip. At the storyboard's
-  // 92 px keys (w 300) the bottom row's labels end at y 1640, below the safe area (the gate stops them at 1540)
-  const PAD = { x: 770, y: 1585, w: 270, screen: false };
-  const KEYS = [5, 9, 7, 8]; // 6, the point (the keypad's '*'), 8, 9
+  // keypad bottom centre: top at y 1180, keys of 83 px from x 655 to 925 (body to x 936), no screen strip. At
+  // the storyboard's 92 px keys (w 300) the bottom row's labels end at y 1640, below the safe area (the gate
+  // stops them at 1540); 20 px right of the storyboard's x 620 so the hand on the point key clears the caption
+  const PAD = { x: 790, y: 1585, w: 270, screen: false };
+  const LABELS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '#']; // the point where a phone has '*'
+  const KEYS = [5, 9, 7, 8]; // 6, the point, 8, 9
   const PRESS = [24, 27, 30, 33]; // the presses, T 25.0, 25.125, 25.25, 25.375
   const HANDSET = { w: 240, rot: 0.8 }; // the handset from his ear down across the jaw to the shoulder
-  const CAPTION = ['Ex-owner:', '"You don\'t really', 'have much of a choice', 'anymore."'];
+  // the quote re-broken so it stands at G8's cap height 44 inside x 80 to 590 (team lead, after review)
+  const CAPTION = ['Ex-owner:', '"You don\'t really', 'have much of a', 'choice anymore."'];
   const CAP_BASE = [1250, 1320, 1390, 1460];
 
   // ---- the action, frame by frame ----
@@ -64,7 +68,7 @@
       if (fr === PRESS[i] + 1) st.pop = 1.12;
     }
     if (fr >= 34) st.lift = fr < 36 ? 4 : fr < 38 ? -24 : -20;
-    if (fr >= 36) Object.assign(st, { tilt: 0, face: 'bored' }); // the head dips as he shows it: resigned
+    if (fr >= 36) Object.assign(st, { tilt: 0, face: 'resigned' }); // the head dips as he shows it
     if (fr === 42 || fr === 43) st.blink = true;
     return st;
   }
@@ -92,20 +96,14 @@
   const ELBOW = [540, 1110];
   const elbowAt = (st, tip) => [ELBOW[0] + st.lean * S * 0.5 + 0.1 * (tip[0] - REST_TIP[0]), ELBOW[1] + st.drop + 0.2 * (tip[1] - REST_TIP[1])];
 
-  // ---- 1 the warm wall, 5 the counter: cached plates ----
+  // ---- 1 the warm wall, 5 the counter: lib.dense caches each texture, so the shot keeps two cache entries ----
   function wall(ctx, L, P) {
-    L.plate(ctx, `${ID}|wall|1`, (g) => {
-      L.dense(g, null, { bounds: [0, 0, 1080, COUNTER_Y + 20], base: P.wallWarm, dir: 'vertical', seed: sd('wall') });
-    }, { x: 0, y: 0, w: 1080, h: COUNTER_Y + 20 });
+    L.dense(ctx, null, { bounds: [0, 0, 1080, COUNTER_Y + 20], base: P.wallWarm, dir: 'vertical', seed: sd('wall') });
   }
   function counter(ctx, L, P) {
-    const H = 1920 - COUNTER_Y;
-    L.plate(ctx, `${ID}|counter|1`, (g) => {
-      g.translate(0, -COUNTER_Y);
-      L.dense(g, null, { bounds: [0, COUNTER_Y, 1080, H], base: P.fence, dir: 'horizontal', seed: sd('top') });
-      L.ragged(g, [[-10, COUNTER_Y + 2], [1090, COUNTER_Y]], { base: P.fence, width: 5, seed: sd('edge') });
-      L.ragged(g, [[-10, COUNTER_Y + 16], [1090, COUNTER_Y + 13]], { base: P.fence, width: 3, seed: sd('edge2') });
-    }, { x: 0, y: COUNTER_Y, w: 1080, h: H });
+    L.dense(ctx, null, { bounds: [0, COUNTER_Y, 1080, 1920 - COUNTER_Y], base: P.fence, dir: 'horizontal', seed: sd('top') });
+    L.ragged(ctx, [[-10, COUNTER_Y + 2], [1090, COUNTER_Y]], { base: P.fence, width: 5, seed: sd('edge') });
+    L.ragged(ctx, [[-10, COUNTER_Y + 16], [1090, COUNTER_Y + 13]], { base: P.fence, width: 3, seed: sd('edge2') });
   }
 
   // ---- 2 the G4 tag held in his hand (03's call with the strings dangling): count glyphs in their slots ----
@@ -115,9 +113,10 @@
   }
 
   // ---- 7 drawn effects ----
-  // three short zigzags off the earpiece, away from his head; two drawings swapped on twos
+  // three short zigzags off the earpiece, away from his head; two drawings swapped on twos, on the odd frames
+  // where the nods change too, so nothing moves on the even frames of the listening
   function zigzags(ctx, L, ear, fr) {
-    const alt = Math.floor(fr / 2) % 2;
+    const alt = Math.floor((fr + 1) / 2) % 2;
     [-2.2, -2.75, -3.3].forEach((a, i) => {
       const r0 = 46 + (alt ? 8 : 0) + i * 4, len = 58 + (alt ? -8 : 6), n = 5;
       const ca = Math.cos(a), sa = Math.sin(a);
@@ -138,10 +137,9 @@
   }
 
   // ---- 8 the caption (G8): white handwriting on the counter, an ink pass under it so it reads on the wood ----
-  // G8 asks for cap height 44 in x 80 to 590; the longest line only fits that width at about cap 36, so the
-  // letters are set without the default tracking and the size comes from the width
+  // cap height 44; shrunk only if a line would leave the box x 80 to 590
   function caption(ctx, L, P) {
-    const base = { size: 44 / 0.71, face: 'note', tracking: 0 };
+    const base = { size: 44 / 0.71, face: 'note' };
     const wide = Math.max(...CAPTION.map((s, i) => L.letters(ctx, s, 80, CAP_BASE[i], Object.assign({ seed: sd('cap', i), measure: true }, base)).w));
     if (wide > 510) base.size *= 510 / wide;
     for (const pass of [{ color: P.ink, outline: P.ink, outlineWidth: 5.5 }, { color: P.white }]) {
@@ -208,7 +206,7 @@
       R.cord(ctx, [hsAt[0] + hs0.cord[0], hsAt[1] + hs0.cord[1]], [150, COUNTER_Y + 60], { loops: 9, r: 15, sag: 50 });
       // 5 the counter and the keypad
       counter(ctx, L, P);
-      R.keypad(ctx, PAD.x, PAD.y, { w: PAD.w, screen: PAD.screen, press: st.press });
+      R.keypad(ctx, PAD.x, PAD.y, { w: PAD.w, screen: PAD.screen, labels: LABELS, press: st.press });
       // 6 the owner, front layer: the near arm; the handset pinned over his ear and shoulder
       C.owner(ctx, OWN.x, OWN.y, Object.assign({ layer: 'front' }, ro));
       R.handset(ctx, hsAt[0], hsAt[1], HANDSET);
