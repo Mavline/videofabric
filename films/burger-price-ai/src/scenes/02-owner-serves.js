@@ -2,11 +2,12 @@
 // docs/storyboard.md, plan 02 and shared geometry G2; the same interior returns in 08 and 13.
 // Layers, back to front:
 //   1 the modest street through the window: a cached light plate (fieldSky, washes, colored pencil)
-//   2 the hero outside, front view, clipped to the window opening
-//   3 the inside: a cached dense plate, the warm wall with the window cut out, its frame, the counter
-//   4 on the counter: the phone, the register, the coins, the burger
-//   5 the owner, three-quarter from behind, in the left foreground
-//   6 drawn effects on ones: the smears of the snatch and of the flick, the impact star of the ka-ching
+//   2 the inside: a cached dense plate, the warm wall with the window cut out, its frame, the counter, the floor
+//   3 the register; on the grab frame the burger on the counter goes here, under the hero
+//   4 the hero outside, front view, clipped to the window opening (what he holds sits under his arms)
+//   5 the burger on the counter while it slides and waits, the phone, the coins on the sill
+//   6 the owner, three-quarter from behind, in the left foreground
+//   7 drawn effects on ones: the smears of the snatch and of the flick, the impact star of the ka-ching
 (() => {
   'use strict';
   const ID = 'owner-serves';
@@ -19,6 +20,7 @@
   const OWN = { x: 92.5, y: 1636, h: 1167 }; // art bible 8: head at (180, 650), head height 210
   const HERO = { x: 560, y: 1483, h: 838 }; // art bible 8: hands on the sill at 465 and 655, y 1100
   const HS = HERO.h / 300; // one of the hero's design units in px
+  const SILL_Y = 1088; // his wrists on the sill: the fists sit on the sill line instead of under the window edge
   const BURGER_W = 75 * HS; // in his hands the burger is 75 of his units (art bible 10.4)
   const BURGER_Y = 1080; // the burger path, on the counter
   const COIN_W = 34 * HS; // the coins he held up in 01, at this scale
@@ -26,11 +28,13 @@
   const REG = [960, 1100]; // register x 860 to 1060, y 886 to 1100 at w 200
   const PHONE = [770, 1100]; // phone x 704 to 836, y 996 to 1100 at w 140
   const INNER = FILM.lib.mix(FILM.lib.pal.fence, FILM.lib.pal.trunk, 0.45); // the counter's inner side
+  const FLOOR_Y = 1570; // the booth's floor, from here to the bottom edge: the owner's shoes stand on it
+  const CHEST = [560, 1000]; // the burger at his chest from the rebound on (75 of his units wide)
 
   // ---- timing, shot-local; frame n is T 2.0 + n / 24 ----
   const SLIDE = 0.25; // T 2.0 to 2.25: the burger slides from 380 to 500 on twos, easing out
   const WIND = 6; // frames 6 to 11: the hero's hands rise into claws, the body stretches up (anticipation, twos)
-  const SNATCH = 12; // T 2.5: grab, yank, stretch on ones (frames 12 to 14)
+  const SNATCH = 12; // T 2.5: grab, yank up into the window, rebound on ones (frames 12 to 14)
   const RING = 24; // T 3.0: the flick into the register and the ka-ching on ones (frames 24 to 26)
   const BLINK = 30; // the hero's blink on the hold: exactly 2 frames
 
@@ -52,7 +56,7 @@
 
   // ---- layer 3: the inside, a dense plate with the window cut out ----
   function inside(ctx, L, P) {
-    L.plate(ctx, `${ID}|inside|1`, (g) => {
+    L.plate(ctx, `${ID}|inside|2`, (g) => {
       const fx0 = WIN.x0 - FRAME, fy0 = WIN.y0 - FRAME, fx1 = WIN.x1 + FRAME;
       // the warm wall around the frame
       L.dense(g, [rect(0, 0, 1080, TOP.y0), rect(fx0, fy0, fx1, TOP.y0)], { bounds: [0, 0, 1080, TOP.y0], base: P.wallWarm, dir: 'vertical', seed: sd(10) });
@@ -67,6 +71,9 @@
       L.dense(g, null, { bounds: [0, TOP.y1, 1080, 1920 - TOP.y1], base: INNER, dir: 'vertical', seed: sd(17) });
       L.ragged(g, [[0, TOP.y0], [1080, TOP.y0 - 1]], { base: P.fence, width: 4, seed: sd(18) });
       L.ragged(g, [[0, TOP.y1], [1080, TOP.y1 + 1]], { base: P.fence, width: 5, seed: sd(19) });
+      // the floor under the owner's shoes, strokes toward the vanishing point, the counter's foot along it
+      L.dense(g, null, { bounds: [0, FLOOR_Y, 1080, 1920 - FLOOR_Y], base: P.pavement, dir: 'perspective', vp: [540, 900], seed: sd(20) });
+      L.ragged(g, [[0, FLOOR_Y], [1080, FLOOR_Y + 1]], { base: INNER, width: 5, seed: sd(21) });
       // the opening stays clear for the street and the hero
       g.save();
       g.globalCompositeOperation = 'destination-out';
@@ -86,10 +93,10 @@
   }
   // key drawings: frame -> [wrist [x, y], sag]; a frame holds the last key at or before it
   const OWNER_KEYS = {
-    6: [[430, 1040], 0], // the push ends with his hand on the bun; he holds while the boy grabs
-    13: [[444, 1110], 0], // the burger is yanked from under his hand: it drops onto the counter (ones)
-    14: [[452, 1112], 0], // and rests there (twos)
-    16: [[512, 1102], 0], // over the coins
+    6: [[430, 1040], 0], // the push ends with his hand on the bun
+    8: [[392, 1110], 0], // he lets go: the hand slides back onto the counter top, clear of the boy's grab (twos)
+    14: [[452, 1108], 0], // the burger is gone: he reaches for the money (twos)
+    16: [[512, 1102], 0], // the hand over the coins
     18: [[470, 1106], 0.25], // drawn back, shoulders hunched: the anticipation, 6 frames
     24: [[600, 1102], 0], // the flick (ones): the coins fly into the register
     25: [[616, 1106], 0], // overshoot
@@ -100,6 +107,7 @@
     34: [[486, 1120], 1], // hold to the cut
   };
   function ownerKey(fr, bx) {
+    if (fr < 2) return [[380, 1040], 0]; // the first drawing of the push: the wrist clear of his shoulder
     if (fr < 6) return [[bx - 70, 1040], 0]; // the push: his flat hand on the bun's upper left, moving with it
     let k = fr;
     while (!OWNER_KEYS[k]) k--;
@@ -113,25 +121,36 @@
     const o = { h: HERO.h, facing: -1, view: 'front', plate: 'street', face: 'grin', shadow: false };
     // two hands at frame points under the squash sq, elbows out and down
     const hands = (n, f, sq, kind) => ({ handN: heroU(n[0], n[1], sq), handF: heroU(f[0], f[1], sq), elbowN: [0.7, 1], elbowF: [-0.7, 1], kindN: kind, kindF: kind, sq });
+    const burgerAt = (x, y) => () => R.burger(ctx, x, y, { w: BURGER_W });
     // look x is mirrored by facing -1: positive looks to the frame's left
-    if (fr < WIND) return Object.assign(o, { pose: 'sill', target: [0, TOP.y0], look: [L.clamp((560 - bx) / 260) * 0.9, 0.75], rig: fr < 2 ? { sq: [1.04, 0.95] } : undefined });
+    if (fr < WIND) return Object.assign(o, { pose: 'sill', target: [0, SILL_Y], look: [L.clamp((560 - bx) / 260) * 0.9, 0.75] });
     if (fr < SNATCH) {
       // anticipation, 6 frames on twos: both hands rise into open claws either side of the burger, the body stretches up
       const k = fr < WIND + 2 ? 0.5 : 1;
       const sq = [1 - 0.04 * k, 1 + 0.05 * k];
-      return Object.assign(o, { pose: 'sill', look: [0.2, 0.9], rig: hands([L.lerp(465, 425, k), L.lerp(1100, 950, k)], [L.lerp(655, 695, k), L.lerp(1100, 950, k)], sq, 'open') });
+      return Object.assign(o, { pose: 'sill', look: [0.2, 0.9], rig: hands([L.lerp(465, 425, k), L.lerp(SILL_Y, 950, k)], [L.lerp(655, 695, k), L.lerp(SILL_Y, 950, k)], sq, 'open') });
     }
     if (fr === SNATCH) {
-      // the grab on the beat: the fists come down on the top bun, the body squashed into it
-      return Object.assign(o, { pose: 'sill', look: [0.2, 0.9], rig: hands([448, 1040], [572, 1036], [1.07, 0.92], 'fist') });
+      // the grab on the beat: the fists come down on the top bun, the body squashed into it; the burger still
+      // stands on the counter, drawn again between his body and his arms so the fists sit on it
+      return Object.assign(o, { pose: 'sill', look: [0.2, 0.9], hold: burgerAt(bx, BURGER_Y), rig: hands([448, 1040], [572, 1036], [1.07, 0.92], 'fist') });
     }
     if (fr === SNATCH + 1) {
-      // the yank: the burger goes down and out over the sill with his fists
-      return Object.assign(o, { pose: 'sill', look: [0.2, 0.9], rig: hands([462, 1098], [556, 1094], [1.08, 0.91], 'fist'), hold: () => R.burger(ctx, 507, 1140, { w: BURGER_W, rot: 0.06 }) });
+      // the yank, up into the window: the fists near (470, 975) and (585, 975), the burger in them at (528, 990)
+      const sq = [0.97, 1.04];
+      return Object.assign(o, { pose: 'sill', look: [0.15, 0.6], hold: burgerAt(528, 990), rig: hands([472, 1000], [583, 1000], sq, 'fist') });
     }
-    // the burger is his, below the sill: beaming at the owner; the rebound stretch, the bounce on T 3.0, a blink
-    const sq = fr === SNATCH + 2 ? [0.95, 1.06] : fr >= RING && fr < RING + 2 ? [1.04, 0.95] : null;
-    return Object.assign(o, { pose: 'stand', look: fr < 20 ? [0.25, 0.5] : [0.45, 0.12], blink: fr === BLINK || fr === BLINK + 1, rig: sq ? { sq } : undefined });
+    // the burger is his: held at his chest to the cut in front of his arms, his fists on its sides, beaming; the
+    // rebound stretch, the bounce on T 3.0 and a blink. The scene draws the burger over him at the 'hold'
+    // anchor, which rides the body's squash through the rig.
+    const sq = fr === SNATCH + 2 ? [0.95, 1.06] : fr >= RING && fr < RING + 2 ? [1.04, 0.95] : [1, 1];
+    const one = [1, 1];
+    return Object.assign(o, {
+      pose: 'sill',
+      look: fr < 20 ? [0.25, 0.5] : [0.45, 0.12],
+      blink: fr === BLINK || fr === BLINK + 1,
+      rig: Object.assign(hands([CHEST[0] - 116, CHEST[1] + 28], [CHEST[0] + 116, CHEST[1] + 28], one, 'fist'), { hold: heroU(CHEST[0], CHEST[1], one), sq }),
+    });
   }
 
   FILM.scene({
@@ -142,38 +161,44 @@
       const fr = Math.min(35, Math.floor(t * 24 + 1e-6)); // frame in the shot, for the actions on ones
       const bx = 380 + 120 * L.ease.outCubic(L.clamp(L.onTwos(t) / SLIDE)); // the burger on the counter
 
-      // 1 the street
+      // 1 the street, 2 the inside
       street(ctx, L, P, R);
+      inside(ctx, L, P);
 
-      // 2 the hero outside, clipped to the window
+      // 3 the register: the drawer shoots out over 3 frames, it jolts 6 px for 2. On the grab and the yank the
+      // burger on the counter and the coins go under the hero, so his fists show on the bun
+      const jolt = fr === RING || fr === RING + 1 ? -6 : 0;
+      const drawer = fr < RING ? 0 : fr === RING ? 0.4 : fr === RING + 1 ? 0.8 : 1;
+      const coins = () => COINS.forEach(([x, y, seed]) => R.coin(ctx, x, y, { w: COIN_W, spin: 1 / 3, rot: Math.PI / 2, seed }));
+      const grab = fr === SNATCH || fr === SNATCH + 1;
+      R.register(ctx, REG[0], REG[1] + jolt, { w: 200, drawer });
+      if (fr === SNATCH) R.burger(ctx, bx, BURGER_Y, { w: BURGER_W });
+      if (grab) coins();
+
+      // 4 the hero outside, clipped to the window (the plate is clear there, so he shows only through it)
       ctx.save();
       ctx.beginPath();
       ctx.rect(WIN.x0, WIN.y0, WIN.x1 - WIN.x0, WIN.y1 - WIN.y0);
       ctx.clip();
-      C.hero(ctx, HERO.x, HERO.y, heroOpts(L, R, ctx, fr, bx));
+      const a = C.hero(ctx, HERO.x, HERO.y, heroOpts(L, R, ctx, fr, bx));
+      if (fr >= SNATCH + 2) R.burger(ctx, a.hold[0], a.hold[1], { w: BURGER_W }); // at his chest, over his arms
       ctx.restore();
 
-      // 3 the inside
-      inside(ctx, L, P);
-
-      // 4 on the counter: the drawer shoots out over 3 frames, the register jolts 6 px for 2
+      // 5 on the counter in front of him: the burger while it slides and waits, the phone, the coins
+      if (fr < SNATCH) R.burger(ctx, bx, BURGER_Y, { w: BURGER_W });
       R.phone(ctx, PHONE[0], PHONE[1], { w: 140 });
-      const jolt = fr === RING || fr === RING + 1 ? -6 : 0;
-      const drawer = fr < RING ? 0 : fr === RING ? 0.4 : fr === RING + 1 ? 0.8 : 1;
-      R.register(ctx, REG[0], REG[1] + jolt, { w: 200, drawer });
-      if (fr < RING) COINS.forEach(([x, y, seed]) => R.coin(ctx, x, y, { w: COIN_W, spin: 1 / 3, rot: Math.PI / 2, seed }));
-      if (fr <= SNATCH) R.burger(ctx, bx, BURGER_Y, { w: BURGER_W });
+      if (fr < RING && !grab) coins();
 
-      // 5 the owner from behind: his right hand works on the counter
+      // 6 the owner from behind: his right hand works on the counter; his shoes stand on the floor
       const [hand, sag] = ownerKey(fr, bx);
-      C.owner(ctx, OWN.x, OWN.y, { h: OWN.h, view: 'back', pose: 'push', target: hand, ground: INNER, rig: ownerRig(L, sag) });
+      C.owner(ctx, OWN.x, OWN.y, { h: OWN.h, view: 'back', pose: 'push', target: hand, ground: P.pavement, rig: ownerRig(L, sag) });
 
-      // 6 effects on ones: the snatch (2 frames), the coins flicked into the drawer (2), the ka-ching star (2)
+      // 7 effects on ones: the snatch (2 frames), the coins flicked into the drawer (2), the ka-ching star (2)
       if (fr === SNATCH) {
         L.smear(ctx, [[422, 930], [436, 975], [448, 1016]], { colors: [P.skinKid, P.red], width: 48, seed: sd(30) });
         L.smear(ctx, [[698, 930], [636, 975], [578, 1012]], { colors: [P.skinKid, P.red], width: 48, seed: sd(35) });
       }
-      if (fr === SNATCH + 1) L.smear(ctx, [[500, 1000], [502, 1060], [505, 1120]], { colors: [P.bun, P.lettuce, P.patty, P.skinKid], width: 110, seed: sd(31) });
+      if (fr === SNATCH + 1) L.smear(ctx, [[505, 1080], [516, 1035], [528, 990]], { colors: [P.bun, P.lettuce, P.patty, P.skinKid], width: 110, seed: sd(31) });
       if (fr === RING) {
         L.smear(ctx, [[612, 1088], [650, 1050], [700, 1026]], { colors: [P.coin, P.skin], width: 60, seed: sd(32) });
         R.coin(ctx, 700, 1024, { w: COIN_W * 0.9, rot: 0.4, spin: 0.3, seed: 1 });
