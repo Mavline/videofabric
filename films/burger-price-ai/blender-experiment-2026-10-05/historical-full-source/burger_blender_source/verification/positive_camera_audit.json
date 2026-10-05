@@ -1,0 +1,165 @@
+{
+  "required_subject_checks": 16,
+  "checks": [
+    {
+      "scene": "arrival",
+      "seconds": 2,
+      "projection": [
+        0.19438064098358154,
+        0.5391138195991516,
+        7.063625812530518
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "first handoff",
+      "seconds": 7.2,
+      "projection": [
+        0.4736878275871277,
+        0.5591018199920654,
+        3.5050313472747803
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "first bite",
+      "seconds": 14.3,
+      "projection": [
+        0.36139732599258423,
+        0.5347700119018555,
+        2.998086929321289
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "fences",
+      "seconds": 23.5,
+      "projection": [
+        0.2830487787723541,
+        0.4198330342769623,
+        10.37564468383789
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "fountain",
+      "seconds": 28,
+      "projection": [
+        0.4520791471004486,
+        0.406515896320343,
+        10.641849517822266
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "columns",
+      "seconds": 32.3,
+      "projection": [
+        0.4449710547924042,
+        0.39228641986846924,
+        10.857342720031738
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "second handoff",
+      "seconds": 36.8,
+      "projection": [
+        0.7611477375030518,
+        0.5664107203483582,
+        2.6112241744995117
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "second price",
+      "seconds": 44,
+      "projection": [
+        0.21118588745594025,
+        0.43278247117996216,
+        3.7297518253326416
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "return ride",
+      "seconds": 87,
+      "projection": [
+        0.2707003951072693,
+        0.4109409749507904,
+        10.071272850036621
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "return bite",
+      "seconds": 95.3,
+      "projection": [
+        0.36139732599258423,
+        0.5347700119018555,
+        2.998086929321289
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "title burger",
+      "seconds": 19.5,
+      "projection": [
+        0.5104625821113586,
+        0.22353798151016235,
+        0.78890460729599
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "machine intake",
+      "seconds": 49.7,
+      "projection": [
+        0.5000011920928955,
+        0.4290662109851837,
+        11.898750305175781
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "machine ticket",
+      "seconds": 62,
+      "projection": [
+        0.5237117409706116,
+        0.4745764434337616,
+        13.05555534362793
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "owner quote",
+      "seconds": 68.2,
+      "projection": [
+        0.353779137134552,
+        0.4385879337787628,
+        4.832798480987549
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "owner keypad",
+      "seconds": 77.3,
+      "projection": [
+        0.3102901875972748,
+        0.4870598316192627,
+        3.495527744293213
+      ],
+      "render_visible": true
+    },
+    {
+      "scene": "empty booth cook",
+      "seconds": 103,
+      "projection": [
+        0.7000361084938049,
+        0.5489327311515808,
+        9.429919242858887
+      ],
+      "render_visible": true
+    }
+  ]
+}

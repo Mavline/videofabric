@@ -1,0 +1,112 @@
+{
+  "artifacts": [
+    {
+      "library_id": "libfile_eba4390ff4f8819199926fc10c9b58cd",
+      "name": "burger-price-ai-blender-master.mp4",
+      "path": "films/burger-price-ai/exports/blender-experiment-2026-10-05/burger-price-ai-blender-master.mp4",
+      "bytes": 17471419,
+      "sha256": "85f52c3b6585ff1405c3d2fc1b74722bf990938790256afd34d05bae19a0da51",
+      "type": "финал",
+      "git_intended": false
+    },
+    {
+      "library_id": "libfile_783f2cfadf788191af8f2b330d3d05a1",
+      "name": "burger-price-faithful-18.blend",
+      "path": "films/burger-price-ai/exports/blender-experiment-2026-10-05/burger-price-faithful-18.blend",
+      "bytes": 9642179,
+      "sha256": "fea5e54b12e5175c3c3e291ac2f74f75a9e953404e071ef2f16928b613f56a2e",
+      "type": "исходник",
+      "git_intended": false
+    },
+    {
+      "library_id": "libfile_a30aa236ca8c8191a7522ba63195ae81",
+      "name": "burger-price-blender-source-compact.zip",
+      "path": "films/burger-price-ai/exports/blender-experiment-2026-10-05/burger-price-blender-source-compact.zip",
+      "bytes": 5568259,
+      "sha256": "be710039180e731217c88cf16e686bf397393e8b836fa0f31dad27c16cddaf2f",
+      "type": "исходник",
+      "git_intended": false
+    },
+    {
+      "library_id": "libfile_397cc402bf7c81919dca4ce9f64aaeba",
+      "name": "2026-10-05_08-26-36.png",
+      "path": "films/burger-price-ai/blender-experiment-2026-10-05/2026-10-05_08-26-36.png",
+      "bytes": 272197,
+      "sha256": "dfde5603e2f2bebb7320fbbd9bd68b90cb20d192cb06a67c626870d0ce6cd136",
+      "type": "замечания",
+      "git_intended": true
+    },
+    {
+      "library_id": "libfile_c25687bdac9081918059573566d42479",
+      "name": "2026-10-05_08-25-53.png",
+      "path": "films/burger-price-ai/blender-experiment-2026-10-05/2026-10-05_08-25-53.png",
+      "bytes": 149951,
+      "sha256": "0e709cb8585c3ee7f234b2785040abf3fa8eb1d10eb7bd28a26161c6a0b87baf",
+      "type": "замечания",
+      "git_intended": true
+    },
+    {
+      "library_id": "libfile_8513452827648191ab495d8c7b3a8864",
+      "name": "2026-10-05_08-25-26.png",
+      "path": "films/burger-price-ai/blender-experiment-2026-10-05/2026-10-05_08-25-26.png",
+      "bytes": 231164,
+      "sha256": "aa3b83b5cf6ac380f66c6c7ac719b465a6b30f5ad0d958025e5b8272a27ba403",
+      "type": "замечания",
+      "git_intended": true
+    },
+    {
+      "library_id": "libfile_f49463830a808191a88ceb027a7e02dc",
+      "name": "burger-blender-motion-preview.mp4",
+      "path": "films/burger-price-ai/exports/blender-experiment-2026-10-05/burger-blender-motion-preview.mp4",
+      "bytes": 2317295,
+      "sha256": "8f93ce190820512864f42cb3ad150fd16e8d8ab099ec48e0c0d9ee1adffc5dbf",
+      "type": "история",
+      "git_intended": false
+    },
+    {
+      "library_id": "libfile_b899c6547624819187aec89c8ff91079",
+      "name": "burger-blender-v2-style-check.jpg",
+      "path": "films/burger-price-ai/blender-experiment-2026-10-05/burger-blender-v2-style-check.jpg",
+      "bytes": 539528,
+      "sha256": "fd7134ca8998f6d568613f188393c4220c2c3e8cb1f669f4ecb3895c6ba9848a",
+      "type": "история",
+      "git_intended": true
+    },
+    {
+      "library_id": "libfile_06dd4cd575088191aba3d41579fb3e88",
+      "name": "burger-faithful-opening-proof.mp4",
+      "path": "films/burger-price-ai/exports/blender-experiment-2026-10-05/burger-faithful-opening-proof.mp4",
+      "bytes": 1218466,
+      "sha256": "9d72201d6208b7f3e8c994d719fb67c586f5ace910ca59816cd33b44b55aa790",
+      "type": "история",
+      "git_intended": false
+    },
+    {
+      "library_id": "libfile_a9c50406690481919facdc83c0610466",
+      "name": "burger-price-ai-blender-preview.mp4",
+      "path": "films/burger-price-ai/exports/blender-experiment-2026-10-05/burger-price-ai-blender-preview.mp4",
+      "bytes": 10691788,
+      "sha256": "148ad4cb1cac816a612f460db6a32a9b3f608d6a831553c46e892cc4a2b419f2",
+      "type": "история",
+      "git_intended": false
+    },
+    {
+      "library_id": "libfile_27780c045a34819190154a38272e8f84",
+      "name": "burger-blender-archive-supplement-2026-10-05.zip",
+      "path": "films/burger-price-ai/exports/blender-experiment-2026-10-05/burger-blender-archive-supplement-2026-10-05.zip",
+      "bytes": 6580407,
+      "sha256": "a71a08ccf1f8534b28689dcc8aded01587b07e61198a6c7a412eae441ed4446d",
+      "type": "история",
+      "git_intended": false
+    },
+    {
+      "library_id": "libfile_b0e1a0763018819190c0ad0a5e8ecb63",
+      "name": "burger-price-blender-source.zip",
+      "path": "films/burger-price-ai/exports/blender-experiment-2026-10-05/burger-price-blender-source.zip",
+      "bytes": 30716460,
+      "sha256": "995c9cd91f22edca48f8dabff4c96fee8bf42bd629d77d5028e4272855ac9607",
+      "type": "исходник",
+      "git_intended": false
+    }
+  ]
+}

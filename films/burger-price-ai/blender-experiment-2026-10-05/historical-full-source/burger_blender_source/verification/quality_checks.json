@@ -1,0 +1,19 @@
+{
+  "film_seconds": 110,
+  "scene_count": 18,
+  "master_fps": 24,
+  "story_order": "Original 18-scene order",
+  "motion": "12 drawings/sec on held animation,24 fps accents and protected camera/visibility transitions",
+  "checks": [
+    "All18 scenes reviewed visually",
+    "Source captions retained with expanded reading holds",
+    "Forward and reverse bicycle motion reviewed",
+    "Seller/buyer/burger/coin contacts reviewed",
+    "Per-frame object-visibility audit passed",
+    "Required subject/frustum audit passed",
+    "Complete preview decoded without errors",
+    "Scene14 corrected pose verified in encoded frames1729 and1730"
+  ],
+  "audio": "Stereo48kHz procedural score; format, cue timing and loudness verified; not auditioned in this runtime",
+  "source_movie_unchanged": true
+}

@@ -1,0 +1,236 @@
+{
+  "title": "One burger, two prices",
+  "scope": "Source-faithful reproduction; technical motion/readability fixes only",
+  "duration": 110,
+  "fps": 24,
+  "width": 1080,
+  "height": 1920,
+  "sharedCaption": {
+    "ids": [
+      "periscope-view",
+      "machine-ticket"
+    ],
+    "start": 53.5,
+    "end": 65
+  },
+  "approvedExtraLabel": "Illustration",
+  "shots": [
+    {
+      "order": 1,
+      "id": "booth-569",
+      "start": 0,
+      "end": 6,
+      "duration": 6,
+      "text": [
+        "BURGERS",
+        "$5.69"
+      ]
+    },
+    {
+      "order": 2,
+      "id": "owner-serves",
+      "start": 6,
+      "end": 12,
+      "duration": 6,
+      "text": []
+    },
+    {
+      "order": 3,
+      "id": "first-bite",
+      "start": 12,
+      "end": 18,
+      "duration": 6,
+      "text": [
+        "$5.69"
+      ]
+    },
+    {
+      "order": 4,
+      "id": "title-card",
+      "start": 18,
+      "end": 22,
+      "duration": 4,
+      "text": [
+        "ONE BURGER, TWO PRICES",
+        "Reuters, Sept 29, 2026"
+      ]
+    },
+    {
+      "order": 5,
+      "id": "ride-fence",
+      "start": 22,
+      "end": 26,
+      "duration": 4,
+      "text": [
+        "0 mi",
+        "0.25 mi",
+        "0.5 mi",
+        "0.75 mi"
+      ]
+    },
+    {
+      "order": 6,
+      "id": "ride-fountain",
+      "start": 26,
+      "end": 30,
+      "duration": 4,
+      "text": [
+        "1 mi",
+        "1.25 mi",
+        "1.5 mi"
+      ]
+    },
+    {
+      "order": 7,
+      "id": "ride-columns",
+      "start": 30,
+      "end": 34,
+      "duration": 4,
+      "text": [
+        "1.75 mi",
+        "2 mi"
+      ]
+    },
+    {
+      "order": 8,
+      "id": "booth-again",
+      "start": 34,
+      "end": 41,
+      "duration": 7,
+      "text": []
+    },
+    {
+      "order": 9,
+      "id": "price-689",
+      "start": 41,
+      "end": 47,
+      "duration": 6,
+      "text": [
+        "$6.89",
+        "+21%",
+        "Reuters, Sept 29, 2026"
+      ]
+    },
+    {
+      "order": 10,
+      "id": "machine-feed",
+      "start": 47,
+      "end": 53,
+      "duration": 6,
+      "text": [
+        "nearly 14,000 restaurants",
+        "millions of orders a day",
+        "Illustration"
+      ]
+    },
+    {
+      "order": 11,
+      "id": "periscope-view",
+      "start": 53,
+      "end": 57,
+      "duration": 4,
+      "text": [
+        "The engine recommends\nan \"optimal price\"\nfor each restaurant.",
+        "Illustration"
+      ]
+    },
+    {
+      "order": 12,
+      "id": "machine-ticket",
+      "start": 57,
+      "end": 65,
+      "duration": 8,
+      "text": [
+        "The engine recommends\nan \"optimal price\"\nfor each restaurant.",
+        "SENSITIVITY TO PRICE",
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "based on willingness to pay in your area",
+        "RECOMMENDED:",
+        "$6.89",
+        "Illustration"
+      ]
+    },
+    {
+      "order": 13,
+      "id": "owner-ticket",
+      "start": 65,
+      "end": 72,
+      "duration": 7,
+      "text": [
+        "McDonald's:\n\"a tool,\nnot a mandate\"",
+        "RECOMMENDED:",
+        "$6.89",
+        "Illustration"
+      ]
+    },
+    {
+      "order": 14,
+      "id": "owner-types",
+      "start": 72,
+      "end": 81,
+      "duration": 9,
+      "text": [
+        "Ex-owner:\n\"You don't really\nhave much of a\nchoice anymore.\"",
+        "6",
+        ".",
+        "8",
+        "9",
+        "$6.89",
+        "Illustration"
+      ]
+    },
+    {
+      "order": 15,
+      "id": "turn-back",
+      "start": 81,
+      "end": 86,
+      "duration": 5,
+      "text": [
+        "$6.89"
+      ]
+    },
+    {
+      "order": 16,
+      "id": "ride-back",
+      "start": 86,
+      "end": 92,
+      "duration": 6,
+      "text": [
+        "1.75 mi",
+        "1.5 mi",
+        "1.25 mi",
+        "1 mi",
+        "0.75 mi",
+        "0.5 mi",
+        "0.25 mi",
+        "0 mi"
+      ]
+    },
+    {
+      "order": 17,
+      "id": "bite-again",
+      "start": 92,
+      "end": 98,
+      "duration": 6,
+      "text": [
+        "$5.69",
+        "Same burger.\nDifferent\nneighborhood."
+      ]
+    },
+    {
+      "order": 18,
+      "id": "sources-card",
+      "start": 98,
+      "end": 110,
+      "duration": 12,
+      "text": [
+        "Sources: Reuters / CNBC,\nEngadget, Restaurant Business\nSept 29 – Oct 1, 2026",
+        "Reuters could not confirm the price gap\ncame from the pricing engine.",
+        "Ideas & Technologies",
+        "$5.69"
+      ]
+    }
+  ]
+}

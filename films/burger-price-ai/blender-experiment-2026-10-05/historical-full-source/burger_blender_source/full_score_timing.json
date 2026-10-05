@@ -1,0 +1,8600 @@
+{
+  "title": "One burger, two prices \u2014 source-faithful 18-scene score",
+  "duration": 110,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bpm": 120,
+  "status": "Music draft; effect alignment after18s is provisional until integrated motion review",
+  "immutable_prefix": {
+    "file": "faithful_score.wav",
+    "duration": 18,
+    "sha256": "0cf760f606992f1b3165b26f76da91b9bf7ca1aca9f7b779a3acd75cf5b6192b",
+    "requirement": "Copy first864000 stereo PCM frames without processing"
+  },
+  "source": "Supplied original src/music.js and docs/storyboard.md",
+  "shots": [
+    {
+      "order": 1,
+      "id": "booth-569",
+      "start": 0,
+      "end": 6,
+      "duration": 6,
+      "text": [
+        "BURGERS",
+        "$5.69"
+      ]
+    },
+    {
+      "order": 2,
+      "id": "owner-serves",
+      "start": 6,
+      "end": 12,
+      "duration": 6,
+      "text": []
+    },
+    {
+      "order": 3,
+      "id": "first-bite",
+      "start": 12,
+      "end": 18,
+      "duration": 6,
+      "text": [
+        "$5.69"
+      ]
+    },
+    {
+      "order": 4,
+      "id": "title-card",
+      "start": 18,
+      "end": 22,
+      "duration": 4,
+      "text": [
+        "ONE BURGER, TWO PRICES",
+        "Reuters, Sept 29, 2026"
+      ]
+    },
+    {
+      "order": 5,
+      "id": "ride-fence",
+      "start": 22,
+      "end": 26,
+      "duration": 4,
+      "text": [
+        "0 mi",
+        "0.25 mi",
+        "0.5 mi",
+        "0.75 mi"
+      ]
+    },
+    {
+      "order": 6,
+      "id": "ride-fountain",
+      "start": 26,
+      "end": 30,
+      "duration": 4,
+      "text": [
+        "1 mi",
+        "1.25 mi",
+        "1.5 mi"
+      ]
+    },
+    {
+      "order": 7,
+      "id": "ride-columns",
+      "start": 30,
+      "end": 34,
+      "duration": 4,
+      "text": [
+        "1.75 mi",
+        "2 mi"
+      ]
+    },
+    {
+      "order": 8,
+      "id": "booth-again",
+      "start": 34,
+      "end": 41,
+      "duration": 7,
+      "text": []
+    },
+    {
+      "order": 9,
+      "id": "price-689",
+      "start": 41,
+      "end": 47,
+      "duration": 6,
+      "text": [
+        "$6.89",
+        "+21%",
+        "Reuters, Sept 29, 2026"
+      ]
+    },
+    {
+      "order": 10,
+      "id": "machine-feed",
+      "start": 47,
+      "end": 53,
+      "duration": 6,
+      "text": [
+        "nearly 14,000 restaurants",
+        "millions of orders a day",
+        "Illustration"
+      ]
+    },
+    {
+      "order": 11,
+      "id": "periscope-view",
+      "start": 53,
+      "end": 57,
+      "duration": 4,
+      "text": [
+        "The engine recommends\nan \"optimal price\"\nfor each restaurant.",
+        "Illustration"
+      ]
+    },
+    {
+      "order": 12,
+      "id": "machine-ticket",
+      "start": 57,
+      "end": 65,
+      "duration": 8,
+      "text": [
+        "The engine recommends\nan \"optimal price\"\nfor each restaurant.",
+        "SENSITIVITY TO PRICE",
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "based on willingness to pay in your area",
+        "RECOMMENDED:",
+        "$6.89",
+        "Illustration"
+      ]
+    },
+    {
+      "order": 13,
+      "id": "owner-ticket",
+      "start": 65,
+      "end": 72,
+      "duration": 7,
+      "text": [
+        "McDonald's:\n\"a tool,\nnot a mandate\"",
+        "RECOMMENDED:",
+        "$6.89",
+        "Illustration"
+      ]
+    },
+    {
+      "order": 14,
+      "id": "owner-types",
+      "start": 72,
+      "end": 81,
+      "duration": 9,
+      "text": [
+        "Ex-owner:\n\"You don't really\nhave much of a\nchoice anymore.\"",
+        "6",
+        ".",
+        "8",
+        "9",
+        "$6.89",
+        "Illustration"
+      ]
+    },
+    {
+      "order": 15,
+      "id": "turn-back",
+      "start": 81,
+      "end": 86,
+      "duration": 5,
+      "text": [
+        "$6.89"
+      ]
+    },
+    {
+      "order": 16,
+      "id": "ride-back",
+      "start": 86,
+      "end": 92,
+      "duration": 6,
+      "text": [
+        "1.75 mi",
+        "1.5 mi",
+        "1.25 mi",
+        "1 mi",
+        "0.75 mi",
+        "0.5 mi",
+        "0.25 mi",
+        "0 mi"
+      ]
+    },
+    {
+      "order": 17,
+      "id": "bite-again",
+      "start": 92,
+      "end": 98,
+      "duration": 6,
+      "text": [
+        "$5.69",
+        "Same burger.\nDifferent\nneighborhood."
+      ]
+    },
+    {
+      "order": 18,
+      "id": "sources-card",
+      "start": 98,
+      "end": 110,
+      "duration": 12,
+      "text": [
+        "Sources: Reuters / CNBC,\nEngadget, Restaurant Business\nSept 29 \u2013 Oct 1, 2026",
+        "Reuters could not confirm the price gap\ncame from the pricing engine.",
+        "Ideas & Technologies",
+        "$5.69"
+      ]
+    }
+  ],
+  "muffled_band_intervals": [
+    [
+      34,
+      41
+    ],
+    [
+      65,
+      81
+    ]
+  ],
+  "alignment_warnings": [
+    "Current route scenes6/7 default to3s and16 to5s; full integration must pass4/4/6s explicitly.",
+    "Scene8/9/15 cues follow the audited integrated second-kiosk map; scene10\u201314 follow the revised gesture-aware pricing audit. Integrated audiovisual review remains pending.",
+    "Current route return cuts are equally spaced1.5s; timing plan suggests1.25/1.25/1.25/2.25.",
+    "No synthesized receiver squawk: user requested no voice. Phone, nonvocal breath and reed retain the source mood."
+  ],
+  "cue_sheet": [
+    {
+      "scene": 4,
+      "time": 18,
+      "cue": "Title stinger",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 4,
+      "time": 18.125,
+      "cue": "Original title word pop",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 4,
+      "time": 18.25,
+      "cue": "Original title word pop",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 4,
+      "time": 18.375,
+      "cue": "Original title word pop",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 4,
+      "time": 18.6,
+      "cue": "Reuters byline reveal",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 4,
+      "time": 20.0,
+      "cue": "Single burger bounce",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 5,
+      "time": 23,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "scene": 5,
+      "time": 24,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "scene": 5,
+      "time": 24,
+      "cue": "Outward ride gulp",
+      "alignment": "provisional",
+      "basis": "Route scene5 source t=1, multiplied by2"
+    },
+    {
+      "scene": 5,
+      "time": 25,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "scene": 6,
+      "time": 26,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "scene": 6,
+      "time": 26,
+      "cue": "Fountain jet springs",
+      "alignment": "provisional",
+      "basis": "Route scene6 source half-second jet cycle scaled to4s"
+    },
+    {
+      "scene": 6,
+      "time": 27.333333,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "scene": 6,
+      "time": 27.333333,
+      "cue": "Fountain jet springs",
+      "alignment": "provisional",
+      "basis": "Route scene6 source half-second jet cycle scaled to4s"
+    },
+    {
+      "scene": 6,
+      "time": 28.666667,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "scene": 6,
+      "time": 28.666667,
+      "cue": "Fountain jet springs",
+      "alignment": "provisional",
+      "basis": "Route scene6 source half-second jet cycle scaled to4s"
+    },
+    {
+      "scene": 7,
+      "time": 30,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "scene": 7,
+      "time": 31.333333,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "scene": 7,
+      "time": 31.333333,
+      "cue": "Two-mile bicycle bell",
+      "alignment": "provisional",
+      "basis": "Route scene7 source t=.5 scaled to4s"
+    },
+    {
+      "scene": 7,
+      "time": 31.333333,
+      "cue": "Two original sniffs",
+      "alignment": "provisional",
+      "basis": "Route scene7 sniff begins source t=.5"
+    },
+    {
+      "scene": 8,
+      "time": 34,
+      "cue": "Muffled arrival outside second booth",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 8,
+      "time": 34.75,
+      "cue": "Same coins held up",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 8,
+      "time": 34.875,
+      "cue": "Same coins held up",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 8,
+      "time": 35.0,
+      "cue": "Same coins held up",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 8,
+      "time": 35.86,
+      "cue": "Second burger pushed",
+      "alignment": "provisional",
+      "basis": "Audited integrated second-kiosk push begins35.86"
+    },
+    {
+      "scene": 8,
+      "time": 37.04,
+      "cue": "Second burger snatch",
+      "alignment": "provisional",
+      "basis": "Audited shared contact ends37.04, then snatch to37.33"
+    },
+    {
+      "scene": 8,
+      "time": 38.2,
+      "cue": "Vendor taps coins twice",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 8,
+      "time": 38.53,
+      "cue": "Vendor taps coins twice",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 8,
+      "time": 39.94,
+      "cue": "Accented push-in on eyes",
+      "alignment": "provisional",
+      "basis": "Audited integrated push-in39.94\u201341"
+    },
+    {
+      "scene": 9,
+      "time": 41,
+      "cue": "$6.89 shock stab",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 9,
+      "time": 41.375,
+      "cue": "Eyes pop",
+      "alignment": "provisional",
+      "basis": "Integrated second-kiosk eye pop41.375\u201341.75"
+    },
+    {
+      "scene": 9,
+      "time": 41.75,
+      "cue": "+21% reveal",
+      "alignment": "provisional",
+      "basis": "Integrated overlay appears41.75"
+    },
+    {
+      "scene": 9,
+      "time": 42.5,
+      "cue": "Jaw drops",
+      "alignment": "provisional",
+      "basis": "Integrated jaw drop42.50\u201342.875"
+    },
+    {
+      "scene": 9,
+      "time": 45.875,
+      "cue": "Dip-to-black choke",
+      "alignment": "provisional",
+      "basis": "Integrated second-kiosk dip45.875\u201346.625; black hold to47"
+    },
+    {
+      "scene": 10,
+      "time": 47.25,
+      "cue": "Machine caption enters",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 10,
+      "time": 47.25,
+      "cue": "Receipts continuously into hopper",
+      "alignment": "provisional",
+      "basis": "Revised pricing module keeps particles moving through reading holds, until50.25"
+    },
+    {
+      "scene": 10,
+      "time": 47.5,
+      "cue": "Machine caption enters",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 10,
+      "time": 48.0,
+      "cue": "Exaggerated hopper gulp",
+      "alignment": "provisional",
+      "basis": "Revised gesture-aware pricing module gulp peaks48.00/49.75"
+    },
+    {
+      "scene": 10,
+      "time": 49.75,
+      "cue": "Exaggerated hopper gulp",
+      "alignment": "provisional",
+      "basis": "Revised gesture-aware pricing module gulp peaks48.00/49.75"
+    },
+    {
+      "scene": 11,
+      "time": 53,
+      "cue": "Periscope turns",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 11,
+      "time": 53.25,
+      "cue": "Shared recommendation caption enters",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 11,
+      "time": 53.583333,
+      "cue": "Periscope pan locks after tiny overshoot",
+      "alignment": "provisional",
+      "basis": "Revised periscope overshoot settles at53.583333"
+    },
+    {
+      "scene": 11,
+      "time": 56.875,
+      "cue": "Periscope eyelid blink",
+      "alignment": "provisional",
+      "basis": "Pricing scene11 .875 +3-second hold"
+    },
+    {
+      "scene": 12,
+      "time": 57.25,
+      "cue": "LOW-to-MEDIUM ratchet",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 12,
+      "time": 57.5,
+      "cue": "LOW-to-MEDIUM ratchet",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 12,
+      "time": 57.75,
+      "cue": "LOW-to-MEDIUM ratchet",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 12,
+      "time": 58.0,
+      "cue": "LOW-to-MEDIUM ratchet",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 12,
+      "time": 58.0,
+      "cue": "Gauge reaches MEDIUM",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 12,
+      "time": 60.0,
+      "cue": "Four price-ticket printing clicks",
+      "alignment": "provisional",
+      "basis": "Revised printing gestures at60/60.333333/60.666667/61, then settle61.20"
+    },
+    {
+      "scene": 12,
+      "time": 60.0,
+      "cue": "Ticket slides bottom-first",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 12,
+      "time": 60.333333,
+      "cue": "Four price-ticket printing clicks",
+      "alignment": "provisional",
+      "basis": "Revised printing gestures at60/60.333333/60.666667/61, then settle61.20"
+    },
+    {
+      "scene": 12,
+      "time": 60.666667,
+      "cue": "Four price-ticket printing clicks",
+      "alignment": "provisional",
+      "basis": "Revised printing gestures at60/60.333333/60.666667/61, then settle61.20"
+    },
+    {
+      "scene": 12,
+      "time": 61.0,
+      "cue": "Four price-ticket printing clicks",
+      "alignment": "provisional",
+      "basis": "Revised printing gestures at60/60.333333/60.666667/61, then settle61.20"
+    },
+    {
+      "scene": 12,
+      "time": 61.2,
+      "cue": "RECOMMENDED $6.89 fully printed",
+      "alignment": "provisional",
+      "basis": "Revised final paper settles61.20"
+    },
+    {
+      "scene": 13,
+      "time": 65,
+      "cue": "Same recommendation ticket flutters in",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 13,
+      "time": 65.75,
+      "cue": "Ticket catch",
+      "alignment": "provisional",
+      "basis": "Revised hand catch65.50\u201365.75; paper snap at65.75"
+    },
+    {
+      "scene": 13,
+      "time": 69.5,
+      "cue": "Original telephone ring",
+      "alignment": "provisional",
+      "basis": "Revised visible phone strikes; ringing settles70.60"
+    },
+    {
+      "scene": 13,
+      "time": 69.775,
+      "cue": "Original telephone ring",
+      "alignment": "provisional",
+      "basis": "Revised visible phone strikes; ringing settles70.60"
+    },
+    {
+      "scene": 13,
+      "time": 70.05,
+      "cue": "Original telephone ring",
+      "alignment": "provisional",
+      "basis": "Revised visible phone strikes; ringing settles70.60"
+    },
+    {
+      "scene": 13,
+      "time": 70.325,
+      "cue": "Original telephone ring",
+      "alignment": "provisional",
+      "basis": "Revised visible phone strikes; ringing settles70.60"
+    },
+    {
+      "scene": 14,
+      "time": 74.0,
+      "cue": "Shoulder-drop sigh",
+      "alignment": "provisional",
+      "basis": "Revised sigh/puff74\u201375; shoulders settle74.70"
+    },
+    {
+      "scene": 14,
+      "time": 75.5,
+      "cue": "Owner types 6",
+      "alignment": "provisional",
+      "basis": "Revised visible keys6/. /8/9 at75.50/75.75/76/76.25"
+    },
+    {
+      "scene": 14,
+      "time": 75.75,
+      "cue": "Owner types .",
+      "alignment": "provisional",
+      "basis": "Revised visible keys6/. /8/9 at75.50/75.75/76/76.25"
+    },
+    {
+      "scene": 14,
+      "time": 76.0,
+      "cue": "Owner types 8",
+      "alignment": "provisional",
+      "basis": "Revised visible keys6/. /8/9 at75.50/75.75/76/76.25"
+    },
+    {
+      "scene": 14,
+      "time": 76.25,
+      "cue": "Owner types 9",
+      "alignment": "provisional",
+      "basis": "Revised visible keys6/. /8/9 at75.50/75.75/76/76.25"
+    },
+    {
+      "scene": 14,
+      "time": 76.5,
+      "cue": "Finished $6.89 sign lifted",
+      "alignment": "provisional",
+      "basis": "Revised finished sign lift76.50\u201377.20"
+    },
+    {
+      "scene": 15,
+      "time": 82.9,
+      "cue": "Original crouch anticipation",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 15,
+      "time": 83.6875,
+      "cue": "Fast turn to face left",
+      "alignment": "provisional",
+      "basis": "Integrated spin83.6875\u201384.375"
+    },
+    {
+      "scene": 15,
+      "time": 84.45,
+      "cue": "Dash left",
+      "alignment": "provisional",
+      "basis": "Integrated dash84.45\u201385.525"
+    },
+    {
+      "scene": 16,
+      "time": 86,
+      "cue": "Return route cut: columns",
+      "alignment": "provisional",
+      "basis": "Current route module equal quarter cuts over6s; plan suggests1.25/1.25/1.25/2.25 instead"
+    },
+    {
+      "scene": 16,
+      "time": 87.5,
+      "cue": "Return route cut: fountain",
+      "alignment": "provisional",
+      "basis": "Current route module equal quarter cuts over6s; plan suggests1.25/1.25/1.25/2.25 instead"
+    },
+    {
+      "scene": 16,
+      "time": 89,
+      "cue": "Return route cut: fences",
+      "alignment": "provisional",
+      "basis": "Current route module equal quarter cuts over6s; plan suggests1.25/1.25/1.25/2.25 instead"
+    },
+    {
+      "scene": 16,
+      "time": 90.5,
+      "cue": "Return route cut: first booth",
+      "alignment": "provisional",
+      "basis": "Current route module equal quarter cuts over6s; plan suggests1.25/1.25/1.25/2.25 instead"
+    },
+    {
+      "scene": 16,
+      "time": 90.5,
+      "cue": "Home skid",
+      "alignment": "provisional",
+      "basis": "Current route module fourth-card cut and deceleration begin90.50; dust follows90.74"
+    },
+    {
+      "scene": 16,
+      "time": 91.25,
+      "cue": "Return counter reaches 0 mi",
+      "alignment": "provisional",
+      "basis": "Current route module normalized .875; .75s final reading hold"
+    },
+    {
+      "scene": 17,
+      "time": 92.25,
+      "cue": "Same burger caption pop",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 17,
+      "time": 92.75,
+      "cue": "Different neighborhood caption pop",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 17,
+      "time": 93.3,
+      "cue": "Repeated chomp",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 17,
+      "time": 93.6,
+      "cue": "Repeated chew",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 17,
+      "time": 94,
+      "cue": "Repeated chew",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 17,
+      "time": 94.4,
+      "cue": "Repeated chew",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 18,
+      "time": 98,
+      "cue": "Sources and caveat held in full",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 18,
+      "time": 98.5,
+      "cue": "Ideas & Technologies mark sparkle",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 18,
+      "time": 98.5625,
+      "cue": "Ideas & Technologies mark sparkle",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 18,
+      "time": 98.625,
+      "cue": "Ideas & Technologies mark sparkle",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 18,
+      "time": 98.6875,
+      "cue": "Ideas & Technologies mark sparkle",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 18,
+      "time": 106.5,
+      "cue": "Late vendor yawn, low reed only",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "scene": 18,
+      "time": 109.75,
+      "cue": "Original loop pickup",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    }
+  ],
+  "events": [
+    {
+      "type": "bass",
+      "args": [
+        18,
+        "F2",
+        0.95,
+        {}
+      ],
+      "scene": 4,
+      "time": 18
+    },
+    {
+      "type": "pah",
+      "args": [
+        18,
+        [
+          "A3",
+          "D4",
+          "G4",
+          "C5"
+        ],
+        0.26,
+        {}
+      ],
+      "scene": 4,
+      "time": 18
+    },
+    {
+      "type": "xylo",
+      "args": [
+        18,
+        "D6",
+        0.26,
+        {}
+      ],
+      "scene": 4,
+      "time": 18
+    },
+    {
+      "type": "xylo",
+      "args": [
+        18,
+        "G6",
+        0.22,
+        {}
+      ],
+      "scene": 4,
+      "time": 18
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            18,
+            "C5"
+          ]
+        ],
+        18.09,
+        0.28,
+        {
+          "att": 0.01,
+          "rel": 0.03
+        }
+      ],
+      "scene": 4,
+      "time": 18
+    },
+    {
+      "type": "cym",
+      "args": [
+        18,
+        0.1,
+        0.6,
+        {
+          "pan": 0.2
+        }
+      ],
+      "scene": 4,
+      "time": 18,
+      "cue": "Title stinger",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        18.125,
+        "A5",
+        0.5,
+        {}
+      ],
+      "scene": 4,
+      "time": 18.125,
+      "cue": "Original title word pop",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        18.25,
+        "C6",
+        0.5,
+        {}
+      ],
+      "scene": 4,
+      "time": 18.25,
+      "cue": "Original title word pop",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        18.375,
+        "F6",
+        0.5,
+        {}
+      ],
+      "scene": 4,
+      "time": 18.375,
+      "cue": "Original title word pop",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "scribble",
+      "args": [
+        18.6,
+        0.25,
+        3000,
+        6000,
+        0.3
+      ],
+      "scene": 4,
+      "time": 18.6,
+      "cue": "Reuters byline reveal",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        20.0,
+        "F3",
+        0.42,
+        {
+          "glide": [
+            "C4",
+            0.12
+          ],
+          "bright": 0.3,
+          "open": true
+        }
+      ],
+      "scene": 4,
+      "time": 20.0,
+      "cue": "Single burger bounce",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "bass",
+      "args": [
+        20,
+        "C2",
+        0.6,
+        {}
+      ],
+      "scene": 4,
+      "time": 20
+    },
+    {
+      "type": "pah",
+      "args": [
+        20.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.19,
+        {}
+      ],
+      "scene": 4,
+      "time": 20.5
+    },
+    {
+      "type": "bass",
+      "args": [
+        21,
+        "C2",
+        0.7,
+        {}
+      ],
+      "scene": 4,
+      "time": 21
+    },
+    {
+      "type": "xylo",
+      "args": [
+        21.25,
+        "A4",
+        0.3,
+        {}
+      ],
+      "scene": 4,
+      "time": 21.25
+    },
+    {
+      "type": "bass",
+      "args": [
+        21.5,
+        "E2",
+        0.7,
+        {}
+      ],
+      "scene": 4,
+      "time": 21.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        21.5,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.26,
+        {}
+      ],
+      "scene": 4,
+      "time": 21.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        21.5,
+        0.07200000000000001,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 4,
+      "time": 21.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        21.5,
+        "Bb4",
+        0.3,
+        {}
+      ],
+      "scene": 4,
+      "time": 21.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        21.75,
+        "B4",
+        0.3,
+        {}
+      ],
+      "scene": 4,
+      "time": 21.75
+    },
+    {
+      "type": "bass",
+      "args": [
+        22.0,
+        "F2",
+        0.72,
+        {}
+      ],
+      "scene": 5,
+      "time": 22.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        22.0,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 22.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        22.0,
+        "A4",
+        0.4,
+        {}
+      ],
+      "scene": 5,
+      "time": 22.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        22.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 22.125
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        22.25,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 22.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        22.25,
+        "C5",
+        0.32,
+        {}
+      ],
+      "scene": 5,
+      "time": 22.25
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        22.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 22.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        22.5,
+        "A2",
+        0.72,
+        {}
+      ],
+      "scene": 5,
+      "time": 22.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        22.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 5,
+      "time": 22.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        22.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 5,
+      "time": 22.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        22.5,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 22.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        22.5,
+        "F5",
+        0.38,
+        {}
+      ],
+      "scene": 5,
+      "time": 22.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        22.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 22.625
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        22.75,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 22.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        22.75,
+        "D5",
+        0.32,
+        {}
+      ],
+      "scene": 5,
+      "time": 22.75
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        22.875,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 22.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        23.0,
+        "C3",
+        0.72,
+        {}
+      ],
+      "scene": 5,
+      "time": 23.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        23.0,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 23.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        23.0,
+        "E5",
+        0.34,
+        {}
+      ],
+      "scene": 5,
+      "time": 23.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        23,
+        0.09,
+        1600,
+        {}
+      ],
+      "scene": 5,
+      "time": 23,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        23.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 23.125
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        23.25,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 23.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        23.25,
+        "C5",
+        0.32,
+        {}
+      ],
+      "scene": 5,
+      "time": 23.25
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        23.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 23.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        23.5,
+        "Bb2",
+        0.72,
+        {}
+      ],
+      "scene": 5,
+      "time": 23.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        23.5,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 5,
+      "time": 23.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        23.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 5,
+      "time": 23.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        23.5,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 23.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        23.5,
+        "Bb4",
+        0.36,
+        {}
+      ],
+      "scene": 5,
+      "time": 23.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        23.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 23.625
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        23.75,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 23.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        23.75,
+        "G4",
+        0.32,
+        {}
+      ],
+      "scene": 5,
+      "time": 23.75
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        23.875,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 23.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        24.0,
+        "A2",
+        0.72,
+        {}
+      ],
+      "scene": 5,
+      "time": 24.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        24.0,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 24.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        24.0,
+        "A4",
+        0.25,
+        {}
+      ],
+      "scene": 5,
+      "time": 24.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        24,
+        0.09,
+        1600,
+        {}
+      ],
+      "scene": 5,
+      "time": 24,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "type": "gulp",
+      "args": [
+        24,
+        0.3
+      ],
+      "scene": 5,
+      "time": 24,
+      "cue": "Outward ride gulp",
+      "alignment": "provisional",
+      "basis": "Route scene5 source t=1, multiplied by2"
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        24.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 24.125
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        24.25,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 24.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        24.25,
+        "C5",
+        0.25,
+        {}
+      ],
+      "scene": 5,
+      "time": 24.25
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        24.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 24.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        24.5,
+        "D3",
+        0.72,
+        {}
+      ],
+      "scene": 5,
+      "time": 24.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        24.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 5,
+      "time": 24.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        24.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 5,
+      "time": 24.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        24.5,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 24.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        24.5,
+        "F5",
+        0.25,
+        {}
+      ],
+      "scene": 5,
+      "time": 24.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        24.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 24.625
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        24.75,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 24.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        24.75,
+        "D5",
+        0.25,
+        {}
+      ],
+      "scene": 5,
+      "time": 24.75
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        24.875,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 24.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        25.0,
+        "C3",
+        0.72,
+        {}
+      ],
+      "scene": 5,
+      "time": 25.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        25.0,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 25.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        25.0,
+        "E5",
+        0.25,
+        {}
+      ],
+      "scene": 5,
+      "time": 25.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        25,
+        0.09,
+        1600,
+        {}
+      ],
+      "scene": 5,
+      "time": 25,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        25.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 25.125
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        25.25,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 25.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        25.25,
+        "C5",
+        0.25,
+        {}
+      ],
+      "scene": 5,
+      "time": 25.25
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        25.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 25.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        25.5,
+        "Bb2",
+        0.72,
+        {}
+      ],
+      "scene": 5,
+      "time": 25.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        25.5,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 5,
+      "time": 25.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        25.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 5,
+      "time": 25.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        25.5,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 25.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        25.5,
+        "Bb4",
+        0.25,
+        {}
+      ],
+      "scene": 5,
+      "time": 25.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        25.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 25.625
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        25.75,
+        0.055,
+        0.25
+      ],
+      "scene": 5,
+      "time": 25.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        25.75,
+        "G4",
+        0.25,
+        {}
+      ],
+      "scene": 5,
+      "time": 25.75
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        25.875,
+        0.035,
+        -0.25
+      ],
+      "scene": 5,
+      "time": 25.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        26.0,
+        "F2",
+        0.72,
+        {}
+      ],
+      "scene": 6,
+      "time": 26.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        26.0,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 26.0
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            26,
+            "A5"
+          ],
+          [
+            26.25,
+            "C6"
+          ],
+          [
+            26.5,
+            "F6"
+          ],
+          [
+            26.75,
+            "D6"
+          ],
+          [
+            27,
+            "E6"
+          ],
+          [
+            27.25,
+            "C6"
+          ]
+        ],
+        27.45,
+        0.24,
+        {
+          "att": 0.015,
+          "vib": 0
+        }
+      ],
+      "scene": 6,
+      "time": 26
+    },
+    {
+      "type": "tock",
+      "args": [
+        26,
+        0.09,
+        1600,
+        {}
+      ],
+      "scene": 6,
+      "time": 26,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "type": "fountain",
+      "args": [
+        26,
+        0.28
+      ],
+      "scene": 6,
+      "time": 26,
+      "cue": "Fountain jet springs",
+      "alignment": "provisional",
+      "basis": "Route scene6 source half-second jet cycle scaled to4s"
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        26.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 26.125
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        26.25,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 26.25
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        26.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 26.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        26.5,
+        "C3",
+        0.72,
+        {}
+      ],
+      "scene": 6,
+      "time": 26.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        26.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 6,
+      "time": 26.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        26.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 6,
+      "time": 26.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        26.5,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 26.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        26.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 26.625
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        26.75,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 26.75
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        26.875,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 26.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        27.0,
+        "A2",
+        0.72,
+        {}
+      ],
+      "scene": 6,
+      "time": 27.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        27.0,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 27.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        27.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 27.125
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        27.25,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 27.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        27.333333,
+        0.09,
+        1600,
+        {}
+      ],
+      "scene": 6,
+      "time": 27.333333,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "type": "fountain",
+      "args": [
+        27.333333,
+        0.28
+      ],
+      "scene": 6,
+      "time": 27.333333,
+      "cue": "Fountain jet springs",
+      "alignment": "provisional",
+      "basis": "Route scene6 source half-second jet cycle scaled to4s"
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        27.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 27.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        27.5,
+        "C3",
+        0.72,
+        {}
+      ],
+      "scene": 6,
+      "time": 27.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        27.5,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 6,
+      "time": 27.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        27.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 6,
+      "time": 27.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        27.5,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 27.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        27.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 27.625
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        27.75,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 27.75
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        27.875,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 27.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        28.0,
+        "F2",
+        0.72,
+        {}
+      ],
+      "scene": 6,
+      "time": 28.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        28.0,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 28.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        28.0,
+        "A4",
+        0.27,
+        {}
+      ],
+      "scene": 6,
+      "time": 28.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        28.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 28.125
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        28.25,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 28.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        28.25,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 6,
+      "time": 28.25
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        28.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 28.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        28.5,
+        "A2",
+        0.72,
+        {}
+      ],
+      "scene": 6,
+      "time": 28.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        28.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 6,
+      "time": 28.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        28.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 6,
+      "time": 28.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        28.5,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 28.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        28.5,
+        "F5",
+        0.27,
+        {}
+      ],
+      "scene": 6,
+      "time": 28.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        28.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 28.625
+    },
+    {
+      "type": "tock",
+      "args": [
+        28.666667,
+        0.09,
+        1600,
+        {}
+      ],
+      "scene": 6,
+      "time": 28.666667,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "type": "fountain",
+      "args": [
+        28.666667,
+        0.28
+      ],
+      "scene": 6,
+      "time": 28.666667,
+      "cue": "Fountain jet springs",
+      "alignment": "provisional",
+      "basis": "Route scene6 source half-second jet cycle scaled to4s"
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        28.75,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 28.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        28.75,
+        "D5",
+        0.27,
+        {}
+      ],
+      "scene": 6,
+      "time": 28.75
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        28.875,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 28.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        29.0,
+        "C3",
+        0.72,
+        {}
+      ],
+      "scene": 6,
+      "time": 29.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        29.0,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 29.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        29.0,
+        "E5",
+        0.27,
+        {}
+      ],
+      "scene": 6,
+      "time": 29.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        29.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 29.125
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        29.25,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 29.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        29.25,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 6,
+      "time": 29.25
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        29.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 29.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        29.5,
+        "Bb2",
+        0.72,
+        {}
+      ],
+      "scene": 6,
+      "time": 29.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        29.5,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 6,
+      "time": 29.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        29.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 6,
+      "time": 29.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        29.5,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 29.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        29.5,
+        "Bb4",
+        0.27,
+        {}
+      ],
+      "scene": 6,
+      "time": 29.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        29.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 29.625
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        29.75,
+        0.055,
+        0.25
+      ],
+      "scene": 6,
+      "time": 29.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        29.75,
+        "G4",
+        0.27,
+        {}
+      ],
+      "scene": 6,
+      "time": 29.75
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        29.875,
+        0.035,
+        -0.25
+      ],
+      "scene": 6,
+      "time": 29.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        30.0,
+        "A2",
+        0.72,
+        {}
+      ],
+      "scene": 7,
+      "time": 30.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        30.0,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 30.0
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            30,
+            "G5"
+          ],
+          [
+            30.25,
+            "C6"
+          ],
+          [
+            30.5,
+            "A5"
+          ]
+        ],
+        31.1,
+        0.26,
+        {
+          "att": 0.015,
+          "vib": 0.004
+        }
+      ],
+      "scene": 7,
+      "time": 30
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            30,
+            "C5"
+          ],
+          [
+            30.25,
+            "F5"
+          ],
+          [
+            30.5,
+            "D5"
+          ]
+        ],
+        31.1,
+        0.16,
+        {
+          "att": 0.03,
+          "wave": "brassSaw",
+          "cut": 1600,
+          "breath": 0,
+          "vib": 0
+        }
+      ],
+      "scene": 7,
+      "time": 30
+    },
+    {
+      "type": "pizz",
+      "args": [
+        30.0,
+        "F3",
+        0.34,
+        {
+          "dec": 0.3,
+          "pan": -0.3
+        }
+      ],
+      "scene": 7,
+      "time": 30.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        30,
+        0.09,
+        1600,
+        {}
+      ],
+      "scene": 7,
+      "time": 30,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        30.0625,
+        "G3",
+        0.36000000000000004,
+        {
+          "dec": 0.3,
+          "pan": -0.21999999999999997
+        }
+      ],
+      "scene": 7,
+      "time": 30.0625
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        30.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 30.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        30.125,
+        "A3",
+        0.38,
+        {
+          "dec": 0.3,
+          "pan": -0.13999999999999999
+        }
+      ],
+      "scene": 7,
+      "time": 30.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        30.1875,
+        "Bb3",
+        0.4,
+        {
+          "dec": 0.3,
+          "pan": -0.06
+        }
+      ],
+      "scene": 7,
+      "time": 30.1875
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        30.25,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 30.25
+    },
+    {
+      "type": "pizz",
+      "args": [
+        30.25,
+        "C4",
+        0.42000000000000004,
+        {
+          "dec": 0.3,
+          "pan": 0.020000000000000018
+        }
+      ],
+      "scene": 7,
+      "time": 30.25
+    },
+    {
+      "type": "pizz",
+      "args": [
+        30.3125,
+        "D4",
+        0.44000000000000006,
+        {
+          "dec": 0.3,
+          "pan": 0.10000000000000003
+        }
+      ],
+      "scene": 7,
+      "time": 30.3125
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        30.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 30.375
+    },
+    {
+      "type": "pizz",
+      "args": [
+        30.375,
+        "E4",
+        0.46,
+        {
+          "dec": 0.3,
+          "pan": 0.18
+        }
+      ],
+      "scene": 7,
+      "time": 30.375
+    },
+    {
+      "type": "pizz",
+      "args": [
+        30.4375,
+        "F4",
+        0.48000000000000004,
+        {
+          "dec": 0.3,
+          "pan": 0.26000000000000006
+        }
+      ],
+      "scene": 7,
+      "time": 30.4375
+    },
+    {
+      "type": "bass",
+      "args": [
+        30.5,
+        "D3",
+        0.72,
+        {}
+      ],
+      "scene": 7,
+      "time": 30.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        30.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 7,
+      "time": 30.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        30.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 7,
+      "time": 30.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        30.5,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 30.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        30.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 30.625
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        30.75,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 30.75
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        30.875,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 30.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        31.0,
+        "C3",
+        0.72,
+        {}
+      ],
+      "scene": 7,
+      "time": 31.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        31.0,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 31.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        31.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 31.125
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        31.25,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 31.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        31.333333,
+        0.09,
+        1600,
+        {}
+      ],
+      "scene": 7,
+      "time": 31.333333,
+      "cue": "Distance counter step",
+      "alignment": "provisional",
+      "basis": "Route module with explicit 4-second shot duration"
+    },
+    {
+      "type": "bike",
+      "args": [
+        31.333333,
+        0.2
+      ],
+      "scene": 7,
+      "time": 31.333333,
+      "cue": "Two-mile bicycle bell",
+      "alignment": "provisional",
+      "basis": "Route scene7 source t=.5 scaled to4s"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        31.333333,
+        "C7",
+        0.25,
+        {}
+      ],
+      "scene": 7,
+      "time": 31.333333
+    },
+    {
+      "type": "sniff",
+      "args": [
+        31.333333,
+        0.3
+      ],
+      "scene": 7,
+      "time": 31.333333,
+      "cue": "Two original sniffs",
+      "alignment": "provisional",
+      "basis": "Route scene7 sniff begins source t=.5"
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        31.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 31.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        31.5,
+        "Bb2",
+        0.72,
+        {}
+      ],
+      "scene": 7,
+      "time": 31.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        31.5,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 7,
+      "time": 31.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        31.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 7,
+      "time": 31.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        31.5,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 31.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        31.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 31.625
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        31.75,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 31.75
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        31.875,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 31.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        32.0,
+        "F2",
+        0.72,
+        {}
+      ],
+      "scene": 7,
+      "time": 32.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        32.0,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 32.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        32.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 32.125
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        32.25,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 32.25
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        32.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 32.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        32.5,
+        "C3",
+        0.72,
+        {}
+      ],
+      "scene": 7,
+      "time": 32.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        32.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 7,
+      "time": 32.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        32.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 7,
+      "time": 32.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        32.5,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 32.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        32.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 32.625
+    },
+    {
+      "type": "xylo",
+      "args": [
+        32.666667,
+        "A4",
+        0.38,
+        {}
+      ],
+      "scene": 7,
+      "time": 32.666667
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        32.75,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 32.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        32.791667,
+        "C5",
+        0.32,
+        {}
+      ],
+      "scene": 7,
+      "time": 32.791667
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        32.875,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 32.875
+    },
+    {
+      "type": "xylo",
+      "args": [
+        32.916667,
+        "F5",
+        0.36,
+        {}
+      ],
+      "scene": 7,
+      "time": 32.916667
+    },
+    {
+      "type": "bass",
+      "args": [
+        33.0,
+        "A2",
+        0.72,
+        {}
+      ],
+      "scene": 7,
+      "time": 33.0
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        33.0,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 33.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        33.041667,
+        "D5",
+        0.32,
+        {}
+      ],
+      "scene": 7,
+      "time": 33.041667
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        33.125,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 33.125
+    },
+    {
+      "type": "xylo",
+      "args": [
+        33.166667,
+        "A4",
+        0.38,
+        {}
+      ],
+      "scene": 7,
+      "time": 33.166667
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        33.25,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 33.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        33.291667,
+        "C5",
+        0.32,
+        {}
+      ],
+      "scene": 7,
+      "time": 33.291667
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        33.375,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 33.375
+    },
+    {
+      "type": "xylo",
+      "args": [
+        33.416667,
+        "F5",
+        0.36,
+        {}
+      ],
+      "scene": 7,
+      "time": 33.416667
+    },
+    {
+      "type": "bass",
+      "args": [
+        33.5,
+        "C3",
+        0.72,
+        {}
+      ],
+      "scene": 7,
+      "time": 33.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        33.5,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 7,
+      "time": 33.5
+    },
+    {
+      "type": "cym",
+      "args": [
+        33.5,
+        0.0675,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 7,
+      "time": 33.5
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        33.5,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 33.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        33.541667,
+        "D5",
+        0.32,
+        {}
+      ],
+      "scene": 7,
+      "time": 33.541667
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        33.625,
+        0.035,
+        -0.25
+      ],
+      "scene": 7,
+      "time": 33.625
+    },
+    {
+      "type": "freewheel",
+      "args": [
+        33.75,
+        0.055,
+        0.25
+      ],
+      "scene": 7,
+      "time": 33.75
+    },
+    {
+      "type": "skid",
+      "args": [
+        34,
+        0.42,
+        true
+      ],
+      "scene": 8,
+      "time": 34,
+      "cue": "Muffled arrival outside second booth",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "bass",
+      "args": [
+        34,
+        "F2",
+        0.8,
+        {}
+      ],
+      "scene": 8,
+      "time": 34
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            34,
+            "F3"
+          ],
+          [
+            35,
+            "D3"
+          ],
+          [
+            35.5,
+            "E3"
+          ]
+        ],
+        35.95,
+        0.27,
+        {
+          "att": 0.04
+        }
+      ],
+      "scene": 8,
+      "time": 34
+    },
+    {
+      "type": "pah",
+      "args": [
+        34.5,
+        [
+          "A3",
+          "C4",
+          "F4"
+        ],
+        0.23,
+        {}
+      ],
+      "scene": 8,
+      "time": 34.5
+    },
+    {
+      "type": "clink",
+      "args": [
+        34.75,
+        4200,
+        0.24,
+        -0.3
+      ],
+      "scene": 8,
+      "time": 34.75,
+      "cue": "Same coins held up",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "clink",
+      "args": [
+        34.875,
+        4800,
+        0.24,
+        0.2
+      ],
+      "scene": 8,
+      "time": 34.875,
+      "cue": "Same coins held up",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "bass",
+      "args": [
+        35,
+        "Bb1",
+        0.78,
+        {}
+      ],
+      "scene": 8,
+      "time": 35
+    },
+    {
+      "type": "clink",
+      "args": [
+        35.0,
+        3900,
+        0.24,
+        0.35
+      ],
+      "scene": 8,
+      "time": 35.0,
+      "cue": "Same coins held up",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "pah",
+      "args": [
+        35.5,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.24,
+        {}
+      ],
+      "scene": 8,
+      "time": 35.5
+    },
+    {
+      "type": "zip",
+      "args": [
+        35.86,
+        0.32
+      ],
+      "scene": 8,
+      "time": 35.86,
+      "cue": "Second burger pushed",
+      "alignment": "provisional",
+      "basis": "Audited integrated second-kiosk push begins35.86"
+    },
+    {
+      "type": "bass",
+      "args": [
+        36,
+        "F2",
+        0.8,
+        {}
+      ],
+      "scene": 8,
+      "time": 36
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            36,
+            "F3"
+          ],
+          [
+            37,
+            "D3"
+          ],
+          [
+            37.5,
+            "E3"
+          ]
+        ],
+        37.95,
+        0.27,
+        {
+          "att": 0.04
+        }
+      ],
+      "scene": 8,
+      "time": 36
+    },
+    {
+      "type": "pah",
+      "args": [
+        36.5,
+        [
+          "A3",
+          "C4",
+          "F4"
+        ],
+        0.23,
+        {}
+      ],
+      "scene": 8,
+      "time": 36.5
+    },
+    {
+      "type": "bass",
+      "args": [
+        37,
+        "Bb1",
+        0.78,
+        {}
+      ],
+      "scene": 8,
+      "time": 37
+    },
+    {
+      "type": "snatch",
+      "args": [
+        37.04
+      ],
+      "scene": 8,
+      "time": 37.04,
+      "cue": "Second burger snatch",
+      "alignment": "provisional",
+      "basis": "Audited shared contact ends37.04, then snatch to37.33"
+    },
+    {
+      "type": "clink",
+      "args": [
+        37.19,
+        4600,
+        0.2,
+        0.25
+      ],
+      "scene": 8,
+      "time": 37.19
+    },
+    {
+      "type": "pah",
+      "args": [
+        37.5,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.24,
+        {}
+      ],
+      "scene": 8,
+      "time": 37.5
+    },
+    {
+      "type": "tock",
+      "args": [
+        38.2,
+        0.25,
+        950,
+        {}
+      ],
+      "scene": 8,
+      "time": 38.2,
+      "cue": "Vendor taps coins twice",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            38.2,
+            "C4"
+          ]
+        ],
+        40.96,
+        0.16,
+        {
+          "att": 0.05,
+          "sus": 2.4,
+          "rel": 0.03
+        }
+      ],
+      "scene": 8,
+      "time": 38.2
+    },
+    {
+      "type": "tock",
+      "args": [
+        38.53,
+        0.25,
+        950,
+        {}
+      ],
+      "scene": 8,
+      "time": 38.53,
+      "cue": "Vendor taps coins twice",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "swhistle",
+      "args": [
+        39.94,
+        1.04,
+        400,
+        1600,
+        0.2
+      ],
+      "scene": 8,
+      "time": 39.94,
+      "cue": "Accented push-in on eyes",
+      "alignment": "provisional",
+      "basis": "Audited integrated push-in39.94\u201341"
+    },
+    {
+      "type": "snare",
+      "args": [
+        39.94,
+        0.11
+      ],
+      "scene": 8,
+      "time": 39.94
+    },
+    {
+      "type": "snare",
+      "args": [
+        40.065,
+        0.134
+      ],
+      "scene": 8,
+      "time": 40.065
+    },
+    {
+      "type": "snare",
+      "args": [
+        40.19,
+        0.158
+      ],
+      "scene": 8,
+      "time": 40.19
+    },
+    {
+      "type": "snare",
+      "args": [
+        40.315,
+        0.182
+      ],
+      "scene": 8,
+      "time": 40.315
+    },
+    {
+      "type": "snare",
+      "args": [
+        40.44,
+        0.20600000000000002
+      ],
+      "scene": 8,
+      "time": 40.44
+    },
+    {
+      "type": "snare",
+      "args": [
+        40.565,
+        0.22999999999999998
+      ],
+      "scene": 8,
+      "time": 40.565
+    },
+    {
+      "type": "snare",
+      "args": [
+        40.69,
+        0.254
+      ],
+      "scene": 8,
+      "time": 40.69
+    },
+    {
+      "type": "snare",
+      "args": [
+        40.7525,
+        0.278
+      ],
+      "scene": 8,
+      "time": 40.7525
+    },
+    {
+      "type": "snare",
+      "args": [
+        40.815,
+        0.302
+      ],
+      "scene": 8,
+      "time": 40.815
+    },
+    {
+      "type": "snare",
+      "args": [
+        40.8775,
+        0.326
+      ],
+      "scene": 8,
+      "time": 40.8775
+    },
+    {
+      "type": "snare",
+      "args": [
+        40.94,
+        0.35
+      ],
+      "scene": 8,
+      "time": 40.94
+    },
+    {
+      "type": "bass",
+      "args": [
+        41,
+        "B1",
+        0.7,
+        {
+          "dec": 0.5
+        }
+      ],
+      "scene": 9,
+      "time": 41
+    },
+    {
+      "type": "pah",
+      "args": [
+        41,
+        [
+          "B3",
+          "D4",
+          "F4",
+          "Ab4"
+        ],
+        0.3,
+        {
+          "dec": 0.3
+        }
+      ],
+      "scene": 9,
+      "time": 41
+    },
+    {
+      "type": "xylo",
+      "args": [
+        41,
+        "B5",
+        0.2,
+        {}
+      ],
+      "scene": 9,
+      "time": 41
+    },
+    {
+      "type": "xylo",
+      "args": [
+        41,
+        "F6",
+        0.18,
+        {}
+      ],
+      "scene": 9,
+      "time": 41
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            41,
+            "D5"
+          ]
+        ],
+        41.09,
+        0.32,
+        {
+          "att": 0.006,
+          "rel": 0.03
+        }
+      ],
+      "scene": 9,
+      "time": 41
+    },
+    {
+      "type": "cym",
+      "args": [
+        41,
+        0.1,
+        0.4,
+        {}
+      ],
+      "scene": 9,
+      "time": 41
+    },
+    {
+      "type": "subDrop",
+      "args": [
+        41,
+        70,
+        45,
+        0.5,
+        0.45
+      ],
+      "scene": 9,
+      "time": 41,
+      "cue": "$6.89 shock stab",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "boing",
+      "args": [
+        41.375,
+        0.36
+      ],
+      "scene": 9,
+      "time": 41.375,
+      "cue": "Eyes pop",
+      "alignment": "provisional",
+      "basis": "Integrated second-kiosk eye pop41.375\u201341.75"
+    },
+    {
+      "type": "scribble",
+      "args": [
+        41.75,
+        0.2,
+        2500,
+        5000,
+        0.32
+      ],
+      "scene": 9,
+      "time": 41.75,
+      "cue": "+21% reveal",
+      "alignment": "provisional",
+      "basis": "Integrated overlay appears41.75"
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            41.75,
+            "A4"
+          ],
+          [
+            41.8,
+            "E4",
+            0.3
+          ]
+        ],
+        42.15,
+        0.24,
+        {
+          "att": 0.012
+        }
+      ],
+      "scene": 9,
+      "time": 41.75
+    },
+    {
+      "type": "bass",
+      "args": [
+        42.5,
+        "F2",
+        1,
+        {
+          "bright": 0.8
+        }
+      ],
+      "scene": 9,
+      "time": 42.5
+    },
+    {
+      "type": "tone",
+      "args": [
+        42.5,
+        0.12,
+        95,
+        70,
+        0.4,
+        {}
+      ],
+      "scene": 9,
+      "time": 42.5,
+      "cue": "Jaw drops",
+      "alignment": "provisional",
+      "basis": "Integrated jaw drop42.50\u201342.875"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        44.0,
+        "E5",
+        0.32,
+        {}
+      ],
+      "scene": 9,
+      "time": 44.0
+    },
+    {
+      "type": "bass",
+      "args": [
+        44,
+        "A1",
+        0.7,
+        {
+          "dec": 0.6
+        }
+      ],
+      "scene": 9,
+      "time": 44
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            44,
+            "D2"
+          ]
+        ],
+        45.65,
+        0.3,
+        {
+          "att": 0.1,
+          "rel": 0.35,
+          "cut": 600
+        }
+      ],
+      "scene": 9,
+      "time": 44
+    },
+    {
+      "type": "xylo",
+      "args": [
+        44.05,
+        "E5",
+        0.26,
+        {}
+      ],
+      "scene": 9,
+      "time": 44.05
+    },
+    {
+      "type": "xylo",
+      "args": [
+        44.1,
+        "E5",
+        0.32,
+        {}
+      ],
+      "scene": 9,
+      "time": 44.1
+    },
+    {
+      "type": "xylo",
+      "args": [
+        44.15,
+        "E5",
+        0.26,
+        {}
+      ],
+      "scene": 9,
+      "time": 44.15
+    },
+    {
+      "type": "xylo",
+      "args": [
+        44.2,
+        "E5",
+        0.32,
+        {}
+      ],
+      "scene": 9,
+      "time": 44.2
+    },
+    {
+      "type": "cym",
+      "args": [
+        45.875,
+        0.18,
+        0.07,
+        {}
+      ],
+      "scene": 9,
+      "time": 45.875,
+      "cue": "Dip-to-black choke",
+      "alignment": "provisional",
+      "basis": "Integrated second-kiosk dip45.875\u201346.625; black hold to47"
+    },
+    {
+      "type": "pah",
+      "args": [
+        45.875,
+        [
+          "G3",
+          "C#4",
+          "E4"
+        ],
+        0.3,
+        {
+          "dec": 0.15
+        }
+      ],
+      "scene": 9,
+      "time": 45.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        45.875,
+        "A1",
+        0.7,
+        {
+          "dec": 0.2
+        }
+      ],
+      "scene": 9,
+      "time": 45.875
+    },
+    {
+      "type": "hum",
+      "args": [
+        47,
+        64.85,
+        0.09
+      ],
+      "scene": 10,
+      "time": 47
+    },
+    {
+      "type": "pizz",
+      "args": [
+        47.0,
+        "D3",
+        0.3105,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 47.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        47.0,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 10,
+      "time": 47.0
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            47,
+            "D2"
+          ]
+        ],
+        48.42,
+        0.2,
+        {
+          "att": 0.03,
+          "cut": 600,
+          "vib": 0
+        }
+      ],
+      "scene": 10,
+      "time": 47
+    },
+    {
+      "type": "pizz",
+      "args": [
+        47.125,
+        "A3",
+        0.27,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 47.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        47.25,
+        "F3",
+        0.27,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 47.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        47.25,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 10,
+      "time": 47.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        47.25,
+        0.11,
+        2000,
+        {}
+      ],
+      "scene": 10,
+      "time": 47.25,
+      "cue": "Machine caption enters",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "rustle",
+      "args": [
+        47.25,
+        3.0,
+        0.28
+      ],
+      "scene": 10,
+      "time": 47.25,
+      "cue": "Receipts continuously into hopper",
+      "alignment": "provisional",
+      "basis": "Revised pricing module keeps particles moving through reading holds, until50.25"
+    },
+    {
+      "type": "clink",
+      "args": [
+        47.25,
+        3400,
+        0.09,
+        0.55
+      ],
+      "scene": 10,
+      "time": 47.25
+    },
+    {
+      "type": "pizz",
+      "args": [
+        47.375,
+        "A3",
+        0.27,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 47.375
+    },
+    {
+      "type": "pizz",
+      "args": [
+        47.5,
+        "D3",
+        0.3105,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 47.5
+    },
+    {
+      "type": "tock",
+      "args": [
+        47.5,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 10,
+      "time": 47.5
+    },
+    {
+      "type": "tock",
+      "args": [
+        47.5,
+        0.11,
+        2000,
+        {}
+      ],
+      "scene": 10,
+      "time": 47.5,
+      "cue": "Machine caption enters",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "clink",
+      "args": [
+        47.5,
+        3791,
+        0.108,
+        -0.55
+      ],
+      "scene": 10,
+      "time": 47.5
+    },
+    {
+      "type": "pizz",
+      "args": [
+        47.625,
+        "A3",
+        0.27,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 47.625
+    },
+    {
+      "type": "pizz",
+      "args": [
+        47.75,
+        "F3",
+        0.27,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 47.75
+    },
+    {
+      "type": "tock",
+      "args": [
+        47.75,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 10,
+      "time": 47.75
+    },
+    {
+      "type": "clink",
+      "args": [
+        47.75,
+        4182,
+        0.126,
+        0.55
+      ],
+      "scene": 10,
+      "time": 47.75
+    },
+    {
+      "type": "pizz",
+      "args": [
+        47.875,
+        "A3",
+        0.27,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 47.875
+    },
+    {
+      "type": "pizz",
+      "args": [
+        48.0,
+        "D3",
+        0.3105,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 48.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        48.0,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 10,
+      "time": 48.0
+    },
+    {
+      "type": "clink",
+      "args": [
+        48.0,
+        4573,
+        0.09,
+        -0.55
+      ],
+      "scene": 10,
+      "time": 48.0
+    },
+    {
+      "type": "gobble",
+      "args": [
+        48.0,
+        0.5
+      ],
+      "scene": 10,
+      "time": 48.0,
+      "cue": "Exaggerated hopper gulp",
+      "alignment": "provisional",
+      "basis": "Revised gesture-aware pricing module gulp peaks48.00/49.75"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        48.125,
+        "A3",
+        0.27,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 48.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        48.25,
+        "F3",
+        0.27,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 48.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        48.25,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 10,
+      "time": 48.25
+    },
+    {
+      "type": "clink",
+      "args": [
+        48.25,
+        4964,
+        0.108,
+        0.55
+      ],
+      "scene": 10,
+      "time": 48.25
+    },
+    {
+      "type": "pizz",
+      "args": [
+        48.375,
+        "A3",
+        0.27,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 48.375
+    },
+    {
+      "type": "clink",
+      "args": [
+        48.5,
+        5355,
+        0.126,
+        -0.55
+      ],
+      "scene": 10,
+      "time": 48.5
+    },
+    {
+      "type": "clink",
+      "args": [
+        48.75,
+        3546,
+        0.09,
+        0.55
+      ],
+      "scene": 10,
+      "time": 48.75
+    },
+    {
+      "type": "clink",
+      "args": [
+        49.0,
+        3937,
+        0.108,
+        -0.55
+      ],
+      "scene": 10,
+      "time": 49.0
+    },
+    {
+      "type": "clink",
+      "args": [
+        49.25,
+        4328,
+        0.126,
+        0.55
+      ],
+      "scene": 10,
+      "time": 49.25
+    },
+    {
+      "type": "clink",
+      "args": [
+        49.5,
+        4719,
+        0.09,
+        -0.55
+      ],
+      "scene": 10,
+      "time": 49.5
+    },
+    {
+      "type": "pizz",
+      "args": [
+        49.66,
+        "D3",
+        0.299,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 49.66
+    },
+    {
+      "type": "tock",
+      "args": [
+        49.66,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 10,
+      "time": 49.66
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            49.66,
+            "D2"
+          ]
+        ],
+        50.3,
+        0.15,
+        {
+          "att": 0.03,
+          "cut": 600,
+          "vib": 0
+        }
+      ],
+      "scene": 10,
+      "time": 49.66
+    },
+    {
+      "type": "clink",
+      "args": [
+        49.75,
+        5110,
+        0.108,
+        0.55
+      ],
+      "scene": 10,
+      "time": 49.75
+    },
+    {
+      "type": "gobble",
+      "args": [
+        49.75,
+        0.5
+      ],
+      "scene": 10,
+      "time": 49.75,
+      "cue": "Exaggerated hopper gulp",
+      "alignment": "provisional",
+      "basis": "Revised gesture-aware pricing module gulp peaks48.00/49.75"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        49.785,
+        "A3",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 49.785
+    },
+    {
+      "type": "pizz",
+      "args": [
+        49.91,
+        "F3",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 49.91
+    },
+    {
+      "type": "tock",
+      "args": [
+        49.91,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 10,
+      "time": 49.91
+    },
+    {
+      "type": "clink",
+      "args": [
+        50.0,
+        5501,
+        0.126,
+        -0.55
+      ],
+      "scene": 10,
+      "time": 50.0
+    },
+    {
+      "type": "pizz",
+      "args": [
+        50.035,
+        "A3",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 50.035
+    },
+    {
+      "type": "pizz",
+      "args": [
+        51.0,
+        "D3",
+        0.1955,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 51.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        51.0,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 10,
+      "time": 51.0
+    },
+    {
+      "type": "pizz",
+      "args": [
+        51.125,
+        "A3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 51.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        51.25,
+        "F3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 51.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        51.25,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 10,
+      "time": 51.25
+    },
+    {
+      "type": "pizz",
+      "args": [
+        51.375,
+        "A3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 51.375
+    },
+    {
+      "type": "pizz",
+      "args": [
+        51.5,
+        "D3",
+        0.1955,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 51.5
+    },
+    {
+      "type": "tock",
+      "args": [
+        51.5,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 10,
+      "time": 51.5
+    },
+    {
+      "type": "pizz",
+      "args": [
+        51.625,
+        "A3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 51.625
+    },
+    {
+      "type": "pizz",
+      "args": [
+        51.75,
+        "F3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 51.75
+    },
+    {
+      "type": "tock",
+      "args": [
+        51.75,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 10,
+      "time": 51.75
+    },
+    {
+      "type": "pizz",
+      "args": [
+        51.875,
+        "A3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 51.875
+    },
+    {
+      "type": "pizz",
+      "args": [
+        52.0,
+        "D3",
+        0.1955,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 52.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        52.0,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 10,
+      "time": 52.0
+    },
+    {
+      "type": "pizz",
+      "args": [
+        52.125,
+        "A3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 52.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        52.25,
+        "F3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 52.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        52.25,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 10,
+      "time": 52.25
+    },
+    {
+      "type": "pizz",
+      "args": [
+        52.375,
+        "A3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 10,
+      "time": 52.375
+    },
+    {
+      "type": "squeak",
+      "args": [
+        53,
+        0.3,
+        0.26
+      ],
+      "scene": 11,
+      "time": 53,
+      "cue": "Periscope turns",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "whirr",
+      "args": [
+        53,
+        0.5,
+        0.12
+      ],
+      "scene": 11,
+      "time": 53
+    },
+    {
+      "type": "bass",
+      "args": [
+        53,
+        "D2",
+        0.7,
+        {}
+      ],
+      "scene": 11,
+      "time": 53
+    },
+    {
+      "type": "pah",
+      "args": [
+        53,
+        [
+          "A3",
+          "D4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 11,
+      "time": 53
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            53,
+            "G4"
+          ]
+        ],
+        53.95,
+        0.16,
+        {
+          "att": 0.04
+        }
+      ],
+      "scene": 11,
+      "time": 53
+    },
+    {
+      "type": "tock",
+      "args": [
+        53.25,
+        0.11,
+        2000,
+        {}
+      ],
+      "scene": 11,
+      "time": 53.25,
+      "cue": "Shared recommendation caption enters",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "clunk",
+      "args": [
+        53.583333,
+        0.36
+      ],
+      "scene": 11,
+      "time": 53.583333,
+      "cue": "Periscope pan locks after tiny overshoot",
+      "alignment": "provisional",
+      "basis": "Revised periscope overshoot settles at53.583333"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        53.583333,
+        "C6",
+        0.2,
+        {}
+      ],
+      "scene": 11,
+      "time": 53.583333
+    },
+    {
+      "type": "xylo",
+      "args": [
+        53.583333,
+        "D6",
+        0.2,
+        {}
+      ],
+      "scene": 11,
+      "time": 53.583333
+    },
+    {
+      "type": "xylo",
+      "args": [
+        53.583333,
+        "E6",
+        0.2,
+        {}
+      ],
+      "scene": 11,
+      "time": 53.583333
+    },
+    {
+      "type": "tone",
+      "args": [
+        56.875,
+        0.04,
+        1200,
+        1200,
+        0.25,
+        {}
+      ],
+      "scene": 11,
+      "time": 56.875,
+      "cue": "Periscope eyelid blink",
+      "alignment": "provisional",
+      "basis": "Pricing scene11 .875 +3-second hold"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        57.0,
+        "D3",
+        0.299,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 57.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        57.0,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 57.0
+    },
+    {
+      "type": "pizz",
+      "args": [
+        57.125,
+        "A3",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 57.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        57.25,
+        "F3",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 57.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        57.25,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 12,
+      "time": 57.25
+    },
+    {
+      "type": "ratchet",
+      "args": [
+        57.25,
+        1000.0,
+        0.4
+      ],
+      "scene": 12,
+      "time": 57.25,
+      "cue": "LOW-to-MEDIUM ratchet",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        57.375,
+        "A3",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 57.375
+    },
+    {
+      "type": "pizz",
+      "args": [
+        57.5,
+        "D3",
+        0.299,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 57.5
+    },
+    {
+      "type": "tock",
+      "args": [
+        57.5,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 57.5
+    },
+    {
+      "type": "ratchet",
+      "args": [
+        57.5,
+        1259.9210498948732,
+        0.4
+      ],
+      "scene": 12,
+      "time": 57.5,
+      "cue": "LOW-to-MEDIUM ratchet",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        57.625,
+        "A3",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 57.625
+    },
+    {
+      "type": "pizz",
+      "args": [
+        57.75,
+        "F3",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 57.75
+    },
+    {
+      "type": "tock",
+      "args": [
+        57.75,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 12,
+      "time": 57.75
+    },
+    {
+      "type": "ratchet",
+      "args": [
+        57.75,
+        1587.4010519681995,
+        0.4
+      ],
+      "scene": 12,
+      "time": 57.75,
+      "cue": "LOW-to-MEDIUM ratchet",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        57.875,
+        "A3",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 57.875
+    },
+    {
+      "type": "pizz",
+      "args": [
+        58.0,
+        "F3",
+        0.1955,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 58.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        58.0,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 58.0
+    },
+    {
+      "type": "ratchet",
+      "args": [
+        58.0,
+        2000.0,
+        0.4
+      ],
+      "scene": 12,
+      "time": 58.0,
+      "cue": "LOW-to-MEDIUM ratchet",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "fmBell",
+      "args": [
+        58.0,
+        2400,
+        0.28,
+        {
+          "ratio": 1.41,
+          "index": 1.5,
+          "dec": 0.6
+        }
+      ],
+      "scene": 12,
+      "time": 58.0,
+      "cue": "Gauge reaches MEDIUM",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        58.125,
+        "C4",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 58.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        58.25,
+        "A3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 58.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        58.25,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 12,
+      "time": 58.25
+    },
+    {
+      "type": "pizz",
+      "args": [
+        58.375,
+        "C4",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 58.375
+    },
+    {
+      "type": "pizz",
+      "args": [
+        58.5,
+        "F3",
+        0.1955,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 58.5
+    },
+    {
+      "type": "tock",
+      "args": [
+        58.5,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 58.5
+    },
+    {
+      "type": "pizz",
+      "args": [
+        58.625,
+        "C4",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 58.625
+    },
+    {
+      "type": "pizz",
+      "args": [
+        58.75,
+        "A3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 58.75
+    },
+    {
+      "type": "tock",
+      "args": [
+        58.75,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 12,
+      "time": 58.75
+    },
+    {
+      "type": "pizz",
+      "args": [
+        58.875,
+        "C4",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 58.875
+    },
+    {
+      "type": "pizz",
+      "args": [
+        59.0,
+        "F3",
+        0.1955,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 59.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        59.0,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 59.0
+    },
+    {
+      "type": "pizz",
+      "args": [
+        59.125,
+        "C4",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 59.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        59.25,
+        "A3",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 59.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        59.25,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 12,
+      "time": 59.25
+    },
+    {
+      "type": "pizz",
+      "args": [
+        59.375,
+        "C4",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 59.375
+    },
+    {
+      "type": "pizz",
+      "args": [
+        59.5,
+        "F3",
+        0.1955,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 59.5
+    },
+    {
+      "type": "tock",
+      "args": [
+        59.5,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 59.5
+    },
+    {
+      "type": "pizz",
+      "args": [
+        59.625,
+        "C4",
+        0.17,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 59.625
+    },
+    {
+      "type": "pizz",
+      "args": [
+        60.0,
+        "F3",
+        0.299,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 60.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        60.0,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 60.0
+    },
+    {
+      "type": "typeClick",
+      "args": [
+        60.0,
+        0.38
+      ],
+      "scene": 12,
+      "time": 60.0,
+      "cue": "Four price-ticket printing clicks",
+      "alignment": "provisional",
+      "basis": "Revised printing gestures at60/60.333333/60.666667/61, then settle61.20"
+    },
+    {
+      "type": "rustle",
+      "args": [
+        60.0,
+        1.2,
+        0.15
+      ],
+      "scene": 12,
+      "time": 60.0,
+      "cue": "Ticket slides bottom-first",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        60.125,
+        "C4",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 60.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        60.25,
+        "A3",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 60.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        60.25,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 12,
+      "time": 60.25
+    },
+    {
+      "type": "typeClick",
+      "args": [
+        60.333333,
+        0.38
+      ],
+      "scene": 12,
+      "time": 60.333333,
+      "cue": "Four price-ticket printing clicks",
+      "alignment": "provisional",
+      "basis": "Revised printing gestures at60/60.333333/60.666667/61, then settle61.20"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        60.375,
+        "C4",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 60.375
+    },
+    {
+      "type": "pizz",
+      "args": [
+        60.5,
+        "F3",
+        0.299,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 60.5
+    },
+    {
+      "type": "tock",
+      "args": [
+        60.5,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 60.5
+    },
+    {
+      "type": "pizz",
+      "args": [
+        60.625,
+        "C4",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 60.625
+    },
+    {
+      "type": "typeClick",
+      "args": [
+        60.666667,
+        0.38
+      ],
+      "scene": 12,
+      "time": 60.666667,
+      "cue": "Four price-ticket printing clicks",
+      "alignment": "provisional",
+      "basis": "Revised printing gestures at60/60.333333/60.666667/61, then settle61.20"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        60.75,
+        "A3",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 60.75
+    },
+    {
+      "type": "tock",
+      "args": [
+        60.75,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 12,
+      "time": 60.75
+    },
+    {
+      "type": "pizz",
+      "args": [
+        60.875,
+        "C4",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 60.875
+    },
+    {
+      "type": "pizz",
+      "args": [
+        61.0,
+        "F3",
+        0.299,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 61.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        61.0,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 61.0
+    },
+    {
+      "type": "typeClick",
+      "args": [
+        61.0,
+        0.38
+      ],
+      "scene": 12,
+      "time": 61.0,
+      "cue": "Four price-ticket printing clicks",
+      "alignment": "provisional",
+      "basis": "Revised printing gestures at60/60.333333/60.666667/61, then settle61.20"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        61.125,
+        "C4",
+        0.26,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 61.125
+    },
+    {
+      "type": "fmBell",
+      "args": [
+        61.2,
+        1600,
+        0.32,
+        {
+          "ratio": 3.51,
+          "index": 2.2,
+          "dec": 1
+        }
+      ],
+      "scene": 12,
+      "time": 61.2,
+      "cue": "RECOMMENDED $6.89 fully printed",
+      "alignment": "provisional",
+      "basis": "Revised final paper settles61.20"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        62.0,
+        "F3",
+        0.1725,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 62.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        62.0,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 62.0
+    },
+    {
+      "type": "pizz",
+      "args": [
+        62.125,
+        "C4",
+        0.15,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 62.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        62.25,
+        "A3",
+        0.15,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 62.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        62.25,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 12,
+      "time": 62.25
+    },
+    {
+      "type": "pizz",
+      "args": [
+        62.375,
+        "C4",
+        0.15,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 62.375
+    },
+    {
+      "type": "pizz",
+      "args": [
+        62.5,
+        "F3",
+        0.1725,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 62.5
+    },
+    {
+      "type": "tock",
+      "args": [
+        62.5,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 62.5
+    },
+    {
+      "type": "pizz",
+      "args": [
+        62.625,
+        "C4",
+        0.15,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 62.625
+    },
+    {
+      "type": "pizz",
+      "args": [
+        62.75,
+        "A3",
+        0.15,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 62.75
+    },
+    {
+      "type": "tock",
+      "args": [
+        62.75,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 12,
+      "time": 62.75
+    },
+    {
+      "type": "pizz",
+      "args": [
+        62.875,
+        "C4",
+        0.15,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 62.875
+    },
+    {
+      "type": "pizz",
+      "args": [
+        63.0,
+        "F3",
+        0.1725,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 63.0
+    },
+    {
+      "type": "tock",
+      "args": [
+        63.0,
+        0.17,
+        900,
+        {
+          "pan": -0.35
+        }
+      ],
+      "scene": 12,
+      "time": 63.0
+    },
+    {
+      "type": "pizz",
+      "args": [
+        63.125,
+        "C4",
+        0.15,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 63.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        63.25,
+        "A3",
+        0.15,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 63.25
+    },
+    {
+      "type": "tock",
+      "args": [
+        63.25,
+        0.13,
+        1200,
+        {
+          "pan": 0.35
+        }
+      ],
+      "scene": 12,
+      "time": 63.25
+    },
+    {
+      "type": "pizz",
+      "args": [
+        63.375,
+        "C4",
+        0.15,
+        {
+          "dec": 0.25,
+          "pan": 0.1
+        }
+      ],
+      "scene": 12,
+      "time": 63.375
+    },
+    {
+      "type": "flutter",
+      "args": [
+        65,
+        0.3
+      ],
+      "scene": 13,
+      "time": 65,
+      "cue": "Same recommendation ticket flutters in",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "bass",
+      "args": [
+        65,
+        "D2",
+        0.65,
+        {}
+      ],
+      "scene": 13,
+      "time": 65
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            65,
+            "A4"
+          ],
+          [
+            65.5,
+            "G4"
+          ],
+          [
+            65.75,
+            "F4"
+          ],
+          [
+            66,
+            "E4"
+          ]
+        ],
+        66.45,
+        0.2,
+        {
+          "att": 0.05
+        }
+      ],
+      "scene": 13,
+      "time": 65
+    },
+    {
+      "type": "pah",
+      "args": [
+        65.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.2,
+        {}
+      ],
+      "scene": 13,
+      "time": 65.5
+    },
+    {
+      "type": "paperSnap",
+      "args": [
+        65.75,
+        0.45
+      ],
+      "scene": 13,
+      "time": 65.75,
+      "cue": "Ticket catch",
+      "alignment": "provisional",
+      "basis": "Revised hand catch65.50\u201365.75; paper snap at65.75"
+    },
+    {
+      "type": "bass",
+      "args": [
+        66,
+        "C#2",
+        0.58,
+        {}
+      ],
+      "scene": 13,
+      "time": 66
+    },
+    {
+      "type": "bass",
+      "args": [
+        67,
+        "D2",
+        0.65,
+        {}
+      ],
+      "scene": 13,
+      "time": 67
+    },
+    {
+      "type": "pah",
+      "args": [
+        67.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.2,
+        {}
+      ],
+      "scene": 13,
+      "time": 67.5
+    },
+    {
+      "type": "bass",
+      "args": [
+        68,
+        "C#2",
+        0.58,
+        {}
+      ],
+      "scene": 13,
+      "time": 68
+    },
+    {
+      "type": "bass",
+      "args": [
+        69,
+        "D2",
+        0.65,
+        {}
+      ],
+      "scene": 13,
+      "time": 69
+    },
+    {
+      "type": "pah",
+      "args": [
+        69.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.2,
+        {}
+      ],
+      "scene": 13,
+      "time": 69.5
+    },
+    {
+      "type": "phone",
+      "args": [
+        69.5,
+        0.14,
+        0.26
+      ],
+      "scene": 13,
+      "time": 69.5,
+      "cue": "Original telephone ring",
+      "alignment": "provisional",
+      "basis": "Revised visible phone strikes; ringing settles70.60"
+    },
+    {
+      "type": "phone",
+      "args": [
+        69.775,
+        0.14,
+        0.26
+      ],
+      "scene": 13,
+      "time": 69.775,
+      "cue": "Original telephone ring",
+      "alignment": "provisional",
+      "basis": "Revised visible phone strikes; ringing settles70.60"
+    },
+    {
+      "type": "bass",
+      "args": [
+        70,
+        "C#2",
+        0.58,
+        {}
+      ],
+      "scene": 13,
+      "time": 70
+    },
+    {
+      "type": "phone",
+      "args": [
+        70.05,
+        0.14,
+        0.26
+      ],
+      "scene": 13,
+      "time": 70.05,
+      "cue": "Original telephone ring",
+      "alignment": "provisional",
+      "basis": "Revised visible phone strikes; ringing settles70.60"
+    },
+    {
+      "type": "phone",
+      "args": [
+        70.325,
+        0.14,
+        0.26
+      ],
+      "scene": 13,
+      "time": 70.325,
+      "cue": "Original telephone ring",
+      "alignment": "provisional",
+      "basis": "Revised visible phone strikes; ringing settles70.60"
+    },
+    {
+      "type": "bass",
+      "args": [
+        72,
+        "D2",
+        0.62,
+        {}
+      ],
+      "scene": 14,
+      "time": 72
+    },
+    {
+      "type": "pah",
+      "args": [
+        72.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.18,
+        {}
+      ],
+      "scene": 14,
+      "time": 72.5
+    },
+    {
+      "type": "bass",
+      "args": [
+        74,
+        "Bb1",
+        0.62,
+        {}
+      ],
+      "scene": 14,
+      "time": 74
+    },
+    {
+      "type": "sigh",
+      "args": [
+        74.0,
+        0.32
+      ],
+      "scene": 14,
+      "time": 74.0,
+      "cue": "Shoulder-drop sigh",
+      "alignment": "provisional",
+      "basis": "Revised sigh/puff74\u201375; shoulders settle74.70"
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            74.0,
+            "A4"
+          ],
+          [
+            74.2,
+            "F4",
+            0.12
+          ],
+          [
+            74.4,
+            "D4",
+            0.15
+          ]
+        ],
+        74.68,
+        0.18,
+        {
+          "att": 0.06
+        }
+      ],
+      "scene": 14,
+      "time": 74.0
+    },
+    {
+      "type": "pah",
+      "args": [
+        74.5,
+        [
+          "G3",
+          "Bb3",
+          "D4"
+        ],
+        0.18,
+        {}
+      ],
+      "scene": 14,
+      "time": 74.5
+    },
+    {
+      "type": "bass",
+      "args": [
+        75.5,
+        "A1",
+        0.62,
+        {}
+      ],
+      "scene": 14,
+      "time": 75.5
+    },
+    {
+      "type": "key",
+      "args": [
+        75.5,
+        0.5
+      ],
+      "scene": 14,
+      "time": 75.5,
+      "cue": "Owner types 6",
+      "alignment": "provisional",
+      "basis": "Revised visible keys6/. /8/9 at75.50/75.75/76/76.25"
+    },
+    {
+      "type": "key",
+      "args": [
+        75.75,
+        0.5
+      ],
+      "scene": 14,
+      "time": 75.75,
+      "cue": "Owner types .",
+      "alignment": "provisional",
+      "basis": "Revised visible keys6/. /8/9 at75.50/75.75/76/76.25"
+    },
+    {
+      "type": "pah",
+      "args": [
+        76.0,
+        [
+          "G3",
+          "C#4",
+          "E4"
+        ],
+        0.18,
+        {}
+      ],
+      "scene": 14,
+      "time": 76.0
+    },
+    {
+      "type": "key",
+      "args": [
+        76.0,
+        0.5
+      ],
+      "scene": 14,
+      "time": 76.0,
+      "cue": "Owner types 8",
+      "alignment": "provisional",
+      "basis": "Revised visible keys6/. /8/9 at75.50/75.75/76/76.25"
+    },
+    {
+      "type": "key",
+      "args": [
+        76.25,
+        0.5
+      ],
+      "scene": 14,
+      "time": 76.25,
+      "cue": "Owner types 9",
+      "alignment": "provisional",
+      "basis": "Revised visible keys6/. /8/9 at75.50/75.75/76/76.25"
+    },
+    {
+      "type": "fmBell",
+      "args": [
+        76.5,
+        1300,
+        0.3,
+        {
+          "ratio": 1.4,
+          "index": 1.1,
+          "dec": 1.1
+        }
+      ],
+      "scene": 14,
+      "time": 76.5,
+      "cue": "Finished $6.89 sign lifted",
+      "alignment": "provisional",
+      "basis": "Revised finished sign lift76.50\u201377.20"
+    },
+    {
+      "type": "bass",
+      "args": [
+        76.5,
+        "D2",
+        0.8,
+        {
+          "open": true
+        }
+      ],
+      "scene": 14,
+      "time": 76.5
+    },
+    {
+      "type": "bass",
+      "args": [
+        77.5,
+        "D2",
+        0.62,
+        {}
+      ],
+      "scene": 14,
+      "time": 77.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        78.0,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.18,
+        {}
+      ],
+      "scene": 14,
+      "time": 78.0
+    },
+    {
+      "type": "bass",
+      "args": [
+        79,
+        "D2",
+        0.62,
+        {}
+      ],
+      "scene": 14,
+      "time": 79
+    },
+    {
+      "type": "pah",
+      "args": [
+        79.5,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.18,
+        {}
+      ],
+      "scene": 14,
+      "time": 79.5
+    },
+    {
+      "type": "pizz",
+      "args": [
+        81.0,
+        "C3",
+        0.5,
+        {
+          "dec": 0.25,
+          "pan": -0.1
+        }
+      ],
+      "scene": 15,
+      "time": 81.0
+    },
+    {
+      "type": "bass",
+      "args": [
+        81,
+        "C2",
+        0.8,
+        {}
+      ],
+      "scene": 15,
+      "time": 81
+    },
+    {
+      "type": "pah",
+      "args": [
+        81,
+        [
+          "A3",
+          "C4",
+          "F4"
+        ],
+        0.3,
+        {}
+      ],
+      "scene": 15,
+      "time": 81
+    },
+    {
+      "type": "xylo",
+      "args": [
+        81,
+        "F5",
+        0.3,
+        {}
+      ],
+      "scene": 15,
+      "time": 81
+    },
+    {
+      "type": "xylo",
+      "args": [
+        81,
+        "C6",
+        0.24,
+        {}
+      ],
+      "scene": 15,
+      "time": 81
+    },
+    {
+      "type": "cym",
+      "args": [
+        81,
+        0.09,
+        0.5,
+        {
+          "att": 0.004,
+          "pan": 0.2
+        }
+      ],
+      "scene": 15,
+      "time": 81
+    },
+    {
+      "type": "pizz",
+      "args": [
+        81.0625,
+        "C3",
+        0.3,
+        {
+          "dec": 0.25,
+          "pan": -0.1
+        }
+      ],
+      "scene": 15,
+      "time": 81.0625
+    },
+    {
+      "type": "pizz",
+      "args": [
+        81.125,
+        "C3",
+        0.3,
+        {
+          "dec": 0.25,
+          "pan": -0.1
+        }
+      ],
+      "scene": 15,
+      "time": 81.125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        81.1875,
+        "C3",
+        0.3,
+        {
+          "dec": 0.25,
+          "pan": -0.1
+        }
+      ],
+      "scene": 15,
+      "time": 81.1875
+    },
+    {
+      "type": "pizz",
+      "args": [
+        81.25,
+        "C3",
+        0.3,
+        {
+          "dec": 0.25,
+          "pan": -0.1
+        }
+      ],
+      "scene": 15,
+      "time": 81.25
+    },
+    {
+      "type": "pizz",
+      "args": [
+        81.3125,
+        "C3",
+        0.3,
+        {
+          "dec": 0.25,
+          "pan": -0.1
+        }
+      ],
+      "scene": 15,
+      "time": 81.3125
+    },
+    {
+      "type": "pizz",
+      "args": [
+        81.375,
+        "C3",
+        0.3,
+        {
+          "dec": 0.25,
+          "pan": -0.1
+        }
+      ],
+      "scene": 15,
+      "time": 81.375
+    },
+    {
+      "type": "pizz",
+      "args": [
+        81.4375,
+        "C3",
+        0.3,
+        {
+          "dec": 0.25,
+          "pan": -0.1
+        }
+      ],
+      "scene": 15,
+      "time": 81.4375
+    },
+    {
+      "type": "pizz",
+      "args": [
+        81.5,
+        "C3",
+        0.3,
+        {
+          "dec": 0.25,
+          "pan": -0.1
+        }
+      ],
+      "scene": 15,
+      "time": 81.5
+    },
+    {
+      "type": "pizz",
+      "args": [
+        81.5625,
+        "C3",
+        0.3,
+        {
+          "dec": 0.25,
+          "pan": -0.1
+        }
+      ],
+      "scene": 15,
+      "time": 81.5625
+    },
+    {
+      "type": "swhistle",
+      "args": [
+        82.9,
+        0.25,
+        300,
+        900,
+        0.22
+      ],
+      "scene": 15,
+      "time": 82.9,
+      "cue": "Original crouch anticipation",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "swhistle",
+      "args": [
+        83.6875,
+        0.2,
+        1600,
+        400,
+        0.22
+      ],
+      "scene": 15,
+      "time": 83.6875,
+      "cue": "Fast turn to face left",
+      "alignment": "provisional",
+      "basis": "Integrated spin83.6875\u201384.375"
+    },
+    {
+      "type": "whoosh",
+      "args": [
+        84.45,
+        0.25,
+        0.2
+      ],
+      "scene": 15,
+      "time": 84.45,
+      "cue": "Dash left",
+      "alignment": "provisional",
+      "basis": "Integrated dash84.45\u201385.525"
+    },
+    {
+      "type": "pizz",
+      "args": [
+        84.45,
+        "C4",
+        0.4,
+        {
+          "glide": [
+            "C5",
+            0.06
+          ],
+          "bright": 0.8
+        }
+      ],
+      "scene": 15,
+      "time": 84.45
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            84.45,
+            "A4"
+          ],
+          [
+            84.575,
+            "C5"
+          ],
+          [
+            84.7,
+            "F5"
+          ],
+          [
+            84.825,
+            "D5"
+          ],
+          [
+            84.95,
+            "E5"
+          ],
+          [
+            85.075,
+            "C5"
+          ],
+          [
+            85.2,
+            "Bb4"
+          ],
+          [
+            85.325,
+            "G4"
+          ],
+          [
+            85.45,
+            "A4"
+          ],
+          [
+            85.575,
+            "C5"
+          ],
+          [
+            85.7,
+            "F5"
+          ]
+        ],
+        85.775,
+        0.22,
+        {
+          "att": 0.01,
+          "vib": 0
+        }
+      ],
+      "scene": 15,
+      "time": 84.45
+    },
+    {
+      "type": "bass",
+      "args": [
+        86.0,
+        "F2",
+        0.75,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        86.0,
+        "A4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.0
+    },
+    {
+      "type": "whip",
+      "args": [
+        86,
+        0.32,
+        0.4
+      ],
+      "scene": 16,
+      "time": 86,
+      "cue": "Return route cut: columns",
+      "alignment": "provisional",
+      "basis": "Current route module equal quarter cuts over6s; plan suggests1.25/1.25/1.25/2.25 instead"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        86,
+        "F6",
+        0.4,
+        {}
+      ],
+      "scene": 16,
+      "time": 86
+    },
+    {
+      "type": "xylo",
+      "args": [
+        86.125,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.125
+    },
+    {
+      "type": "pah",
+      "args": [
+        86.25,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        86.25,
+        "F5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        86.375,
+        "D5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        86.5,
+        "C2",
+        0.75,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        86.5,
+        "E5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        86.625,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.625
+    },
+    {
+      "type": "pah",
+      "args": [
+        86.75,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        86.75,
+        "Bb4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        86.875,
+        "G4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 86.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        87.0,
+        "F2",
+        0.75,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        87.0,
+        "A4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        87.125,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.125
+    },
+    {
+      "type": "pah",
+      "args": [
+        87.25,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        87.25,
+        "F5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        87.375,
+        "D5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        87.5,
+        "C2",
+        0.75,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        87.5,
+        "E5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.5
+    },
+    {
+      "type": "whip",
+      "args": [
+        87.5,
+        0.32,
+        0.15000000000000002
+      ],
+      "scene": 16,
+      "time": 87.5,
+      "cue": "Return route cut: fountain",
+      "alignment": "provisional",
+      "basis": "Current route module equal quarter cuts over6s; plan suggests1.25/1.25/1.25/2.25 instead"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        87.5,
+        "D6",
+        0.4,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        87.625,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.625
+    },
+    {
+      "type": "pah",
+      "args": [
+        87.75,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        87.75,
+        "Bb4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        87.875,
+        "G4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 87.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        88.0,
+        "F2",
+        0.75,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        88.0,
+        "A4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        88.125,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.125
+    },
+    {
+      "type": "pah",
+      "args": [
+        88.25,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        88.25,
+        "F5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        88.375,
+        "D5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        88.5,
+        "C2",
+        0.75,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        88.5,
+        "E5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        88.625,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.625
+    },
+    {
+      "type": "pah",
+      "args": [
+        88.75,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        88.75,
+        "Bb4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        88.875,
+        "G4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 88.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        89.0,
+        "F2",
+        0.75,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        89.0,
+        "A4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.0
+    },
+    {
+      "type": "whip",
+      "args": [
+        89,
+        0.32,
+        -0.09999999999999998
+      ],
+      "scene": 16,
+      "time": 89,
+      "cue": "Return route cut: fences",
+      "alignment": "provisional",
+      "basis": "Current route module equal quarter cuts over6s; plan suggests1.25/1.25/1.25/2.25 instead"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        89,
+        "C6",
+        0.4,
+        {}
+      ],
+      "scene": 16,
+      "time": 89
+    },
+    {
+      "type": "xylo",
+      "args": [
+        89.125,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.125
+    },
+    {
+      "type": "pah",
+      "args": [
+        89.25,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        89.25,
+        "F5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        89.375,
+        "D5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        89.5,
+        "C2",
+        0.75,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        89.5,
+        "E5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        89.625,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.625
+    },
+    {
+      "type": "pah",
+      "args": [
+        89.75,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        89.75,
+        "Bb4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        89.875,
+        "G4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 89.875
+    },
+    {
+      "type": "bass",
+      "args": [
+        90.0,
+        "F2",
+        0.75,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        90.0,
+        "A4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.0
+    },
+    {
+      "type": "xylo",
+      "args": [
+        90.125,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.125
+    },
+    {
+      "type": "pah",
+      "args": [
+        90.25,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        90.25,
+        "F5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.25
+    },
+    {
+      "type": "xylo",
+      "args": [
+        90.375,
+        "D5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.375
+    },
+    {
+      "type": "bass",
+      "args": [
+        90.5,
+        "C2",
+        0.75,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        90.5,
+        "E5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.5
+    },
+    {
+      "type": "whip",
+      "args": [
+        90.5,
+        0.32,
+        -0.35
+      ],
+      "scene": 16,
+      "time": 90.5,
+      "cue": "Return route cut: first booth",
+      "alignment": "provisional",
+      "basis": "Current route module equal quarter cuts over6s; plan suggests1.25/1.25/1.25/2.25 instead"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        90.5,
+        "A5",
+        0.4,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.5
+    },
+    {
+      "type": "skid",
+      "args": [
+        90.5,
+        0.36
+      ],
+      "scene": 16,
+      "time": 90.5,
+      "cue": "Home skid",
+      "alignment": "provisional",
+      "basis": "Current route module fourth-card cut and deceleration begin90.50; dust follows90.74"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        90.625,
+        "C5",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.625
+    },
+    {
+      "type": "pah",
+      "args": [
+        90.75,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        90.75,
+        "Bb4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.75
+    },
+    {
+      "type": "xylo",
+      "args": [
+        90.875,
+        "G4",
+        0.27,
+        {}
+      ],
+      "scene": 16,
+      "time": 90.875
+    },
+    {
+      "type": "bike",
+      "args": [
+        91.25,
+        0.2
+      ],
+      "scene": 16,
+      "time": 91.25,
+      "cue": "Return counter reaches 0 mi",
+      "alignment": "provisional",
+      "basis": "Current route module normalized .875; .75s final reading hold"
+    },
+    {
+      "type": "bass",
+      "args": [
+        92,
+        "C2",
+        0.76
+      ],
+      "scene": 17,
+      "time": 92
+    },
+    {
+      "type": "pah",
+      "args": [
+        92,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.22
+      ],
+      "scene": 17,
+      "time": 92
+    },
+    {
+      "type": "xylo",
+      "args": [
+        92.25,
+        "A5",
+        0.36,
+        {}
+      ],
+      "scene": 17,
+      "time": 92.25,
+      "cue": "Same burger caption pop",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            92.7,
+            "C4"
+          ],
+          [
+            92.71000000000001,
+            "C5",
+            0.47
+          ]
+        ],
+        93.22,
+        0.3,
+        {
+          "att": 0.02,
+          "rel": 0.02
+        }
+      ],
+      "scene": 17,
+      "time": 92.7
+    },
+    {
+      "type": "xylo",
+      "args": [
+        92.75,
+        "C6",
+        0.36,
+        {}
+      ],
+      "scene": 17,
+      "time": 92.75,
+      "cue": "Different neighborhood caption pop",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "chomp",
+      "args": [
+        93.3,
+        0.48
+      ],
+      "scene": 17,
+      "time": 93.3,
+      "cue": "Repeated chomp",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "bass",
+      "args": [
+        93.3,
+        "F2",
+        0.9
+      ],
+      "scene": 17,
+      "time": 93.3
+    },
+    {
+      "type": "pah",
+      "args": [
+        93.3,
+        [
+          "F3",
+          "A3",
+          "C4",
+          "F4"
+        ],
+        0.3
+      ],
+      "scene": 17,
+      "time": 93.3
+    },
+    {
+      "type": "squelch",
+      "args": [
+        93.6,
+        0.45
+      ],
+      "scene": 17,
+      "time": 93.6,
+      "cue": "Repeated chew",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "pah",
+      "args": [
+        93.8,
+        [
+          "A3",
+          "C4",
+          "F4"
+        ],
+        0.23
+      ],
+      "scene": 17,
+      "time": 93.8
+    },
+    {
+      "type": "cym",
+      "args": [
+        93.8,
+        0.07200000000000001,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 17,
+      "time": 93.8
+    },
+    {
+      "type": "squelch",
+      "args": [
+        94,
+        0.45
+      ],
+      "scene": 17,
+      "time": 94,
+      "cue": "Repeated chew",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "bass",
+      "args": [
+        94.3,
+        "C2",
+        0.72
+      ],
+      "scene": 17,
+      "time": 94.3
+    },
+    {
+      "type": "squelch",
+      "args": [
+        94.4,
+        0.45
+      ],
+      "scene": 17,
+      "time": 94.4,
+      "cue": "Repeated chew",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "pah",
+      "args": [
+        94.8,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.21
+      ],
+      "scene": 17,
+      "time": 94.8
+    },
+    {
+      "type": "cym",
+      "args": [
+        94.8,
+        0.0585,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 17,
+      "time": 94.8
+    },
+    {
+      "type": "xylo",
+      "args": [
+        95.2,
+        "F5",
+        0.34
+      ],
+      "scene": 17,
+      "time": 95.2
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            95.2,
+            "A5"
+          ]
+        ],
+        96.43,
+        0.2,
+        {
+          "att": 0.07,
+          "vib": 0.01,
+          "rate": 4.2
+        }
+      ],
+      "scene": 17,
+      "time": 95.2
+    },
+    {
+      "type": "bass",
+      "args": [
+        95.2,
+        "F2",
+        0.75
+      ],
+      "scene": 17,
+      "time": 95.2
+    },
+    {
+      "type": "xylo",
+      "args": [
+        95.2625,
+        "G5",
+        0.34
+      ],
+      "scene": 17,
+      "time": 95.2625
+    },
+    {
+      "type": "xylo",
+      "args": [
+        95.325,
+        "A5",
+        0.34
+      ],
+      "scene": 17,
+      "time": 95.325
+    },
+    {
+      "type": "xylo",
+      "args": [
+        95.3875,
+        "C6",
+        0.34
+      ],
+      "scene": 17,
+      "time": 95.3875
+    },
+    {
+      "type": "xylo",
+      "args": [
+        95.45,
+        "D6",
+        0.34
+      ],
+      "scene": 17,
+      "time": 95.45
+    },
+    {
+      "type": "xylo",
+      "args": [
+        95.5125,
+        "F6",
+        0.34
+      ],
+      "scene": 17,
+      "time": 95.5125
+    },
+    {
+      "type": "pah",
+      "args": [
+        95.7,
+        [
+          "A3",
+          "C4",
+          "F4"
+        ],
+        0.22
+      ],
+      "scene": 17,
+      "time": 95.7
+    },
+    {
+      "type": "cym",
+      "args": [
+        95.7,
+        0.0585,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 17,
+      "time": 95.7
+    },
+    {
+      "type": "bass",
+      "args": [
+        96.2,
+        "C2",
+        0.68
+      ],
+      "scene": 17,
+      "time": 96.2
+    },
+    {
+      "type": "pah",
+      "args": [
+        96.7,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.19
+      ],
+      "scene": 17,
+      "time": 96.7
+    },
+    {
+      "type": "cym",
+      "args": [
+        96.7,
+        0.054,
+        0.2,
+        {
+          "att": 0.006,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 17,
+      "time": 96.7
+    },
+    {
+      "type": "bass",
+      "args": [
+        97.2,
+        "F2",
+        0.59,
+        {
+          "dec": 0.45
+        }
+      ],
+      "scene": 17,
+      "time": 97.2
+    },
+    {
+      "type": "pah",
+      "args": [
+        97.2,
+        [
+          "A3",
+          "C4",
+          "F4"
+        ],
+        0.19,
+        {
+          "dec": 0.35
+        }
+      ],
+      "scene": 17,
+      "time": 97.2
+    },
+    {
+      "type": "xylo",
+      "args": [
+        97.2,
+        "F5",
+        0.24
+      ],
+      "scene": 17,
+      "time": 97.2
+    },
+    {
+      "type": "xylo",
+      "args": [
+        97.2625,
+        "A5",
+        0.18
+      ],
+      "scene": 17,
+      "time": 97.2625
+    },
+    {
+      "type": "bass",
+      "args": [
+        98,
+        "F2",
+        0.75,
+        {}
+      ],
+      "scene": 18,
+      "time": 98
+    },
+    {
+      "type": "cym",
+      "args": [
+        98,
+        0.1,
+        0.5,
+        {
+          "att": 0.03,
+          "brush": true,
+          "pan": 0.3
+        }
+      ],
+      "scene": 18,
+      "time": 98,
+      "cue": "Sources and caveat held in full",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            98,
+            "A4"
+          ]
+        ],
+        98.92,
+        0.18,
+        {
+          "att": 0.05
+        }
+      ],
+      "scene": 18,
+      "time": 98
+    },
+    {
+      "type": "xylo",
+      "args": [
+        98,
+        "F5",
+        0.3,
+        {}
+      ],
+      "scene": 18,
+      "time": 98
+    },
+    {
+      "type": "bass",
+      "args": [
+        98.5,
+        "C3",
+        0.65,
+        {}
+      ],
+      "scene": 18,
+      "time": 98.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        98.5,
+        "A5",
+        0.3,
+        {}
+      ],
+      "scene": 18,
+      "time": 98.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        98.5,
+        "C6",
+        0.25,
+        {}
+      ],
+      "scene": 18,
+      "time": 98.5,
+      "cue": "Ideas & Technologies mark sparkle",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "pah",
+      "args": [
+        98.5,
+        [
+          "Bb3",
+          "E4",
+          "G4"
+        ],
+        0.18,
+        {}
+      ],
+      "scene": 18,
+      "time": 98.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        98.5625,
+        "E6",
+        0.22,
+        {}
+      ],
+      "scene": 18,
+      "time": 98.5625,
+      "cue": "Ideas & Technologies mark sparkle",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        98.625,
+        "G6",
+        0.2,
+        {}
+      ],
+      "scene": 18,
+      "time": 98.625,
+      "cue": "Ideas & Technologies mark sparkle",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        98.6875,
+        "C7",
+        0.18,
+        {}
+      ],
+      "scene": 18,
+      "time": 98.6875,
+      "cue": "Ideas & Technologies mark sparkle",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "bass",
+      "args": [
+        99,
+        "F2",
+        0.65,
+        {}
+      ],
+      "scene": 18,
+      "time": 99
+    },
+    {
+      "type": "xylo",
+      "args": [
+        99,
+        "C6",
+        0.3,
+        {}
+      ],
+      "scene": 18,
+      "time": 99
+    },
+    {
+      "type": "xylo",
+      "args": [
+        99.25,
+        "A5",
+        0.3,
+        {}
+      ],
+      "scene": 18,
+      "time": 99.25
+    },
+    {
+      "type": "bass",
+      "args": [
+        100.5,
+        "F2",
+        0.45,
+        {}
+      ],
+      "scene": 18,
+      "time": 100.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        101,
+        [
+          "A3",
+          "D4",
+          "F4"
+        ],
+        0.13,
+        {}
+      ],
+      "scene": 18,
+      "time": 101
+    },
+    {
+      "type": "bass",
+      "args": [
+        102.5,
+        "C3",
+        0.42,
+        {}
+      ],
+      "scene": 18,
+      "time": 102.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        103,
+        [
+          "A3",
+          "C4",
+          "E4"
+        ],
+        0.12,
+        {}
+      ],
+      "scene": 18,
+      "time": 103
+    },
+    {
+      "type": "bass",
+      "args": [
+        104.5,
+        "F2",
+        0.4,
+        {}
+      ],
+      "scene": 18,
+      "time": 104.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        105,
+        [
+          "A3",
+          "C4",
+          "F4"
+        ],
+        0.11,
+        {}
+      ],
+      "scene": 18,
+      "time": 105
+    },
+    {
+      "type": "clar",
+      "args": [
+        [
+          [
+            106.5,
+            "F3"
+          ],
+          [
+            106.56,
+            "C3",
+            0.36
+          ]
+        ],
+        106.95,
+        0.2,
+        {
+          "att": 0.08,
+          "cut": 900
+        }
+      ],
+      "scene": 18,
+      "time": 106.5,
+      "cue": "Late vendor yawn, low reed only",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "bass",
+      "args": [
+        108.5,
+        "F2",
+        0.6,
+        {
+          "dec": 0.4
+        }
+      ],
+      "scene": 18,
+      "time": 108.5
+    },
+    {
+      "type": "pah",
+      "args": [
+        108.5,
+        [
+          "A3",
+          "C4",
+          "F4"
+        ],
+        0.22,
+        {
+          "dec": 0.3
+        }
+      ],
+      "scene": 18,
+      "time": 108.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        108.5,
+        "F5",
+        0.3,
+        {}
+      ],
+      "scene": 18,
+      "time": 108.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        108.5,
+        "A5",
+        0.24,
+        {}
+      ],
+      "scene": 18,
+      "time": 108.5
+    },
+    {
+      "type": "xylo",
+      "args": [
+        109.75,
+        "C5",
+        0.3,
+        {}
+      ],
+      "scene": 18,
+      "time": 109.75,
+      "cue": "Original loop pickup",
+      "alignment": "provisional",
+      "basis": "Source gag, adapted to current 110-second plan"
+    },
+    {
+      "type": "xylo",
+      "args": [
+        109.8125,
+        "E5",
+        0.32,
+        {}
+      ],
+      "scene": 18,
+      "time": 109.8125
+    }
+  ]
+}
