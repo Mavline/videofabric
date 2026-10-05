@@ -1,0 +1,141 @@
+FULL SOURCE-FAITHFUL SCORE — 110 SECONDS
+
+Music draft; effect alignment after18s is provisional until integrated motion review
+
+Opening0–18s is bit-exact. Listening is not verified: runtime audio input unsupported.
+Cue and numerical checks passed. Integrated audiovisual review remains pending.
+
+ACTION CUES
+
+01  booth-569  0.000–6.000 s
+  Locked opening waveform; see faithful_score_timing.json
+
+02  owner-serves  6.000–12.000 s
+  Locked opening waveform; see faithful_score_timing.json
+
+03  first-bite  12.000–18.000 s
+  Locked opening waveform; see faithful_score_timing.json
+
+04  title-card  18.000–22.000 s
+  18.000000  Title stinger
+  18.125000  Original title word pop
+  18.250000  Original title word pop
+  18.375000  Original title word pop
+  18.600000  Reuters byline reveal
+  20.000000  Single burger bounce
+
+05  ride-fence  22.000–26.000 s
+  23.000000  Distance counter step
+  24.000000  Distance counter step
+  24.000000  Outward ride gulp
+  25.000000  Distance counter step
+
+06  ride-fountain  26.000–30.000 s
+  26.000000  Distance counter step
+  26.000000  Fountain jet springs
+  27.333333  Distance counter step
+  27.333333  Fountain jet springs
+  28.666667  Distance counter step
+  28.666667  Fountain jet springs
+
+07  ride-columns  30.000–34.000 s
+  30.000000  Distance counter step
+  31.333333  Distance counter step
+  31.333333  Two-mile bicycle bell
+  31.333333  Two original sniffs
+
+08  booth-again  34.000–41.000 s
+  34.000000  Muffled arrival outside second booth
+  34.750000  Same coins held up
+  34.875000  Same coins held up
+  35.000000  Same coins held up
+  35.860000  Second burger pushed
+  37.040000  Second burger snatch
+  38.200000  Vendor taps coins twice
+  38.530000  Vendor taps coins twice
+  39.940000  Accented push-in on eyes
+
+09  price-689  41.000–47.000 s
+  41.000000  $6.89 shock stab
+  41.375000  Eyes pop
+  41.750000  +21% reveal
+  42.500000  Jaw drops
+  45.875000  Dip-to-black choke
+
+10  machine-feed  47.000–53.000 s
+  47.250000  Machine caption enters
+  47.250000  Receipts continuously into hopper
+  47.500000  Machine caption enters
+  48.000000  Exaggerated hopper gulp
+  49.750000  Exaggerated hopper gulp
+
+11  periscope-view  53.000–57.000 s
+  53.000000  Periscope turns
+  53.250000  Shared recommendation caption enters
+  53.583333  Periscope pan locks after tiny overshoot
+  56.875000  Periscope eyelid blink
+
+12  machine-ticket  57.000–65.000 s
+  57.250000  LOW-to-MEDIUM ratchet
+  57.500000  LOW-to-MEDIUM ratchet
+  57.750000  LOW-to-MEDIUM ratchet
+  58.000000  LOW-to-MEDIUM ratchet
+  58.000000  Gauge reaches MEDIUM
+  60.000000  Four price-ticket printing clicks
+  60.000000  Ticket slides bottom-first
+  60.333333  Four price-ticket printing clicks
+  60.666667  Four price-ticket printing clicks
+  61.000000  Four price-ticket printing clicks
+  61.200000  RECOMMENDED $6.89 fully printed
+
+13  owner-ticket  65.000–72.000 s
+  65.000000  Same recommendation ticket flutters in
+  65.750000  Ticket catch
+  69.500000  Original telephone ring
+  69.775000  Original telephone ring
+  70.050000  Original telephone ring
+  70.325000  Original telephone ring
+
+14  owner-types  72.000–81.000 s
+  74.000000  Shoulder-drop sigh
+  75.500000  Owner types 6
+  75.750000  Owner types .
+  76.000000  Owner types 8
+  76.250000  Owner types 9
+  76.500000  Finished $6.89 sign lifted
+
+15  turn-back  81.000–86.000 s
+  82.900000  Original crouch anticipation
+  83.687500  Fast turn to face left
+  84.450000  Dash left
+
+16  ride-back  86.000–92.000 s
+  86.000000  Return route cut: columns
+  87.500000  Return route cut: fountain
+  89.000000  Return route cut: fences
+  90.500000  Return route cut: first booth
+  90.500000  Home skid
+  91.250000  Return counter reaches 0 mi
+
+17  bite-again  92.000–98.000 s
+  92.250000  Same burger caption pop
+  92.750000  Different neighborhood caption pop
+  93.300000  Repeated chomp
+  93.600000  Repeated chew
+  94.000000  Repeated chew
+  94.400000  Repeated chew
+
+18  sources-card  98.000–110.000 s
+  98.000000  Sources and caveat held in full
+  98.500000  Ideas & Technologies mark sparkle
+  98.562500  Ideas & Technologies mark sparkle
+  98.625000  Ideas & Technologies mark sparkle
+  98.687500  Ideas & Technologies mark sparkle
+  106.500000  Late vendor yawn, low reed only
+  109.750000  Original loop pickup
+
+REMAINING ALIGNMENT NOTES
+- Current route scenes6/7 default to3s and16 to5s; full integration must pass4/4/6s explicitly.
+- Scene8/9/15 cues follow the audited integrated second-kiosk map; scene10–14 follow the revised gesture-aware pricing audit. Integrated audiovisual review remains pending.
+- Current route return cuts are equally spaced1.5s; timing plan suggests1.25/1.25/1.25/2.25.
+- No synthesized receiver squawk: user requested no voice. Phone, nonvocal breath and reed retain the source mood.
