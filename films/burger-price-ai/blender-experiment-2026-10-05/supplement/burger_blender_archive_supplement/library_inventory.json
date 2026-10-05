@@ -1,0 +1,103 @@
+{
+  "verified_on": "2026-10-05",
+  "source": "Library title search returned10 burger files; exact IDs from results",
+  "files": [
+    {
+      "library_file_id": "libfile_a30aa236ca8c8191a7522ba63195ae81",
+      "file_id": "file_00000000fad481f4947868e4724eab42",
+      "file_name": "burger-price-blender-source-compact.zip",
+      "size_bytes": 5568259,
+      "created_at": "2026-10-04T19:06:20.099707Z",
+      "purpose": "Final compact source package:37 files, immutable opening audio seed, generation/render scripts, fonts/license, exact audio regeneration instructions."
+    },
+    {
+      "library_file_id": "libfile_eba4390ff4f8819199926fc10c9b58cd",
+      "file_id": "file_0000000032e481f4ac2e1a99eeb808bb",
+      "file_name": "burger-price-ai-blender-master.mp4",
+      "size_bytes": 17471419,
+      "created_at": "2026-10-04T19:02:26.588420Z",
+      "purpose": "Delivered full110s native1080 film; artistically rejected by user2026-10-05; preserve as experiment output."
+    },
+    {
+      "library_file_id": "libfile_b0e1a0763018819190c0ad0a5e8ecb63",
+      "file_id": "file_0000000026548243a393e6b3e9e32d91",
+      "file_name": "burger-price-blender-source.zip",
+      "size_bytes": 30716460,
+      "created_at": "2026-10-04T17:31:27.192065Z",
+      "purpose": "Earlier large source package with full110s WAV included; attachment delivery exceeded size limit. Mostly redundant with compact source+regeneration."
+    },
+    {
+      "library_file_id": "libfile_783f2cfadf788191af8f2b330d3d05a1",
+      "file_id": "file_00000000f5e88210bd421cf0dd56f765",
+      "file_name": "burger-price-faithful-18.blend",
+      "size_bytes": 9642179,
+      "created_at": "2026-10-04T17:29:36.450005Z",
+      "purpose": "Editable final18-scene Blender master corresponding to delivered native movie."
+    },
+    {
+      "library_file_id": "libfile_a9c50406690481919facdc83c0610466",
+      "file_id": "file_00000000eac881f49b6342e083cca061",
+      "file_name": "burger-price-ai-blender-preview.mp4",
+      "size_bytes": 10691788,
+      "created_at": "2026-10-04T17:27:56.821495Z",
+      "purpose": "Full110s720×1280 preview preceding native final; same final story version."
+    },
+    {
+      "library_file_id": "libfile_06dd4cd575088191aba3d41579fb3e88",
+      "file_id": "file_000000006c5882109b419736d5710f32",
+      "file_name": "burger-faithful-opening-proof.mp4",
+      "size_bytes": 1218466,
+      "created_at": "2026-10-04T15:25:01.579744Z",
+      "purpose": "18s faithful opening proof containing original scenes1–3; historical intermediate, not whole film."
+    },
+    {
+      "library_file_id": "libfile_b899c6547624819187aec89c8ff91079",
+      "file_id": "file_00000000101481f4a1d21a023346de8a",
+      "file_name": "burger-blender-v2-style-check.jpg",
+      "size_bytes": 539528,
+      "created_at": "2026-10-04T13:47:14.194755Z",
+      "purpose": "Static volumetric character/environment style comparison; user liked still style, not approval of final motion."
+    },
+    {
+      "library_file_id": "libfile_f49463830a808191a88ceb027a7e02dc",
+      "file_id": "file_000000000b5081f4b9eddf9bdded319a",
+      "file_name": "burger-blender-motion-preview.mp4",
+      "size_bytes": 2317295,
+      "created_at": "2026-10-04T13:15:59.804722Z",
+      "purpose": "Earlier rejected18s montage preview from simplified60s/front-facing approach; superseded and production stopped."
+    },
+    {
+      "library_file_id": "libfile_f67b66329c9c8191a71272df72d5d567",
+      "file_id": "file_00000000a5ac8246b0dbeed3e59adbac",
+      "file_name": "burger-price-ai-source-transfer.zip",
+      "size_bytes": 577104,
+      "created_at": "2026-10-04T12:34:50.508495Z",
+      "purpose": "Unchanged original JavaScript production source transfer from Mac."
+    },
+    {
+      "library_file_id": "libfile_ba70aa564d5c81919dafec54c9feb19a",
+      "file_id": "file_0000000022608246b227d96c919b316f",
+      "file_name": "burger-price-ai.mp4",
+      "size_bytes": 14008052,
+      "created_at": "2026-10-04T12:30:39.030669Z",
+      "purpose": "Unchanged original32s1080×1920 JavaScript-produced reference video."
+    }
+  ],
+  "user_screenshots": [
+    {
+      "library_file_id": "libfile_397cc402bf7c81919dca4ce9f64aaeba",
+      "file_name": "2026-10-05_08-26-36.png",
+      "subject": "Unsupported keypad buttons / operator staging"
+    },
+    {
+      "library_file_id": "libfile_c25687bdac9081918059573566d42479",
+      "file_name": "2026-10-05_08-25-53.png",
+      "subject": "Neck hump while cycling"
+    },
+    {
+      "library_file_id": "libfile_8513452827648191ab495d8c7b3a8864",
+      "file_name": "2026-10-05_08-25-26.png",
+      "subject": "Bite on outer side of burger"
+    }
+  ]
+}

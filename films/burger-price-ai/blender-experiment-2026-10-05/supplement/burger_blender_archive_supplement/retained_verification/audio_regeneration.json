@@ -1,0 +1,8 @@
+{
+  "command": "python3 render_full_faithful_score.py --out full_faithful_score.wav",
+  "duration_seconds": 110,
+  "reproduced_bytes_exactly": true,
+  "full_wav_sha256": "ce2ae942dc41e62bb662660ac2416ddf3d5e74df0cc420a05906157998a24481",
+  "excluded_regenerable_file": "full_faithful_score.wav",
+  "retained_immutable_seed": "faithful_score.wav"
+}

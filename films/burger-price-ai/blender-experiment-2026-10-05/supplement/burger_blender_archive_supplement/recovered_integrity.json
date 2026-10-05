@@ -1,0 +1,34 @@
+{
+  "checked_on": "2026-10-05",
+  "kind": "New archival integrity check, not recovered historical final_validation.json",
+  "movie_sha256": "85f52c3b6585ff1405c3d2fc1b74722bf990938790256afd34d05bae19a0da51",
+  "movie_probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1080,
+        "height": 1920,
+        "avg_frame_rate": "24/1",
+        "nb_frames": "2640"
+      },
+      {
+        "codec_name": "aac",
+        "sample_rate": "48000",
+        "channels": 2,
+        "avg_frame_rate": "0/0",
+        "nb_frames": "5158"
+      }
+    ],
+    "format": {
+      "duration": "110.000000",
+      "size": "17471419"
+    }
+  },
+  "compact_source_zip_sha256": "be710039180e731217c88cf16e686bf397393e8b836fa0f31dad27c16cddaf2f",
+  "source_manifest_all_files_match": true,
+  "source_files": 37,
+  "film_or_source_modified": false,
+  "new_blender_render_performed": false
+}

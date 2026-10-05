@@ -1,0 +1,14 @@
+[
+  {
+    "output_frame": 1729,
+    "mse_vs_corrected": 4.516146918402778,
+    "mse_vs_rejected": 517.9949837239583,
+    "matches_corrected": true
+  },
+  {
+    "output_frame": 1730,
+    "mse_vs_corrected": 4.514803964120371,
+    "mse_vs_rejected": 517.9920732060185,
+    "matches_corrected": true
+  }
+]

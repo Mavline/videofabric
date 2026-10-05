@@ -1,0 +1,39 @@
+{
+  "old_master_sha256": "97a5c60b7d3a778dc83af94be45f159d22543bde9be4ea2855e7825a0e2879c9",
+  "new_master_sha256": "fea5e54b12e5175c3c3e291ac2f74f75a9e953404e071ef2f16928b613f56a2e",
+  "changed_animation_keys": [
+    {
+      "object": "Franchisee illustration owner-held tag",
+      "channel": 0,
+      "frame": 1729,
+      "old": -0.2250048816204071,
+      "new": 0.1300061047077179
+    },
+    {
+      "object": "Franchisee illustration owner-held tag",
+      "channel": 1,
+      "frame": 1729,
+      "old": -0.29500001668930054,
+      "new": -0.25
+    },
+    {
+      "object": "Franchisee illustration owner-held tag",
+      "channel": 2,
+      "frame": 1729,
+      "old": 0.8849999308586121,
+      "new": 2.9750001430511475
+    }
+  ],
+  "other_animation_key_values_unchanged": true,
+  "master_default_render_settings": {
+    "width": 1080,
+    "height": 1920,
+    "percentage": 100,
+    "aa": "8"
+  },
+  "preview_replaced_canonical_frame": 1729,
+  "affected_output_frames": [
+    1729,
+    1730
+  ]
+}

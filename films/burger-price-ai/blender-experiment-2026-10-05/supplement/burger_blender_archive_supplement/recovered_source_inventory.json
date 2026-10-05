@@ -1,0 +1,150 @@
+[
+  {
+    "path": "MANIFEST.sha256",
+    "bytes": 3263
+  },
+  {
+    "path": "README.txt",
+    "bytes": 4984
+  },
+  {
+    "path": "asset_registry.py",
+    "bytes": 2314
+  },
+  {
+    "path": "build_full_faithful.py",
+    "bytes": 12843
+  },
+  {
+    "path": "character.py",
+    "bytes": 27646
+  },
+  {
+    "path": "encode_manifest.py",
+    "bytes": 2163
+  },
+  {
+    "path": "environment.py",
+    "bytes": 33928
+  },
+  {
+    "path": "faithful_audio_source/events.json",
+    "bytes": 14261
+  },
+  {
+    "path": "faithful_score.wav",
+    "bytes": 5184102
+  },
+  {
+    "path": "film_compose.py",
+    "bytes": 4392
+  },
+  {
+    "path": "final_proof_pose.py",
+    "bytes": 829
+  },
+  {
+    "path": "finish_proof_geometry.py",
+    "bytes": 3764
+  },
+  {
+    "path": "fonts/DejaVuSans-Bold.ttf",
+    "bytes": 708920
+  },
+  {
+    "path": "fonts/DejaVuSans.ttf",
+    "bytes": 759720
+  },
+  {
+    "path": "fonts/LICENSE.txt",
+    "bytes": 3859
+  },
+  {
+    "path": "frame_reuse_manifest.py",
+    "bytes": 24510
+  },
+  {
+    "path": "full_score_cue_sheet.txt",
+    "bytes": 4833
+  },
+  {
+    "path": "full_score_timing.json",
+    "bytes": 141437
+  },
+  {
+    "path": "positive_camera_audit.py",
+    "bytes": 1543
+  },
+  {
+    "path": "pricing_sequence.py",
+    "bytes": 42294
+  },
+  {
+    "path": "proof_faithful.py",
+    "bytes": 11898
+  },
+  {
+    "path": "props.py",
+    "bytes": 10183
+  },
+  {
+    "path": "render_faithful_score.py",
+    "bytes": 6168
+  },
+  {
+    "path": "render_full_faithful_score.py",
+    "bytes": 10919
+  },
+  {
+    "path": "render_manifest.py",
+    "bytes": 2986
+  },
+  {
+    "path": "render_project.py",
+    "bytes": 4929
+  },
+  {
+    "path": "route_sequence.py",
+    "bytes": 21375
+  },
+  {
+    "path": "second_kiosk_sequence.py",
+    "bytes": 21667
+  },
+  {
+    "path": "source_faithful_18_timing.json",
+    "bytes": 4412
+  },
+  {
+    "path": "verification/audio_regeneration.json",
+    "bytes": 347
+  },
+  {
+    "path": "verification/encoded_correction_verification.json",
+    "bytes": 302
+  },
+  {
+    "path": "verification/full_visibility_audit.json",
+    "bytes": 254
+  },
+  {
+    "path": "verification/positive_camera_audit.json",
+    "bytes": 3381
+  },
+  {
+    "path": "verification/preview.validation.json",
+    "bytes": 511
+  },
+  {
+    "path": "verification/quality_checks.json",
+    "bytes": 795
+  },
+  {
+    "path": "verification/scene14_pose_correction.json",
+    "bytes": 1004
+  },
+  {
+    "path": "visibility_audit.py",
+    "bytes": 4638
+  }
+]
