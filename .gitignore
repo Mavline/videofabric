@@ -30,3 +30,6 @@ films/*/exports/
 films/*/.tmp/
 films/*/dist/
 films/*/tools/node_modules/
+
+# Медиаматериалы роликов (сток, сгенерированные клипы, музыка): тяжёлые, скачиваются заново по films/*/sources.md.
+films/*/assets/
