@@ -28,9 +28,9 @@ highlights, muted saturation) so the amber type sits on one palette.
 
 Voice: "grok:<voice_id>" uses xAI text-to-speech (POST api.x.ai/v1/tts; voices from GET /v1/tts/voices,
 e.g. carina, eve, ara, luna; key XAI_API_KEY). "gemini:<Voice>" uses Google's speech models (key
-GEMINI_API_KEY; free tier allows 10 requests a day per model). Keys come from the environment or
-from --env-file. Speech is cached per text and voice. Any other value is a macOS `say` voice name.
-'' renders a mute video.
+GEMINI_API_KEY; free tier allows 10 requests a day per model). Keys come from the environment, else
+from the repository's .env, else from ~/Projects/VoiceAgent/.env (--env-file adds one more path).
+Speech is cached per text and voice. Any other value is a macOS `say` voice name. '' renders a mute video.
 """
 import argparse, base64, hashlib, json, math, os, re, subprocess, sys, tempfile, urllib.request, wave
 from PIL import Image, ImageDraw, ImageFont
@@ -260,16 +260,21 @@ def frame(sc, t, dur, prog, W, H, bgs, f):
 
 # ---- voices -------------------------------------------------------------------------------
 
-def env_key(name, env_file):
-    """A secret from the environment, else from one line of an .env file; the value is never printed."""
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ENV_FILES = [os.path.join(REPO, ".env"), os.path.expanduser("~/Projects/VoiceAgent/.env")]
+
+def env_key(name, env_file=None):
+    """A secret from the environment, else from the first .env file that has the line; never printed."""
     key = os.environ.get(name)
-    if not key and env_file and os.path.exists(env_file):
-        for line in open(env_file):
+    for path in ([env_file] if env_file else []) + ENV_FILES:
+        if key or not path or not os.path.exists(path):
+            continue
+        for line in open(path):
             m = re.match(rf"\s*{name}=(.*)", line)
             if m:
                 key = m.group(1).strip().strip("\"'")
     if not key:
-        sys.exit(f"{name} not set and not found in {env_file}")
+        sys.exit(f"{name} not set and not found in {', '.join(ENV_FILES)}")
     return key
 
 def grok_tts(text, voice, key):
@@ -425,7 +430,7 @@ def main():
     ap.add_argument("out", nargs="?")
     ap.add_argument("--assets", help="directory that 'bg' and 'music' paths are relative to (default: <film>/assets)")
     ap.add_argument("--voice", default="grok:carina", help="'grok:<voice_id>' (xAI), 'gemini:<Voice>' (Google) or a macOS `say` voice; '' for a mute video")
-    ap.add_argument("--env-file", default=os.path.expanduser("~/Projects/VoiceAgent/.env"), help="where to read XAI_API_KEY / GEMINI_API_KEY if not in the environment")
+    ap.add_argument("--env-file", help="an extra .env to read keys from, before the repository's .env and ~/Projects/VoiceAgent/.env")
     ap.add_argument("--rate", type=int, default=220, help="words per minute for macOS voices")
     ap.add_argument("--size", default="1080x1920")
     ap.add_argument("--stills")
